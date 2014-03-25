@@ -9,7 +9,7 @@ import be.kuleuven.cs.som.annotate.*;
  * A Worm can turn, move, jump and change its name.
  * 
  * @author Sebastian Stoelen 2BbiCwsElt2, Matthias Maeyens 2BbiCwsElt2
- * @version 1.0
+ * @version 2.0
  *
  */
 public class Worm {
