@@ -22,6 +22,8 @@ public class World {
 	 */
 	@Raw
 	public World(double width, double height, boolean[][] passableMap, Random random) {
+		assert isValidWidth(width);
+		assert isValidWidth(width);
 		this.width = width;
 		this.height = height;
 	}
