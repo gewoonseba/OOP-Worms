@@ -10,6 +10,7 @@ import be.kuleuven.cs.som.annotate.*;
  * 
  * @author Sebastian Stoelen 2BbiCwsElt2, Matthias Maeyens 2BbiCwsElt2
  * @version 2.0
+ * 
  *
  */
 public class Worm {
@@ -59,7 +60,7 @@ public class Worm {
 	
 
 	/**
-	 * Method to return the x-coördinate of the given worm.
+	 * Method to return the x-coordinate of the given worm.
 	 */
 	@Basic
 	public double getX(){
@@ -67,7 +68,7 @@ public class Worm {
 	}
 	
 	/**
-	 * Set the x-coördinate of the location of the given worm to a given value x.
+	 * Set the x-coordinate of the location of the given worm to a given value x.
 	 * @param x
 	 * @post the new x-coordinate is equal to x.
 	 * 		| new.getX() == x
@@ -78,12 +79,12 @@ public class Worm {
 	}
 	
 	/**
-	 * Variable registering the x-coördinate of the location of the given worm.
+	 * Variable registering the x-coordinate of the location of the given worm.
 	 */
 	private double x = 0;
 	
 	/**
-	 * Method to return the y-coördinate of the given worm.
+	 * Method to return the y-coordinate of the given worm.
 	 */
 	@Basic
 	public double getY(){
@@ -91,7 +92,7 @@ public class Worm {
 	}
 	
 	/**
-	 * Set the y-coördinate of the location of the given worm to a given value y.
+	 * Set the y-coordinate of the location of the given worm to a given value y.
 	 * @param y
 	 * @post the new y-coordinate is equal to y.
 	 * 		| new.getY() == y
@@ -102,9 +103,19 @@ public class Worm {
 	}
 	
 	/**
-	 * Variable registering the y-coördinate of the location of the given worm.
+	 * Variable registering the y-coordinate of the location of the given worm.
 	 */
 	private double y = 0;
+	
+	/**
+	 * Method to check whether the given coordinate is not equal to NaN
+	 * @param coordinate
+	 * @return True if and only if coordinate does not equal Nan
+	 * 			| result == (coordinate != Double.Nan)
+	 */
+	public boolean isValidCoordinate(double coordinate){
+		return (coordinate != Double.NaN);
+	}
 	
 	/**
 	 * Check whether the worm can move the given number of steps.
@@ -213,9 +224,12 @@ public class Worm {
 			throw new IllegalAPException(this.getCurrentAP(), this);
 		if (! this.canJumpDirection())
 			throw new IllegalJumpDirectionException(this.getDirection(),this);
+		double Jumptime = 0;
 		double initialSpeed = this.getInitialSpeed();
-		double distance = (Math.pow(initialSpeed, 2)*Math.sin(2*this.getDirection())/g);
-		return (distance/(initialSpeed*Math.cos(this.getDirection())));
+		double initialSpeedY = initialSpeed * Math.sin(this.getDirection());
+		if (initialSpeedY != 0)
+			Jumptime = (2*initialSpeedY)/g;
+		return Jumptime;
 	}
 	
 	/**
@@ -473,7 +487,12 @@ public class Worm {
 	 * 			| return == (int) Math.round(this.getMass())
 	 */
 	public int getMaxAP(){
-		int maxAP = (int) Math.round(this.getMass());
+		int maxAP;
+		long possibleMaxAP = Math.round(this.getMass());
+		if (possibleMaxAP >= Integer.MAX_VALUE)
+			maxAP = Integer.MAX_VALUE;
+		else
+			maxAP = (int) possibleMaxAP;
 		return maxAP;
 	}
 	
