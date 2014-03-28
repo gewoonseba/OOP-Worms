@@ -532,4 +532,18 @@ public class Worm {
 	 * The current Action Points of the given worm.
 	 */
 	private int currentAP;
+	
+	/**
+	 * Method to set the World of this worm to the given world.
+	 * @param world
+	 * @post If the world is valid, the new World of this worm is the given world.
+	 * 		| new.getWorld() == world
+	 */
+	public void setWorldTo(World world){
+		if ((world != null) && (! hasWorld())
+				&& (canHaveAsWorld(world))){
+			setWorld(world);
+			world.addAsWorm(this);
+		}
+	}
 }

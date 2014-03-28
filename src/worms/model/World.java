@@ -1,5 +1,7 @@
 package worms.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import be.kuleuven.cs.som.annotate.*;
@@ -101,5 +103,31 @@ public class World {
 	 * Variable registering the maximum height of any World.
 	 */
 	private static double maxHeight = Double.MAX_VALUE;
+	
+	/**
+	 * Method to check if the given worm is already in this world.
+	 * @param worm
+	 * @return True if and only if the given worm is in worms.
+	 * 			| return == worms.contains(worm)
+	 */
+	public boolean hasAsWorm(Worm worm){
+		return worms.contains(worm);
+	}
+	
+	/**
+	 * Method to add a given worm to the world.
+	 * @param worm
+	 * 		 the worm to be added
+	 * @post If the worm is valid, this world has the given worm as one of its worms.
+	 * 		| worms.contains(worm)
+	 * @post If the worm is not valid, no worm will be added.
+	 * 		| this.worms == new.worms
+	 */
+	public void addAsWorm(Worm worm){ //moet totaal uitgewerkt worden!
+		if((worm != null)&&(! hasAsWorm(worm)&&worm.hasAsWorld(this)) //samenvoegen in canHaveAsWorm
+				worms.add(worm);
+	}
+	
+	private final List<Worm> worms = new ArrayList<Worm>();
 
 }
