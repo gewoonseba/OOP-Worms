@@ -17,8 +17,8 @@ public class Worm {
 	
 	/**
 	 * Create a new worm.
-	 * @pre 	The given initial direction must be a valid direction.
-	 *			| isValidDirection(direction)
+	 * @pre The given initial direction must be a valid direction.
+	 *		| isValidDirection(direction)
 	 * @param x
 	 * @param y
 	 * @param direction
@@ -58,13 +58,9 @@ public class Worm {
 		this.setRadius(radius);
 		this.setName(name);
 		this.setCurrentAP(this.getMaxAP());
-<<<<<<< HEAD
-	}
-=======
 		this.setHitPoints(this.getMaxHitPoints());
 	}
 	
->>>>>>> c4d16d8aa294c5336a92fdd8707ed0a2e80c6a36
 
 	/**
 	 * Method to return the x-coordinate of the given worm.
@@ -553,7 +549,6 @@ public class Worm {
 	private int currentAP;
 	
 	/**
-<<<<<<< HEAD
 	 * Return the world of this worm.
 	 */
 	@Basic @Raw
@@ -579,7 +574,8 @@ public class Worm {
 	public boolean hasWorld(){
 		return (getWorld() != null);
 	}
-=======
+	
+	/**
 	 * Method to return the maximum Hit Points of the given worm.
 	 * @return Returns the maximum Hit Points of the given worm.
 	 * 			| return == (int) Math.round(this.getMass())
@@ -627,7 +623,6 @@ public class Worm {
 	 */
 	private int hitPoints;
 	
->>>>>>> c4d16d8aa294c5336a92fdd8707ed0a2e80c6a36
 	/**
 	 * Method to set the World of this worm to the given world.
 	 * @param world
