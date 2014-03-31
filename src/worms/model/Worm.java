@@ -62,10 +62,6 @@ public class Worm {
 		this.setHitPoints(this.getMaxHitPoints());
 	}
 	
-	public void dikkeZever(){
-		
-	}
-	
 
 	/**
 	 * Method to return the x-coordinate of the given worm.
@@ -588,6 +584,14 @@ public class Worm {
 		this.hitPoints=hitPoints;
 	}
 	
+	/**
+	 * Checks whether the given worm is alive
+	 * @return returns true if and only if the hit points of the worm are higher than zero.
+	 *        |return == this.getHitPoints()>0
+	 */
+	public boolean isAlive(){
+		return (this.getHitPoints()>0);
+	}	
 	/**
 	 * the current hitPoints of the given Worm.
 	 */
