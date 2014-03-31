@@ -25,18 +25,20 @@ public class Worm {
 	 * @param direction
 	 * @param radius
 	 * @param name
-	 * @post the new x-coordinate is equal to x.
+	 * @effect the new x-coordinate is equal to x.
 	 * 		| new.getX() == x
-	 * @post the new y-coordinate is equal to y.
+	 * @effect the new y-coordinate is equal to y.
 	 * 		| new.getY() == y
-	 * @post the new direction is equal to direction.
+	 * @effect the new direction is equal to direction.
 	 * 		| new.getDirection() == direction
-	 * @post the new radius is equal to radius.
+	 * @effect the new radius is equal to radius.
 	 * 		| new.getRadius() == radius
-	 * @post the new name is equal to name.
+	 * @effect the new name is equal to name.
 	 * 		| new.getName() == name
-	 * @post the new currentAP is equal to the maxAP of the given worm.
+	 * @effect the new currentAP is equal to the maxAP of the given worm.
 	 *      | new.getCurrentAP() == new.getMaxAP()
+	 * @effect the new hit points are equal to to maxHitpoints possible for the given worm.
+	 *      | new.getHitPoints()== new.getMaxHitPoints()
 	 * @throws IllegalRadiusException
 	 *         The given radius is not valid.
 	 *         | (! isValidRadius(radius))
@@ -51,12 +53,13 @@ public class Worm {
 			throw new IllegalRadiusException(radius);
 		if (! isValidName(name))
 			throw new IllegalNameException(name);
-		this.x = x;
-		this.y = y;
-		this.direction = direction;
-		this.radius = radius;
-		this.name = name;
+		this.setX(x);
+		this.setY(y);
+		this.setDirection(direction);
+		this.setRadius(radius);
+		this.setName(name);
 		this.setCurrentAP(this.getMaxAP());
+		this.setHitPoints(this.getMaxHitPoints());
 	}
 	
 	public void dikkeZever(){
@@ -195,6 +198,8 @@ public class Worm {
 	 * @effect if the direction is between zero and PI, then the given worm will jump a calculated distance
 	 *         based on his remaining action points and direction 
 	 *         |new.getX() == distance + this.getX()
+	 * @effect The new ap of the worm will be 0
+	 *         |new.getCurrentAP==0
 	 * @throws IllegalAPException
 	 *        The worm has no AP left.
 	 *        | this.getCurrentAP() <= 0
@@ -409,6 +414,11 @@ public class Worm {
 	 *        The new radius of the given worm.
 	 * @post the new radius is equal to radius.
 	 * 		| new.getRadius() == radius
+	 * @post the hit points and current AP of the given worm do not exceed their respective maximum.
+	 *      |if (this.getHitPoints()>this.getMaxHitPoints())
+	 *		| this.setHitPoints(this.getMaxHitPoints());
+	 *      |if (this.getCurrentAP()>this.getMaxAP())
+	 *		|this.setCurrentAP(this.getMaxAP());
 	 * @throws IllegalRadiusException
 	 * 		   The radius is smaller than the minimal radius
 	 * 		   | radius < getMinimalRadius()
@@ -418,6 +428,11 @@ public class Worm {
 		if (radius < getMinimalRadius())
 			throw new IllegalRadiusException(radius);
 		this.radius = radius;
+		if (this.getCurrentAP()>this.getMaxAP())
+			this.setCurrentAP(this.getMaxAP());
+		if (this.getHitPoints()>this.getMaxHitPoints())
+			this.setHitPoints(this.getMaxHitPoints());
+		
 	}
 	
 	/**
@@ -446,7 +461,7 @@ public class Worm {
 		if (! (name.length() >= 2))
 			return false;
 		for (char c : chars){
-			if (!(Character.isLetter(c) || Character.isWhitespace(c) || c =='\'' || c=='"'))
+			if (!(Character.isLetterOrDigit(c) || Character.isWhitespace(c) || c =='\'' || c=='"' ))
 				return false;
 		}
 		return true;
@@ -537,6 +552,46 @@ public class Worm {
 	 * The current Action Points of the given worm.
 	 */
 	private int currentAP;
+	
+	/**
+	 * Method to return the maximum Hit Points of the given worm.
+	 * @return Returns the maximum Hit Points of the given worm.
+	 * 			| return == (int) Math.round(this.getMass())
+	 */
+	public int getMaxHitPoints(){
+		int maxHitPoints;
+		long possibleMaxHitPoints = Math.round(this.getMass());
+		if (possibleMaxHitPoints >= Integer.MAX_VALUE)
+			maxHitPoints = Integer.MAX_VALUE;
+		else
+			maxHitPoints = (int) possibleMaxHitPoints;
+		return maxHitPoints;
+		
+	}
+	/**
+	 * Method that returns the hitpoints of a given worm.
+	 * @return returns the hit points of the given worm
+	 *         |return == this.hitPoints
+	 */
+	public int getHitPoints(){
+		return this.hitPoints;
+	}
+	
+	/**
+	 * Set the current Hit Points of the world to the given value hitPoints
+	 * @param hitPoints
+	 * @post the new hit points are equal to hitPoints.
+	 *      |new.getHitPoints() == hitPoints
+	 */
+	@Basic
+	public void setHitPoints(int hitPoints){
+		this.hitPoints=hitPoints;
+	}
+	
+	/**
+	 * the current hitPoints of the given Worm.
+	 */
+	private int hitPoints;
 	
 	/**
 	 * Method to set the World of this worm to the given world.
