@@ -105,6 +105,17 @@ public class World {
 	private static double maxHeight = Double.MAX_VALUE;
 	
 	/**
+	 * Method to check whether the world can have the given worm as one of its worms
+	 * @param worm
+	 * @return False if the given worm is null.
+	 * 			| return == (worm != null)
+	 * @return False if the world already contains the given worm.
+	 * 			| return == (! hasAsWorm(worm))
+	 */
+	public boolean canHaveAsWorm(Worm worm){
+		return (worm != null) && (! hasAsWorm(worm));
+	}
+	/**
 	 * Method to check if the given worm is already in this world.
 	 * @param worm
 	 * @return True if and only if the given worm is in worms.
@@ -124,7 +135,7 @@ public class World {
 	 * 		| this.worms == new.worms
 	 */
 	public void addAsWorm(Worm worm){ //moet totaal uitgewerkt worden!
-		if((worm != null)&&(! hasAsWorm(worm)&&worm.hasAsWorld(this)) //samenvoegen in canHaveAsWorm
+		if(canHaveAsWorm(worm) && (worm.hasAsWorld(this))) //samenvoegen in canHaveAsWorm
 				worms.add(worm);
 	}
 	
