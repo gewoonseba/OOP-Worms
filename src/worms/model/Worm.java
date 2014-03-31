@@ -11,7 +11,8 @@ import be.kuleuven.cs.som.annotate.*;
  * @author Sebastian Stoelen 2BbiCwsElt2, Matthias Maeyens 2BbiCwsElt2
  * @version 2.0
  * 
- *
+ * Commentaar test
+ * 
  */
 public class Worm {
 	
@@ -56,6 +57,10 @@ public class Worm {
 		this.radius = radius;
 		this.name = name;
 		this.setCurrentAP(this.getMaxAP());
+	}
+	
+	public void dikkeZever(){
+		
 	}
 	
 
