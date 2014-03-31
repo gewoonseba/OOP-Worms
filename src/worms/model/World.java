@@ -113,8 +113,9 @@ public class World {
 	 * 			| return == (! hasAsWorm(worm))
 	 */
 	public boolean canHaveAsWorm(Worm worm){
-		return (worm != null) && (! hasAsWorm(worm));
+		return (worm != null) && (worm.canHaveAsWorld(this));
 	}
+	
 	/**
 	 * Method to check if the given worm is already in this world.
 	 * @param worm
@@ -133,10 +134,18 @@ public class World {
 	 * 		| worms.contains(worm)
 	 * @post If the worm is not valid, no worm will be added.
 	 * 		| this.worms == new.worms
+	 * @throws IllegalWormException
+	 * 		This world cannot have the given worm as one of its worms.
+	 * 		| ! canHaveAsWorm(worm)
+	 * @throws IllegalStateException
+	 * 		This world already contains the given worm, or the given worm does not have this world as its world.
+	 * 
 	 */
-	public void addAsWorm(Worm worm){ //moet totaal uitgewerkt worden!
-		if(canHaveAsWorm(worm) && (worm.hasAsWorld(this))) //samenvoegen in canHaveAsWorm
-				worms.add(worm);
+	public void addAsWorm(Worm worm) throws IllegalWormException, IllegalStateException{
+		if(! canHaveAsWorm(worm))
+			throw new IllegalWormException(worm);
+		if ((worm.getWorld() != this) || (this.hasAsWorm(worm)))
+			throw new IllegalStateException();
 	}
 	
 	private final List<Worm> worms = new ArrayList<Worm>();

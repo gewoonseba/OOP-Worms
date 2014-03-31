@@ -11,8 +11,7 @@ import be.kuleuven.cs.som.annotate.*;
  * @author Sebastian Stoelen 2BbiCwsElt2, Matthias Maeyens 2BbiCwsElt2
  * @version 2.0
  * 
- * Commentaar test
- * 
+ *
  */
 public class Worm {
 	
@@ -58,11 +57,6 @@ public class Worm {
 		this.name = name;
 		this.setCurrentAP(this.getMaxAP());
 	}
-	
-	public void dikkeZever(){
-		
-	}
-	
 
 	/**
 	 * Method to return the x-coordinate of the given worm.
@@ -539,16 +533,46 @@ public class Worm {
 	private int currentAP;
 	
 	/**
+	 * Return the world of this worm.
+	 */
+	@Basic @Raw
+	public World getWorld(){
+		return this.world;
+	}
+	
+	/**
+	 * Method to check whether this worm can have the given world as its world.
+	 * @param world
+	 * @return True if and only if the world is not null.
+	 * 			| return == (world != null)
+	 */
+	public boolean canHaveAsWorld(World world){
+		return (world != null);
+	}
+	
+	/**
+	 * Method to check whether the given worm already has a world.
+	 * @return True if and only if this.world is not null.
+	 * 		| return == (getWorld() != null)
+	 */
+	public boolean hasWorld(){
+		return (getWorld() != null);
+	}
+	/**
 	 * Method to set the World of this worm to the given world.
 	 * @param world
 	 * @post If the world is valid, the new World of this worm is the given world.
 	 * 		| new.getWorld() == world
 	 */
 	public void setWorldTo(World world){
-		if ((world != null) && (! hasWorld())
-				&& (canHaveAsWorld(world))){
-			setWorld(world);
-			world.addAsWorm(this);
-		}
+		if ((world == null) || (! canHaveAsWorld(world)))
+			throw new IllegalWorldException(world);
+		if (hasWorld())
+			throw new IllegalStateException();
 	}
+	
+	/**
+	 * Variable registering the world of this worm.
+	 */
+	private World world;
 }
