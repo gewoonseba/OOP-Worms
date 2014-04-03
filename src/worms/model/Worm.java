@@ -559,11 +559,11 @@ public class Worm {
 	/**
 	 * Method to check whether this worm can have the given world as its world.
 	 * @param world
-	 * @return True if and only if the world is not null.
-	 * 			| return == (world != null)
+	 * @return True if and only if the world is not null and the given world does not already contains this worm.
+	 * 			| return == (world != null) && (! world.hasAsWorm(this))
 	 */
 	public boolean canHaveAsWorld(World world){
-		return (world != null);
+		return (world != null) && (! world.hasAsWorm(this));
 	}
 	
 	/**
@@ -574,6 +574,40 @@ public class Worm {
 	public boolean hasWorld(){
 		return (getWorld() != null);
 	}
+	
+	/**
+	 * Method to set the World of this worm to the given world.
+	 * @param world
+	 * @post If the world is valid, the new World of this worm is the given world.
+	 * 		| new.getWorld() == world
+	 * @throws IllegalWorldException
+	 * 		The given world is not effective, or the given world already contains this worm.
+	 */
+	public void setWorldTo(World world){
+		if (! canHaveAsWorld(world))
+			throw new IllegalWorldException(world);
+		if (hasWorld())
+			throw new IllegalStateException();
+		this.world = world;
+	}
+	
+	/**
+	 * Method to remove the world of this worm and remove the worm from the world it belonged to.
+	 * @throws NullPointerException
+	 * 		This worm has no world.
+	 * 		| this.world == null
+	 */
+	public void removeWorld() throws NullPointerException {
+		if (this.world == null)
+			throw new NullPointerException();
+		world.removeAsWorm(this);
+		this.world = null;
+	}
+	
+	/**
+	 * Variable registering the world of this worm.
+	 */
+	private World world;
 	
 	/**
 	 * Method to return the maximum Hit Points of the given worm.
@@ -623,21 +657,4 @@ public class Worm {
 	 */
 	private int hitPoints;
 	
-	/**
-	 * Method to set the World of this worm to the given world.
-	 * @param world
-	 * @post If the world is valid, the new World of this worm is the given world.
-	 * 		| new.getWorld() == world
-	 */
-	public void setWorldTo(World world){
-		if ((world == null) || (! canHaveAsWorld(world)))
-			throw new IllegalWorldException(world);
-		if (hasWorld())
-			throw new IllegalStateException();
-	}
-	
-	/**
-	 * Variable registering the world of this worm.
-	 */
-	private World world;
 }

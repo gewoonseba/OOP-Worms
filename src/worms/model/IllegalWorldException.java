@@ -5,6 +5,7 @@ import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Raw;
 
 public class IllegalWorldException extends RuntimeException {
+	
 	/**
 	 * Initialize this new illegal world exception with the given world.
 	 * 
