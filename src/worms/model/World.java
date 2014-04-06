@@ -166,5 +166,29 @@ public class World {
 	}
 	
 	private final List<Worm> worms = new ArrayList<Worm>();
+	
+	/**
+	 * Method to search for a passable possition, beginning from a given position.
+	 * @param tempX
+	 * @param tempY
+	 * @return
+	 */
+	public int[] searchPassableFrom(int tempX, int tempY){
+		int[] wormPosition = {null,null};
+		while (! isPassable(tempX,tempY)){
+			if (tempX < midX)
+				tempX += 1;
+			if (tempX > midX)
+				tempX -= 1;
+			if ((tempY < midY) && (! isPassable(tempX,tempY)))
+				tempY += 1;
+			if ((tempY > midY) && (! isPassable(tempX,tempY)))
+				tempY -= 1;
+			else 
+				return wormPosition;
+			}
+		wormPosition = {tempX,tempY};
+		return wormPosition;
+	}
 
 }
