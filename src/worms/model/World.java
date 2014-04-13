@@ -28,7 +28,13 @@ public class World {
 		assert isValidWidth(width);
 		this.width = width;
 		this.height = height;
+		this.passableMap = passableMap;
 	}
+	
+	/**
+	 * Variable registering the passableMap of this World.
+	 */
+	private boolean[][] passableMap;
 	
 	/**
 	 * Method to return the width of the current World.
@@ -67,6 +73,9 @@ public class World {
 	 */
 	private static double maxWidth = Double.MAX_VALUE;
 	
+	public int getPixelHeight(){
+		return passableMap[0].length;
+	}
 	/**
 	 * Method to return the height of the given world.
 	 */
@@ -168,22 +177,22 @@ public class World {
 	private final List<Worm> worms = new ArrayList<Worm>();
 	
 	/**
-	 * Method to search for a passable possition, beginning from a given position.
+	 * Method to search for a passable position, beginning from a given position.
 	 * @param tempX
 	 * @param tempY
-	 * @return A int array, containing the position that is adjenct, if one is found, and an int array of 'null' values
-	 *  		if no adjenct position is found.
+	 * @return A int array, containing the position that is adjacent, if one is found, and an int array of 'null' values
+	 *  		if no adjacent position is found.
 	 */
-	public int[] searchAdjenctFrom(int tempX, int tempY){
+	public int[] searchAdjacentFrom(int tempX, int tempY){
 		int[] wormPosition = {null,null};
-		while (! isPassable(tempX,tempY)){
+		while (! isAdjacent(tempX,tempY)){
 			if (tempX < midX)
 				tempX += 1;
 			if (tempX > midX)
 				tempX -= 1;
-			if ((tempY < midY) && (! isPassable(tempX,tempY)))
+			if ((tempY < midY) && (! isAdjacent(tempX,tempY)))
 				tempY += 1;
-			if ((tempY > midY) && (! isPassable(tempX,tempY)))
+			if ((tempY > midY) && (! isAdjacent(tempX,tempY)))
 				tempY -= 1;
 			else 
 				return wormPosition;
