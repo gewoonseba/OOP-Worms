@@ -144,46 +144,53 @@ public class Worm {
 	 *         The current AP of the worm is not sufficient to move the number of steps provided.
 	 *         | (! canMove(steps))
 	 */
-	public void move() throws IllegalAPException {
-		if (! this.canMove(1))
-			throw new IllegalAPException(this.getCurrentAP(),this);
-		double theta = this.getDirection();
-		int newAP = (int) Math.round(this.getCurrentAP() - ((Math.abs(Math.cos(theta)) + 4*(Math.abs(Math.sin(theta))))));
-		double distance = this.getRadius();
-		double xDistance = distance*Math.cos(theta);
-		double yDistance = distance*Math.sin(theta);
-		this.setX(this.getX() + xDistance);
-		this.setY(this.getY() + yDistance);
-		this.setCurrentAP(newAP);
+//	public void move() throws IllegalAPException {
+//		if (! this.canMove(1))
+//			throw new IllegalAPException(this.getCurrentAP(),this);
+//		double theta = this.getDirection();
+//		int newAP = (int) Math.round(this.getCurrentAP() - ((Math.abs(Math.cos(theta)) + 4*(Math.abs(Math.sin(theta))))));
+//		double distance = this.getRadius();
+//		double xDistance = distance*Math.cos(theta);
+//		double yDistance = distance*Math.sin(theta);
+//		this.setX(this.getX() + xDistance);
+//		this.setY(this.getY() + yDistance);
+//		this.setCurrentAP(newAP);
+//	}
+	
+	public double[] searchFitLocation(double distance) {
+		double thetaUp = this.getDirection();
+		double thetaDown = this.getDirection();
+		double tempX = this.getX() + distance*Math.cos(this.getDirection());
+		double tempY = this.getY() + distance*Math.sin(this.getDirection());
+		while ((Math.abs(thetaUp-getDirection()) < 0.7875) || (! isAdjacent(tempX,tempY))){
+			thetaUp += 0.0175;
+			tempX = this.getX() + distance*Math.cos(thetaUp);
+		    tempY = this.getY() + distance*Math.sin(thetaUp);
+	        if(!(this.getWorld().isAdjacent(tempX, tempY))){	
+				thetaDown -= 0.0175;
+			    tempX = this.getX() + distance*Math.cos(thetaDown);
+		        tempY = this.getY() + distance*Math.sin(thetaDown); 
+	        }
+	    }
+		if (isAdjacent(tempX,tempY)){
+			return new double[]{tempX,tempY};	
+		}
+		return null;
 	}
 	
-	public void possiblemoveposition() {
-		double maxDistance = this.getRadius();
-		double theta  = this.getDirection();
-		double theta1 = this.getDirection();
-		double theta2 = this.getDirection();
-		int tempX = (int) Math.round(this.getX() + maxDistance*Math.cos(this.getDirection()));
-		int tempY = (int) Math.round(this.getY() + maxDistance*Math.sin(this.getDirection()));
-		while (!(this.getWorld().isAdjenctFrom(tempX, tempY))||maxDistance<0.1){
-			while (Math.abs(theta1-theta)<0.7875){
-	            if (!(this.getWorld().isAdjenctFrom(tempX, tempY))){
-			        tempX = (int) Math.round(this.getX() + maxDistance*Math.cos(theta));
-		            tempY = (int) Math.round(this.getY() + maxDistance*Math.sin(theta));
-		            theta += 0.1;
-	            }
-	            if(!(this.getWorld().isAdjenctFrom(tempX, tempY))){
-	            	
-			        tempX = (int) Math.round(this.getX() + maxDistance*Math.cos(theta2));
-		            tempY = (int) Math.round(this.getY() + maxDistance*Math.sin(theta2));
-		            theta2 -= 0.1;
-	            }
-			}
-			maxDistance-=0.1;
-			
+	public void move(){
+		double currentDistance = getRadius();
+		double[] newLocation = null;
+		while (newLocation == null||currentDistance>=0.1){
+			newLocation = searchFitLocation(currentDistance);
+			currentDistance-=0.01;
 		}
-			
-		
+		if (!(newLocation==null)){
+			setX(newLocation[0]);
+			setY(newLocation[1]);
+		}
 	}
+	
 	
 	/**
 	 * Method to calculate and return the inital speed of the worm.
