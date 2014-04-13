@@ -171,8 +171,8 @@ public class World {
 	 * Method to search for a passable possition, beginning from a given position.
 	 * @param tempX
 	 * @param tempY
-	 * @return A int array, containing the position that is adjenct, if one is found, and an int array of 'null' values
-	 *  		if no adjenct position is found.
+	 * @return A int array, containing the position that is adjacent, if one is found, and an int array of 'null' values
+	 *  		if no adjacent position is found.
 	 */
 	public int[] searchAdjenctFrom(int tempX, int tempY){
 		int[] wormPosition = {null,null};
