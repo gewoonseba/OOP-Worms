@@ -73,9 +73,24 @@ public class World {
 	 */
 	private static double maxWidth = Double.MAX_VALUE;
 	
-	public int getPixelHeight(){
-		return passableMap[0].length;
+	/**
+	 * Method to return the amount of pixels on the horizontal axis of the World.
+	 * @return The length of passableMap
+	 * 		| return == passableMap.length
+	 */
+	public int getPixelWidth(){
+		return passableMap.length;
 	}
+	
+	/**
+	 * Method to calculate the conversion factor from horizontal pixels to horizontal coordinates.
+	 * @return The quotient of the width and the pixelWidth
+	 * 		| return == getWidth()/getPixelWidth()
+	 */
+	public double getXScale(){
+		return (getWidth()/getPixelWidth());
+	}
+	
 	/**
 	 * Method to return the height of the given world.
 	 */
