@@ -157,6 +157,15 @@ public class Worm {
 //		this.setCurrentAP(newAP);
 //	}
 	
+	/**
+	 * Method to search a location which is adjacent to impassable terrain on a quarter circle, a given distance from the
+	 * center of the Worm. The method shall search for fit locations, beginning in the current  direction of the Worm. When
+	 * none is found, the method shall alternately add or remove 0.0175 radians from the optimal angle.
+	 * @param distance
+	 * 		The at which the method will search for adjacent locations.
+	 * @return The coordinate which is adjacent to impassable terrain and closest to the optimal angle, if one is found. 
+	 * 		   If none is found, the method will return null.
+	 */
 	public double[] searchFitLocation(double distance) {
 		double thetaUp = this.getDirection();
 		double thetaDown = this.getDirection();
@@ -173,11 +182,14 @@ public class Worm {
 	        }
 	    }
 		if (isAdjacent(tempX,tempY)){
-			return new double[]{tempX,tempY};	
+			return new double[] {tempX,tempY};	
 		}
 		return null;
 	}
 	
+	/**
+	 * Method to move the worm one step, in its current direction.
+	 */
 	public void move(){
 		double currentDistance = getRadius();
 		double[] newLocation = null;
@@ -193,7 +205,7 @@ public class Worm {
 	
 	
 	/**
-	 * Method to calculate and return the inital speed of the worm.
+	 * Method to calculate and return the initial speed of the worm.
 	 * @return The initial speed of the worm.
 	 *        | return == initialSpeed
 	 */
@@ -228,7 +240,7 @@ public class Worm {
 	 *         based on his remaining action points and direction 
 	 *         |new.getX() == distance + this.getX()
 	 * @effect The new ap of the worm will be 0
-	 *         |new.getCurrentAP==0
+	 *         |new.getCurrentAP == 0
 	 * @throws IllegalAPException
 	 *        The worm has no AP left.
 	 *        | this.getCurrentAP() <= 0

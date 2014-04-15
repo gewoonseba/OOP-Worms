@@ -87,7 +87,7 @@ public class World {
 	 * @return The quotient of the width and the pixelWidth
 	 * 		| return == getWidth()/getPixelWidth()
 	 */
-	public double getXScale(){
+	public double getWidthScale(){
 		return (getWidth()/getPixelWidth());
 	}
 	
@@ -127,6 +127,67 @@ public class World {
 	 * Variable registering the maximum height of any World.
 	 */
 	private static double maxHeight = Double.MAX_VALUE;
+	
+	/**
+	 * Method to return the amount of pixels on the vertical axis of the World.
+	 * @return The length of the first array of passableMap
+	 * 		| return == passableMap[0].length
+	 */
+	public int getPixelHeight(){
+		return passableMap[0].length;
+	}
+	
+	/**
+	 * Method to calculate the conversion factor from vertical pixels to vertical coordinates.
+	 * @return The quotient of the height and the pixelHeight
+	 * 		| return == getHeight()/getPixelHeight()
+	 */
+	public double getHeightScale(){
+		return (getHeight()/getPixelHeight());
+	}
+	
+	/**
+	 * Variable registering the horizontal center of the world, in pixels.
+	 */
+	private final int centerX = getPixelWidth()/2;
+	
+	/**
+	 * Variable registering the vertical center of the world, in pixels.
+	 */
+	private final int centerY = getPixelHeight()/2;
+	
+	/**
+	 * Method to convert a given pixel to a coordinate.
+	 * @param x
+	 * 		The column in which the pixel is located
+	 * @param y
+	 * 		The row in which the pixel is located
+	 * @return x is multiplied with the width scale. y is first mirrored around the center row 
+	 * 			and then multiplied with the height scale. The result is returned as an array of doubles.
+	 * 			| return == {x*getWidthScale(),(getPixelHeight() - y)*getHeightScale()}
+	 */
+	public double[] pixelsToCoordinates(int x,int y){
+		double newX = x*getWidthScale();
+		double newY = (getPixelHeight() - y)*getHeightScale();
+		return new double[] {newX,newY};
+	}
+	
+	/**
+	 * Method to convert a given coordinate to a pixel.
+	 * @param x
+	 * 		The x-coordinate
+	 * @param y
+	 * 		The y-coordinate
+	 * @return x is divided by its scale. y is divided by its scale and then mirrored around the center row.
+	 * 			the result is rounded to an integer and returned as an array of integer values.
+	 * 			| return == {Math.round(x/getWidthScale()),getPixelHeight() - Math.round(y/getHeightScale())}
+	 */
+	public int[] coordinatesToPixels(double x,double y){
+		int newX = (int) Math.round(x/getWidthScale());
+		int newY = (int) Math.round(y/getHeightScale());
+		newY = getPixelHeight() - newY;
+		return new int[] {newX,newY};
+	}
 	
 	/**
 	 * Method to check whether the world can have the given worm as one of its worms
@@ -198,19 +259,20 @@ public class World {
 	 * @return A int array, containing the position that is adjacent, if one is found, and an int array of 'null' values
 	 *  		if no adjacent position is found.
 	 */
-	public int[] searchAdjacentFrom(int tempX, int tempY){
-		int[] wormPosition = {null,null};
+	public double[] searchAdjacentFrom(double tempX, double tempY){
+		tempX = coordinatesToPixels(tempX,tempY)[0];
+		tempY = coordinatesToPixels(tempX,tempY)[1];
 		while (! isAdjacent(tempX,tempY)){
-			if (tempX < midX)
+			if (tempX < centerX)
 				tempX += 1;
-			if (tempX > midX)
+			if (tempX > centerX)
 				tempX -= 1;
-			if ((tempY < midY) && (! isAdjacent(tempX,tempY)))
+			if ((tempY < centerY) && (! isAdjacent(tempX,tempY)))
 				tempY += 1;
-			if ((tempY > midY) && (! isAdjacent(tempX,tempY)))
+			if ((tempY > centerY) && (! isAdjacent(tempX,tempY)))
 				tempY -= 1;
 			else 
-				return wormPosition;
+				return null;
 			}
 		wormPosition = {tempX,tempY};
 		return wormPosition;
