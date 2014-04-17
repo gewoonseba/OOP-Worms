@@ -157,6 +157,36 @@ public class World {
 	private final int centerY = getPixelHeight()/2;
 	
 	/**
+	 * Method to calculate the distance between two coordinates.
+	 * @param x
+	 * 		The first x coordinate
+	 * @param y
+	 * 		The first y coordinate
+	 * @param newX
+	 * 		The second x coordinate
+	 * @param newY
+	 * 		The second y coordinate
+	 * @return The square root of the sum of the square of the differences between x coordinates and y coordinates. 
+	 * 		return == Math.sqrt(Math.pow((newX - x), 2) + Math.pow((newY -y), 2))
+	 */
+	public double getDistance(double x,double y,double newX,double newY){
+		return Math.sqrt(Math.pow((newX - x), 2) + Math.pow((newY -y), 2));
+	}
+	
+	/**
+	 * Method to check wheter the given coordinate is outside the boundaries of this world.
+	 * @param x
+	 * 		The x coordinate to be checked.
+	 * @param y
+	 * 		The y coordinate to be checked.
+	 * @return False if x or y is less than zero, or if x is greater than the width or y greater than the height.
+	 * 		result == ( (x < 0) || (x > getWidth()) || (y < 0) || (y > getHeight()) )
+	 */
+	public boolean isOutOfBounds(double x, double y){
+		return ( (x < 0) || (x > getWidth()) || (y < 0) || (y > getHeight()) );
+	}
+	
+	/**
 	 * Method to convert a given pixel to a coordinate.
 	 * @param x
 	 * 		The column in which the pixel is located
@@ -274,8 +304,10 @@ public class World {
 			else 
 				return null;
 			}
-		wormPosition = {tempX,tempY};
-		return wormPosition;
+		tempX = pixelsToCoordinates((int) tempX,(int) tempY)[0];
+		tempY = pixelsToCoordinates((int) tempX,(int) tempY)[1];
+		return new double[] {tempX,tempY};
+		
 	}
 
 }

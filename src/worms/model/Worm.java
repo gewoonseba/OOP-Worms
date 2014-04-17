@@ -120,6 +120,7 @@ public class Worm {
 		return (coordinate != Double.NaN);
 	}
 	
+	
 	/**
 	 * Check whether the worm can move the given number of steps.
 	 * @param steps
@@ -187,6 +188,7 @@ public class Worm {
 		return null;
 	}
 	
+	//TODO: fall + implementation using slope
 	/**
 	 * Method to move the worm one step, in its current direction.
 	 */
@@ -234,13 +236,21 @@ public class Worm {
 		return  ((this.getDirection() >= 0) && (this.getDirection() <= Math.PI));
 	}
 	
+	//TODO: Formal specification second @effect
 	/**
 	 * Method to make the given worm jump.
-	 * @effect if the direction is between zero and PI, then the given worm will jump a calculated distance
-	 *         based on his remaining action points and direction 
+	 * @param timeStep
+	 * 		  An elementary time interval.
+	 * @effect If the distance between the current position of the worm and the new position is less than its radius, 
+	 * 		   the worm shall not move.
+	 * 		   | if (getWorld().getDistance(getX(),getY(),tempX,tempY) > getRadius())
+	 * 		   |	new.getX() == this.getX()
+	 * 		   |	new.getY() == this.getY()
+	 * @effect If the direction is between zero and PI, then the given worm will jump to the first location, adjacent to
+	 * 		   impassable terrain, it encounters on its trajectory, which is calculated according to its direction and current AP.
 	 *         |new.getX() == distance + this.getX()
-	 * @effect The new ap of the worm will be 0
-	 *         |new.getCurrentAP == 0
+	 * @effect The new AP of the worm will be 0
+	 *         |new.getCurrentAP() == 0
 	 * @throws IllegalAPException
 	 *        The worm has no AP left.
 	 *        | this.getCurrentAP() <= 0
@@ -248,20 +258,37 @@ public class Worm {
 	 * 		  The direction of the worm is not valid for jumping.
 	 *        | (! this.canJumpDirection())
 	 */
-	public void jump() throws IllegalAPException, IllegalJumpDirectionException{
+	public void jump(double timeStep) throws IllegalAPException, IllegalJumpDirectionException{
 		if (! this.canJumpAP())
 			throw new IllegalAPException(this.getCurrentAP(), this);
 		if (! this.canJumpDirection())
 			throw new IllegalJumpDirectionException(this.getDirection(),this);
 		double initialSpeed = this.getInitialSpeed();
-		double distance = (Math.pow(initialSpeed, 2)*Math.sin(2.0*this.getDirection())/g);
-		this.setX(distance + this.getX());
-		this.setCurrentAP(0);
+		double time = timeStep;
+		double tempX = jumpStep(time)[0];
+		double tempY = jumpStep(time)[1];
+		while ((! isAdjacent(tempX,tempY)) && (! getWorld().isOutOfBounds(tempX,tempY))){
+			time += timeStep;
+			tempX = jumpStep(time)[0];
+			tempY = jumpStep(time)[1];
+		}
+		if (getWorld().isOutOfBounds(tempX, tempY))
+			terminate();
+		else {
+			if (getWorld().getDistance(getX(),getY(),tempX,tempY) > getRadius()){
+				setX(tempX);
+				setY(tempY);
+			}
+			setCurrentAP(0);	
+		}
 	}
 	
+	//TODO:Formal specification
 	/**
 	 * Method to calculate the time it takes to jump for the given worm with the remaining action points.
-	 * @return returns the time it takes to jump.
+	 * @param timeStep
+	 * 		  An elementary time interval.
+	 * @return Returns the time it takes to jump.
 	 *        | return == (distance/(initialSpeed*Math.cos(this.getDirection())))
 	 * @throws IllegalAPException
 	 *        The worm has no AP left.
@@ -270,23 +297,28 @@ public class Worm {
 	 * 		  The direction of the worm is not valid for jumping.
 	 *        | (! this.canJumpDirection())
 	 */
-	public double jumpTime() throws IllegalAPException, IllegalJumpDirectionException{
+	public double jumpTime(double timeStep) throws IllegalAPException, IllegalJumpDirectionException{
 		if (! this.canJumpAP())
 			throw new IllegalAPException(this.getCurrentAP(), this);
 		if (! this.canJumpDirection())
 			throw new IllegalJumpDirectionException(this.getDirection(),this);
-		double Jumptime = 0;
-		double initialSpeed = this.getInitialSpeed();
-		double initialSpeedY = initialSpeed * Math.sin(this.getDirection());
-		if (initialSpeedY != 0)
-			Jumptime = (2*initialSpeedY)/g;
-		return Jumptime;
+		double jumpTime = timeStep;
+		double tempX = jumpStep(timeStep)[0];
+		double tempY = jumpStep(timeStep)[1];
+		while ((! isAdjacent(tempX,tempY)) && (! getWorld().isOutOfBounds(tempX,tempY))){
+			jumpTime += timeStep;
+			tempX = jumpStep(jumpTime)[0];
+			tempY = jumpStep(jumpTime)[1];
+		}
+		if (getWorld().getDistance(getX(),getY(),tempX,tempY) < getRadius())
+			jumpTime = 0;
+		return jumpTime;
 	}
 	
 	/**
 	 * Calculate the position of the worm, t seconds after he jumps.
 	 * @param t
-	 * 		  the time after which te position is calculated
+	 * 		  the time after which the position is calculated
 	 * @return Returns the position of the given worm t seconds after the jump.
 	 * 			| return == {newX,newY}
 	 * @throws IllegalAPException
@@ -317,16 +349,13 @@ public class Worm {
 	}
 	
 	/**
-	 * Check whether the given method jumpstep for a given worm van have the given time as input
+	 * Check whether the method jumpStep() for a given worm can have the given time as input
 	 * @param t
 	 * @return True if and only if the time t is higher or equal zero 
-	 *         and lower or equal time the maximum time for a jump for the given worm.
-	 *         |return == (t>=0)&&(t=<this.jumpTime)
+	 *         |return == (t>=0)
 	 */
 	public boolean canHaveAsTime(double t){
-		if ((t<0)||(t>this.jumpTime()))
-			return false;
-		return true;
+		return (t >= 0);
 		}
 	
 	/**
