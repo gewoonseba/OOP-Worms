@@ -220,6 +220,59 @@ public class World {
 	}
 	
 	/**
+	 * Method to search for a position adjacent to impassable terrain, beginning from a given position.
+	 * @param tempX
+	 * @param tempY
+	 * @return A double array, containing the position that is adjacent, if one is found, and null if none is found.
+	 */
+	public double[] searchAdjacentFrom(double tempX, double tempY){
+		tempX = coordinatesToPixels(tempX,tempY)[0];
+		tempY = coordinatesToPixels(tempX,tempY)[1];
+		while (! isAdjacent(tempX,tempY)){
+			if (tempX < centerX)
+				tempX += 1;
+			if (tempX > centerX)
+				tempX -= 1;
+			if ((tempY < centerY) && (! isAdjacent(tempX,tempY)))
+				tempY += 1;
+			if ((tempY > centerY) && (! isAdjacent(tempX,tempY)))
+				tempY -= 1;
+			else 
+				return null;
+			}
+		tempX = pixelsToCoordinates((int) tempX,(int) tempY)[0];
+		tempY = pixelsToCoordinates((int) tempX,(int) tempY)[1];
+		return new double[] {tempX,tempY};
+		
+	}
+	
+	//TODO: IllegalArgumentException, Postconditions
+	/**
+	 * Method to create a worm and add it to this world.
+	 * @param x
+	 * 		The x coordinate from which an adjacent position is to be found.
+	 * @param y
+	 * 		The y coordinate from which an adjacent position is to be found.
+	 * @param direction
+	 * 		The direction the new worm should have.
+	 * @param radius
+	 * 		The radius the new worm should have.
+	 * @param name
+	 * 		The name the new worm should have.
+	 * @throws IllegalArgumentException
+	 * 		No adjacent position can be found starting from (x,y)	
+	 * 		| searchAdjacentFrom(x,y) == null
+	 */
+	public void createWorm(double x,double y,double direction,double radius,String name) throws IllegalArgumentException{
+		double[] location = searchAdjacentFrom(x,y);
+		if (location == null)
+			throw new IllegalArgumentException();
+		Worm worm = new Worm(location[0],location[1],direction,radius,name);
+		worm.setWorldTo(this);
+		addAsWorm(worm);
+	}
+	
+	/**
 	 * Method to check whether the world can have the given worm as one of its worms
 	 * @param worm
 	 * @return False if the given worm is null.
@@ -246,13 +299,13 @@ public class World {
 	 * @post If the worm is valid, this world has the given worm as one of its worms.
 	 * 		| worms.contains(worm)
 	 * @post If the worm is not valid, no worm will be added.
-	 * 		| this.worms == new.worms
+	 * 		| new.worms == this.worms
 	 * @throws IllegalWormException
 	 * 		This world cannot have the given worm as one of its worms.
 	 * 		| ! canHaveAsWorm(worm)
 	 * @throws IllegalStateException
-	 * 		This world already contains the given worm, or the given worm does not have this world as its world.
-	 * 
+	 * 		The given worm does not have this world as its world, or this world already contains the given worm.
+	 * 		| (worm.getWorld() != this) || (hasAsWorm(worm))
 	 */
 	public void addAsWorm(Worm worm) throws IllegalWormException, IllegalStateException{
 		if(! canHaveAsWorm(worm))
@@ -280,34 +333,109 @@ public class World {
 		worms.remove(worm);
 	}
 	
-	private final List<Worm> worms = new ArrayList<Worm>();
+	/**
+	 * Method to return a list of the worms in this world.
+	 */
+	@Basic
+	public List<Worm> getWorms(){
+		return this.worms;
+	}
 	
 	/**
-	 * Method to search for a passable position, beginning from a given position.
-	 * @param tempX
-	 * @param tempY
-	 * @return A int array, containing the position that is adjacent, if one is found, and an int array of 'null' values
-	 *  		if no adjacent position is found.
+	 * Variable registering a list of the worms currently in this world.
 	 */
-	public double[] searchAdjacentFrom(double tempX, double tempY){
-		tempX = coordinatesToPixels(tempX,tempY)[0];
-		tempY = coordinatesToPixels(tempX,tempY)[1];
-		while (! isAdjacent(tempX,tempY)){
-			if (tempX < centerX)
-				tempX += 1;
-			if (tempX > centerX)
-				tempX -= 1;
-			if ((tempY < centerY) && (! isAdjacent(tempX,tempY)))
-				tempY += 1;
-			if ((tempY > centerY) && (! isAdjacent(tempX,tempY)))
-				tempY -= 1;
-			else 
-				return null;
-			}
-		tempX = pixelsToCoordinates((int) tempX,(int) tempY)[0];
-		tempY = pixelsToCoordinates((int) tempX,(int) tempY)[1];
-		return new double[] {tempX,tempY};
-		
+	private final List<Worm> worms = new ArrayList<Worm>();
+	
+	//TODO: IllegalArgumentEception, Postconditions
+	/**
+	 * Method to create a new food and add it to this world.
+	 * @param x
+	 * 		The x coordinate from which an adjacent position should be found.
+	 * @param y
+	 * 		The y coordinate from which an adjacent position should be found.
+	 * @throws IllegalArgumentException
+	 * 		No adjacent position can be found starting from (x,y)
+	 * 		| searchAdjacentFrom(x,y) == null
+	 */
+	public void createFood(double x,double y) throws IllegalArgumentException{
+		double[] location = searchAdjacentFrom(x,y);
+		if (location == null)
+			throw new IllegalArgumentException();
+		Food food = new Food(location[0],location[1]);
+		food.setWorldTo(this);
+		addAsFood(food);
 	}
+	/**
+	 * Method to check whether this world can have the given food as one of its food.
+	 * @param food
+	 * @return True if and only if food is not null.
+	 * 		| return == !(food == null)
+	 */
+	public boolean canHaveAsFood(Food food){
+		return (!(food == null));
+	}
+	
+	/**
+	 * Method to check whether this world already contains the given food.
+	 * @param food
+	 * @return True if and only the given food is in food.
+	 * 		| this.food.contains(food)
+	 */
+	public boolean hasAsFood(Food food){
+		return this.food.contains(food);
+	}
+	
+	/**
+	 * Method to add the given food to this world.
+	 * @param food
+	 * 		The food to be added
+	 * @post If the food is valid, this world has the given food as one of its food.
+	 * 		| this.food.contains(food)
+	 * @post If the food is not valid, no food will be added.
+	 * 		| new.food == this.food
+	 * @throws IllegalFoodException
+	 * 		This world cannot have the given food as one of its food.
+	 * 		| ! canHaveAsFood(food)
+	 * @throws IllegalStateException
+	 * 		The food does not have this world as its world, or this world already contains the given food.
+	 * 		| (food.getWorld() != this) || (hasAsFood(food))
+	 */
+	public void addAsFood(Food food) throws IllegalFoodException, IllegalStateException{
+		if(! canHaveAsFood(food))
+			throw new IllegalFoodException(food);
+		if ((food.getWorld() != this) || (hasAsFood(food)))
+			throw new IllegalStateException();
+		this.food.add(food);
+	}
+	
+	/**
+	 * Method to remove a given food from this world.
+	 * @param food
+	 * 		The food to be removed.
+	 * @throws IllegalFoodException
+	 * 		The given food is null, or this world does not contain the given worm.
+	 * 		| (food == null) || (! hasAsFood(food))
+	 * @throws IllegalStateException
+	 * 		The given food still has a world.
+	 * 		| food.hasWorld()
+	 */
+	public void removeAsFood(Food food) throws IllegalFoodException, IllegalStateException{
+		if ((food == null) || (! hasAsFood(food)))
+			throw new IllegalFoodException(food);
+		if (food.hasWorld())
+			throw new IllegalStateException();
+		this.food.remove(food);
+	}
+	
+	/**
+	 * Method to return a list of all the food in this world.
+	 */
+	public List<Food> getFood(){
+		return this.food;
+	}
+	/**
+	 * Variable registering all the food currently in this world.
+	 */
+	private final List<Food> food = new ArrayList<Food>();
 
 }

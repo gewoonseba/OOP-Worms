@@ -265,12 +265,14 @@ public class Worm {
 			throw new IllegalJumpDirectionException(this.getDirection(),this);
 		double initialSpeed = this.getInitialSpeed();
 		double time = timeStep;
-		double tempX = jumpStep(time)[0];
-		double tempY = jumpStep(time)[1];
+		double[] tempCoordinates = jumpStep(time);
+		double tempX = tempCoordinates[0];
+		double tempY = tempCoordinates[1];
 		while ((! isAdjacent(tempX,tempY)) && (! getWorld().isOutOfBounds(tempX,tempY))){
 			time += timeStep;
-			tempX = jumpStep(time)[0];
-			tempY = jumpStep(time)[1];
+			tempCoordinates = jumpStep(time);
+			tempX = tempCoordinates[0];
+			tempY = tempCoordinates[1];
 		}
 		if (getWorld().isOutOfBounds(tempX, tempY))
 			terminate();
@@ -303,12 +305,14 @@ public class Worm {
 		if (! this.canJumpDirection())
 			throw new IllegalJumpDirectionException(this.getDirection(),this);
 		double jumpTime = timeStep;
-		double tempX = jumpStep(timeStep)[0];
-		double tempY = jumpStep(timeStep)[1];
+		double[] tempCoordinates = jumpStep(jumpTime);
+		double tempX = tempCoordinates[0];
+		double tempY = tempCoordinates[1];
 		while ((! isAdjacent(tempX,tempY)) && (! getWorld().isOutOfBounds(tempX,tempY))){
 			jumpTime += timeStep;
-			tempX = jumpStep(jumpTime)[0];
-			tempY = jumpStep(jumpTime)[1];
+			tempCoordinates = jumpStep(jumpTime);
+			tempX = tempCoordinates[0];
+			tempY = tempCoordinates[1];
 		}
 		if (getWorld().getDistance(getX(),getY(),tempX,tempY) < getRadius())
 			jumpTime = 0;
@@ -624,6 +628,27 @@ public class Worm {
 	private int currentAP;
 	
 	/**
+	 * Method to set the World of this worm to the given world.
+	 * @param world
+	 * 		The world that should be set as the world of this worm.
+	 * @post If the world is valid, the new World of this worm is the given world.
+	 * 		| new.getWorld() == world
+	 * @throws IllegalWorldException
+	 * 		This worm cannot have the given world as its world.
+	 * 		| ! canHaveAsWorld(world)
+	 * @throws IllegalStateException
+	 * 		This worm already has a world.
+	 * 		| hasWorld()
+	 */
+	public void setWorldTo(World world) throws IllegalWorldException, IllegalStateException{
+		if (! canHaveAsWorld(world))
+			throw new IllegalWorldException(world);
+		if (hasWorld())
+			throw new IllegalStateException();
+		this.world = world;
+	}
+	
+	/**
 	 * Return the world of this worm.
 	 */
 	@Basic @Raw
@@ -634,6 +659,7 @@ public class Worm {
 	/**
 	 * Method to check whether this worm can have the given world as its world.
 	 * @param world
+	 * 		The world to be checked.
 	 * @return True if and only if the world is not null and the given world does not already contains this worm.
 	 * 			| return == (world != null) && (! world.hasAsWorm(this))
 	 */
@@ -651,32 +677,17 @@ public class Worm {
 	}
 	
 	/**
-	 * Method to set the World of this worm to the given world.
-	 * @param world
-	 * @post If the world is valid, the new World of this worm is the given world.
-	 * 		| new.getWorld() == world
-	 * @throws IllegalWorldException
-	 * 		The given world is not effective, or the given world already contains this worm.
-	 */
-	public void setWorldTo(World world){
-		if (! canHaveAsWorld(world))
-			throw new IllegalWorldException(world);
-		if (hasWorld())
-			throw new IllegalStateException();
-		this.world = world;
-	}
-	
-	/**
-	 * Method to remove the world of this worm and remove the worm from the world it belonged to.
+	 * Method to remove the world of this worm and remove this worm from the world it belonged to.
 	 * @throws NullPointerException
 	 * 		This worm has no world.
-	 * 		| this.world == null
+	 * 		| ! hasWorld()
 	 */
 	public void removeWorld() throws NullPointerException {
-		if (this.world == null)
+		if (! hasWorld())
 			throw new NullPointerException();
-		world.removeAsWorm(this);
+		World formerWorld = getWorld();
 		this.world = null;
+		formerWorld.removeAsWorm(this);
 	}
 	
 	/**
