@@ -29,7 +29,13 @@ public class World {
 		this.width = width;
 		this.height = height;
 		this.passableMap = passableMap;
+		this.randomGenerator = random;
 	}
+	
+	/**
+	 * Variable registering the random generator of this world.
+	 */
+	private Random randomGenerator;
 	
 	/**
 	 * Variable registering the passableMap of this World.
@@ -62,7 +68,7 @@ public class World {
 	 * Method to set maxWidth to the given maxWidth.
 	 * @param maxWidth
 	 * @post The new maximum width is equal to maxWidth
-	 * 		| new.maxWidth = maxWidth         //hoe new formuleren?
+	 * 		| new.maxWidth = maxWidth         
 	 */
 	public static void setMaxWidth(double maxWidth){
 		World.maxWidth = maxWidth;
@@ -245,8 +251,30 @@ public class World {
 		return new double[] {tempX,tempY};
 		
 	}
+
+	//TODO: specification
+	/**
+	 * Method to create a new Worm and put it at a random location in this world.
+	 * @effect The new worm is created with a random x and y coordinate (which results in an adjacent position), the minimal radius, direction set to zero
+	 * 		and a name with a number, which is a representation of how many worms are already in this world.
+	 * 		| new Worm worm = createWorm(randomX,randomY,0,Worm.getMinimalRadius(),"player x")
+	 * @throws IllegalArgumentException
+	 * 		No random adjacent position could be found.
+	 * 		| searchAdjacentFrom(randomX,randomY,Worm.getMinimalRadius()) == null
+	 */
+	public void addNewWorm() throws IllegalArgumentException{
+		double randomX = randomGenerator.nextInt();
+		double randomY = randomGenerator.nextInt();
+		double radius = Worm.getMinimalRadius();
+		double[] location = searchAdjacentFrom(randomX, randomY, radius);
+		if (location == null)
+			throw new IllegalArgumentException();
+		int number = worms.size() + 1;
+		String playerNumber = "Player ".concat(Integer.toString(number));
+		createWorm(location[0], location[1], 0, radius, playerNumber);
+	}
 	
-	//TODO: IllegalArgumentException, Postconditions
+	//TODO: Postconditions
 	/**
 	 * Method to create a worm and add it to this world.
 	 * @param x
@@ -259,15 +287,15 @@ public class World {
 	 * 		The radius the new worm should have.
 	 * @param name
 	 * 		The name the new worm should have.
-	 * @throws IllegalArgumentException
-	 * 		No adjacent position can be found starting from (x,y)	
-	 * 		| searchAdjacentFrom(x,y) == null
+	 * @effect The new worm is initialized with x,y,direction,radius and name.
+	 * 		| worm = new Worm(x,y,direction,radius,name)
+	 * @post The world of the new worm is this world.
+	 * 		| new.worm.getWorld() == this
+	 * @post The new worm belongs to this world.
+	 * 		| this.worms.contains(worm)
 	 */
-	public void createWorm(double x,double y,double direction,double radius,String name) throws IllegalArgumentException{
-		double[] location = searchAdjacentFrom(x,y,radius);
-		if (location == null)
-			throw new IllegalArgumentException();
-		Worm worm = new Worm(location[0],location[1],direction,radius,name);
+	public void createWorm(double x,double y,double direction,double radius,String name){
+		Worm worm = new Worm(x,y,direction,radius,name);
 		worm.setWorldTo(this);
 		addAsWorm(worm);
 	}
@@ -346,25 +374,43 @@ public class World {
 	 */
 	private final List<Worm> worms = new ArrayList<Worm>();
 	
-	//TODO: IllegalArgumentEception, Postconditions
+	//TODO: postconditions
+	/**
+	 * Method to add a new food at a random location in this world.
+	 * @effect The new food is initialized with a random x and y.
+	 * 		| food = new Food(randomX,randomY)
+	 * @throws IllegalArgumentException
+	 * 		No random position could be found
+	 * 		| searchAdjacentFrom(randomX,randomY,Food.getRadius()) == null
+	 */
+	public void addNewFood() throws IllegalArgumentException{
+		int randomX = randomGenerator.nextInt();
+		int randomY = randomGenerator.nextInt();
+		double[] location = searchAdjacentFrom(randomX, randomY, Food.getRadius());
+		if (location == null)
+			throw new IllegalArgumentException();
+		createFood(location[0],location[1]);
+	}
+	//TODO: Postconditions
 	/**
 	 * Method to create a new food and add it to this world.
 	 * @param x
 	 * 		The x coordinate from which an adjacent position should be found.
 	 * @param y
 	 * 		The y coordinate from which an adjacent position should be found.
-	 * @throws IllegalArgumentException
-	 * 		No adjacent position can be found starting from (x,y)
-	 * 		| searchAdjacentFrom(x,y) == null
+	 * @effect The new food is intialized with the given x and y
+	 * 		| food = new Food(x,y)
+	 * @post The world of the food is this world
+	 * 		| food.getWorld() == this
+	 * @post This world contains the given food
+	 * 		| this.food.contains(food)	
 	 */
-	public void createFood(double x,double y) throws IllegalArgumentException{
-		double[] location = searchAdjacentFrom(x,y,Food.getRadius());
-		if (location == null)
-			throw new IllegalArgumentException();
-		Food food = new Food(location[0],location[1]);
+	public void createFood(double x,double y){
+		Food food = new Food(x,y);
 		food.setWorldTo(this);
 		addAsFood(food);
 	}
+	
 	/**
 	 * Method to check whether this world can have the given food as one of its food.
 	 * @param food
