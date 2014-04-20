@@ -696,6 +696,84 @@ public class Worm {
 	private World world;
 	
 	/**
+	 * Method to set the World of this worm to the given team.
+	 * @param team
+	 * 		The team that should be set as the team of this worm.
+	 * @post If the team is valid, the new World of this worm is the given team.
+	 * 		| new.getTeam() == team
+	 * @throws IllegalTeamException
+	 * 		This worm cannot have the given team as its team.
+	 * 		| ! canHaveAsTeam(team)
+	 * @throws IllegalStateException
+	 * 		This worm already has a team.
+	 * 		| hasTeam()
+	 */
+	public void setTeamTo(Team team) throws IllegalTeamException, IllegalStateException{
+		if (! canHaveAsTeam(team))
+			throw new IllegalTeamException(team);
+		if (hasTeam())
+			throw new IllegalStateException();
+		this.team = team;
+	}
+	
+	/**
+	 * Return the team of this worm.
+	 */
+	@Basic @Raw
+	public Team getTeam(){
+		return this.team;
+	}
+	
+	/**
+	 * Return the name of the team this worm belongs to returns null if this worms has no team.
+	 * @return Return the name of the team of the given worm or null.
+	 */
+	public String getTeamName(){
+		if (!hasTeam())
+			return null;
+		return this.getTeam().getName();
+	}
+	
+	/**
+	 * Method to check whether this worm can have the given team as its team.
+	 * @param team
+	 * 		The team to be checked.
+	 * @return True if and only if the team is not null and the given team does not already contains this worm.
+	 * 			| return == (team != null) && (! team.hasAsWorm(this))
+	 */
+	public boolean canHaveAsTeam(Team team){
+		return (team != null) && (! team.hasAsWorm(this));
+	}
+	
+	/**
+	 * Method to check whether the given worm already has a team.
+	 * @return True if and only if this.team is not null.
+	 * 		| return == (getTeam() != null)
+	 */
+	public boolean hasTeam(){
+		return (getTeam() != null);
+	}
+	
+	/**
+	 * Method to remove the team of this worm and remove this worm from the team it belonged to.
+	 * @throws NullPointerException
+	 * 		This worm has no team.
+	 * 		| ! hasTeam()
+	 */
+	public void removeTeam() throws NullPointerException {
+		if (! hasTeam())
+			throw new NullPointerException();
+		Team formerTeam = getTeam();
+		this.team = null;
+		formerTeam.removeAsWorm(this);
+	}
+	
+	/**
+	 * Variable registering the team of this worm.
+	 */
+	private Team team;
+	
+	/**
 	 * Method to return the maximum Hit Points of the given worm.
 	 * @return Returns the maximum Hit Points of the given worm.
 	 * 			| return == (int) Math.round(this.getMass())
@@ -720,7 +798,7 @@ public class Worm {
 	}
 	
 	/**
-	 * Set the current Hit Points of the world to the given value hitPoints
+	 * Set the current Hit Points of the worm to the given value hitPoints
 	 * @param hitPoints
 	 * @post the new hit points are equal to hitPoints.
 	 *      |new.getHitPoints() == hitPoints

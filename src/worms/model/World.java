@@ -479,6 +479,97 @@ public class World {
 	 */
 	private final List<Food> food = new ArrayList<Food>();
 
+	//TODO: IllegalArgumentEception, Postconditions
+		/**
+		 * Method to create a new team and add it to this world.
+		 * @param x
+		 * 		The x coordinate from which an adjacent position should be found.
+		 * @param y
+		 * 		The y coordinate from which an adjacent position should be found.
+		 * @throws IllegalArgumentException
+		 * 		No adjacent position can be found starting from (x,y)
+		 * 		| searchAdjacentFrom(x,y) == null
+		 */
+		public void createTeam(String name) throws IllegalArgumentException{
+			if (name == null || team.size()==10)
+				throw new IllegalArgumentException();
+			Team team = new Team(name);
+			team.setWorldTo(this);
+			addAsTeam(team);
+		}
+		/**
+		 * Method to check whether this world can have the given team as one of its team.
+		 * @param team
+		 * @return True if and only if team is not null.
+		 * 		| return == !(team == null)
+		 */
+		public boolean canHaveAsTeam(Team team){
+			return (!(team == null));
+		}
+		
+	/**
+	 * Method to check whether this world already contains the given team.
+	 * @param team
+	 * @return True if and only the given team is in team.
+	 * 		| this.team.contains(team)
+	 */
+	public boolean hasAsTeam(Team team){
+		return this.team.contains(team);
+	}
+	
+	/**
+	 * Method to add the given team to this world.
+	 * @param team
+	 * 		The team to be added
+	 * @post If the team is valid, this world has the given team as one of its team.
+	 * 		| this.team.contains(team)
+	 * @post If the team is not valid, no team will be added.
+	 * 		| new.team == this.team
+	 * @throws IllegalTeamException
+	 * 		This world cannot have the given team as one of its team.
+	 * 		| ! canHaveAsTeam(team)
+	 * @throws IllegalStateException
+	 * 		The team does not have this world as its world, or this world already contains the given team.
+	 * 		| (team.getWorld() != this) || (hasAsTeam(team))
+	 */
+	public void addAsTeam(Team team) throws IllegalTeamException, IllegalStateException{
+		if(! canHaveAsTeam(team))
+			throw new IllegalTeamException(team);
+		if ((team.getWorld() != this) || (hasAsTeam(team)))
+			throw new IllegalStateException();
+		this.team.add(team);
+	}
+	
+	/**
+	 * Method to remove a given team from this world.
+	 * @param team
+	 * 		The team to be removed.
+	 * @throws IllegalTeamException
+	 * 		The given team is null, or this world does not contain the given worm.
+	 * 		| (team == null) || (! hasAsTeam(team))
+	 * @throws IllegalStateException
+	 * 		The given team still has a world.
+	 * 		| team.hasWorld()
+	 */
+	public void removeAsTeam(Team team) throws IllegalTeamException, IllegalStateException{
+		if ((team == null) || (! hasAsTeam(team)))
+			throw new IllegalTeamException(team);
+		if (team.hasWorld())
+			throw new IllegalStateException();
+		this.team.remove(team);
+	}
+	
+	/**
+	 * Method to return a list of all the team in this world.
+	 */
+	public List<Team> getTeam(){
+		return this.team;
+	}
+	/**
+	 * Variable registering all the team currently in this world.
+	 */
+	private final List<Team> team = new ArrayList<Team>();
+	
 /**
  * method to see if an object with a given radius is adjacent to impassable terrain.
  * @param x
