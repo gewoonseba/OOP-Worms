@@ -524,7 +524,27 @@ public class World {
 			}
 			change=0;
 		}	
-		
+	}
+	/**
+	 * Variable to determine which worms turn it is.
+	 */
+	private int currentTurn;
 	
+	/**
+	 * Method to start the next turn.
+	 */
+	public void startNextTurn(){
+		currentTurn+=1;
+		if (currentTurn>=worms.size()){
+			currentTurn=0;
+		}
+		Worm currentWorm = worms.get(currentTurn);
+		if (currentWorm.getHitPoints()+10>currentWorm.getMaxHitPoints()){
+			currentWorm.setHitPoints(currentWorm.getMaxHitPoints());
+		}
+		else{
+			currentWorm.setHitPoints(currentWorm.getHitPoints()+10);
+		}
+		currentWorm.setCurrentAP(currentWorm.getMaxAP());
 	}
 }
