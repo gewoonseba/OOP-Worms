@@ -1,5 +1,10 @@
 package worms.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import be.kuleuven.cs.som.annotate.*;
 
 
@@ -38,6 +43,8 @@ public class Worm {
 	 *      | new.getCurrentAP() == new.getMaxAP()
 	 * @effect the new hit points are equal to to maxHitpoints possible for the given worm.
 	 *      | new.getHitPoints()== new.getMaxHitPoints()
+	 * @post the worm has "Rifle" and "Bazooka" as its only weapons.
+	 * 		| new.weapons = {"Rifle","Bazooka"}
 	 * @throws IllegalRadiusException
 	 *         The given radius is not valid.
 	 *         | (! isValidRadius(radius))
@@ -59,6 +66,8 @@ public class Worm {
 		this.setName(name);
 		this.setCurrentAP(this.getMaxAP());
 		this.setHitPoints(this.getMaxHitPoints());
+		this.addAsWeapon("Rifle");
+		this.addAsWeapon("Bazooka");
 	}
 	
 
@@ -263,7 +272,6 @@ public class Worm {
 			throw new IllegalAPException(this.getCurrentAP(), this);
 		if (! this.canJumpDirection())
 			throw new IllegalJumpDirectionException(this.getDirection(),this);
-		double initialSpeed = this.getInitialSpeed();
 		double time = timeStep;
 		double[] tempCoordinates = jumpStep(time);
 		double tempX = tempCoordinates[0];
@@ -743,4 +751,67 @@ public class Worm {
 	 */
 	private int hitPoints;
 	
+	/**
+	 * Method to terminate this worm, setting its terminated value to true.
+	 */
+	public void terminate(){
+		terminated = true;
+	}
+	
+	/**
+	 * Variable registering whether or not this worm is terminated.
+	 */
+	private boolean terminated = false;
+	
+	/**
+	 * Method to check if the given weapon is a valid weapon.
+	 * @param weapon
+	 * 		The weapon to be checked.
+	 * @return True if and only if the given weapon is "Rifle" or "Bazooka"
+	 * 		| retrun == ((weapon == "Rifle") || (weapon == "Bazooka"))
+	 */
+	public boolean isValidWeapon(String weapon){
+		return ((weapon == "Rifle") || (weapon == "Bazooka"));
+	}
+	
+	/**
+	 * @Pre The weapon to be added must be a valid weapon.
+	 * 		| isValidWeapon(weapon)
+	 * Method to add a given weapon to the weapons of this worm.
+	 * @param weapon
+	 * 		The weapon to be added.
+	 * @throws IllegalArgumentException
+	 * 		The given weapon is not a valid weapon.
+	 * 		| ! isValidWeapon(weapon)
+	 */
+	public void addAsWeapon(String weapon) throws IllegalArgumentException{
+		if  (! isValidWeapon(weapon))
+			throw new IllegalArgumentException();
+		weapons.add(weapon);
+	}
+	
+	/**
+	 * Variable containing a list of the weapons this worm currently has.
+	 */
+	private final List<String> weapons = new ArrayList<String>();
+	
+	/**
+	 * Method to select the next weapon of this worm.
+	 * @post the currentWeaponIndex will be increased by 1
+	 * 		| new.currentWeaponIndex = this.currentWeaponIndex + 1
+	 * @post if the new currentWeaponIndex is equal to the size of weapons, the new currentWeaponIndex
+	 * 		will be set to zero.
+	 * 		| if (new.currentWeaponIndex() == weapons.size())
+	 * 		|	new.currentWeaponIndex = 0
+	 */
+	public void selectNextWeapon(){
+		currentWeaponIndex += 1;
+		if (currentWeaponIndex == weapons.size())
+			currentWeaponIndex = 0;
+	}
+	
+	/**
+	 * Variable registering the index of the current weapon of this worm.
+	 */
+	private int currentWeaponIndex = 0;
 }
