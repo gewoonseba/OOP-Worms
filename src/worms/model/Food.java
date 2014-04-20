@@ -17,7 +17,7 @@ public class Food {
 	public Food(double x,double y){
 		this.setX(x);
 	    this.setY(y);
-	    this.terminated=0;
+	    this.terminated = false;
 	}
 
 	/**
@@ -153,7 +153,7 @@ public class Food {
 	 *         | return = (this.terminated==0)
 	 */
 	public boolean isActive(){
-		if (this.terminated==0){
+		if (this.terminated == false){
 				return true;
 		}
 		else {
@@ -164,12 +164,12 @@ public class Food {
 	 * method to terminate the given food.
 	 */
 	public void terminate(){
-		this.terminated=1;
+		this.terminated = true;;
 	}
 	
 	/**
 	 * variable to determine whether food is terminated.
 	 */
-	private int terminated;
+	private boolean terminated = false;
 
 }
