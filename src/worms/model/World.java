@@ -375,7 +375,17 @@ public class World {
 		return (!(food == null));
 	}
 	
-
+	/**
+	 * method to see if an object with a given radius is passable.
+	 * @param x
+	 *       |the x coordinate of the center of the object.
+	 * @param y
+	 *       |the y coordinate of the center of the object.
+	 * @param radius
+	 *       |the radius of the object.
+	 * @return returns a boolean that is true if and only if there is no impassable location
+	 *       in the given radius.
+	 */
 	public boolean isPassable(double x, double y, double radius){
 		double newX = x + radius;
 		double newY = y;
@@ -469,7 +479,17 @@ public class World {
 	 */
 	private final List<Food> food = new ArrayList<Food>();
 
-
+/**
+ * method to see if an object with a given radius is adjacent to impassable terrain.
+ * @param x
+ *       |the x coordinate of the center of the object.
+ * @param y
+ *       |the y coordinate of the center of the object.
+ * @param radius
+ *       |the radius of the object.
+ * @return returns a boolean that is true if and only if there is an impassable location
+ *       between the radius and 1.1*radius.
+ */
 	public boolean isAdjacent(double x,double y, double radius){
 		double newX= x + 1.1*radius;
 		double newY= y;
@@ -504,7 +524,35 @@ public class World {
 			}
 			change=0;
 		}	
-		
+	}
 	
+	/**
+	 * Variable to determine which worms turn it is.
+	 */
+	private int currentTurn;
+	
+	/**
+	 * Method to start the next turn.
+	 */
+	public void startNextTurn(){
+		currentTurn+=1;
+		if (currentTurn>=worms.size()){
+			currentTurn=0;
+		}
+		Worm currentWorm = worms.get(currentTurn);
+		if (currentWorm.getHitPoints()+10>currentWorm.getMaxHitPoints()){
+			currentWorm.setHitPoints(currentWorm.getMaxHitPoints());
+		}
+		else{
+			currentWorm.setHitPoints(currentWorm.getHitPoints()+10);
+		}
+		currentWorm.setCurrentAP(currentWorm.getMaxAP());
+	}
+	
+	/**
+	 * method to start the game
+	 */
+	public void startGame(){
+		currentTurn = 0;
 	}
 }

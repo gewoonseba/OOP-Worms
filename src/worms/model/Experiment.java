@@ -1,11 +1,14 @@
 package worms.model;
 
+import java.util.*;
+
 public class Experiment {
 
 	public static void main(String[] args) {
-		long maxlong = (long) Integer.MAX_VALUE;
-		System.out.println(maxlong >= Integer.MAX_VALUE);
-		
+		List<String> test = new ArrayList<String>();
+		test.add("Rifle");
+		test.add("Bazooka");
+		System.out.println(test.size());
 	}
 
 }

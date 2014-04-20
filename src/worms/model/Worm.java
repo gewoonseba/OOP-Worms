@@ -616,6 +616,24 @@ public class Worm {
 	}
 	
 	/**
+	 * Method to calculate the new AP after shooting the current Weapon.
+	 * @return If the current weapon is a rifle, the new AP is the current AP minus 10
+	 * 		|if (this.weapons.get(getCurrentWeaponIndex()) ==  "Rifle")
+	 *		|	return == this.getCurrentAP() - 10
+	 * @return If the current weapon is a bazooka, the new AP is the current AP minus 50
+	 * 		| if (this.weapons.get(getCurrentWeaponIndex()) == "Bazooka")
+	 * 		|	return == this.getCurrentAP() - 50
+	 */
+	public int getShootAP(){
+		int newAP = getCurrentAP();
+		if (this.weapons.get(getCurrentWeaponIndex()) ==  "Rifle")
+			newAP -= 10;
+		if (this.weapons.get(getCurrentWeaponIndex()) == "Bazooka")
+			newAP -= 50;
+		return newAP;	
+	}
+	
+	/**
 	 * Set the current Action Points of the given worm to a given value currentAP.
 	 * @param currentAP
 	 * @post the new current Action Points is equal to currentAP.
@@ -789,6 +807,65 @@ public class Worm {
 			throw new IllegalArgumentException();
 		weapons.add(weapon);
 	}
+
+	/**
+	 * Method to shoot the current weapon with the given propulsion yield.
+	 * @param p
+	 * 		The given propulsion yield.
+	 * @effect The current AP of the worm shall be reduced with the appropriate amount.
+	 * 		| new.getCurrentAP() == this.getShootAP()
+	 * @throws IllegalArgumentException
+	 * 		The given propulsion yield is not valid.
+	 * 		| ! isValidPropulsionYield(yield)
+	 * @throws IllegalAPException
+	 * 		The worm doesn't have enough AP left to shoot its current weapon.
+	 * 		| getShootAP() < 0
+	 */
+	public void shoot(int yield) throws IllegalArgumentException, IllegalAPException{
+		if (! isValidPropulsionYield(yield))
+			throw new IllegalArgumentException();
+		int newAP = getShootAP();
+		if (newAP < 0)
+			throw new IllegalAPException(getCurrentAP(), this);
+		double[] location = getProjectileLocation();
+		double direction = this.getDirection();
+		double mass = getProjectileMass();
+		Projectile procectile = new Procectile(location[0],location[1],direction,mass);
+		projectile.jump();
+		setCurrentAP(newAP);
+	}
+	
+	/**
+	 * Method to return the location a new projectile should be initialized.
+	 * @return The coordinates at the circumference of the worm, following the current direction of the worm.
+	 * 		| return = new double[] {(getX() + distance*Math.cos(direction)),(getY() + distance*Math.sin(direction))}
+	 */
+	public double[] getProjectileLocation(){
+		double direction = getDirection();
+		double distance = getRadius();
+		double newX = (getX() + distance*Math.cos(direction));
+		double newY = (getY() + distance*Math.sin(direction));
+		return new double[] {newX,newY};
+	}
+	
+	/**
+	 * Method to return the mass a new projectile of the current weapon.
+	 * @return 0.01 if the weapon is a rifle
+	 * 		|if (this.weapons.get(getCurrentWeaponIndex()) == "Rifle")
+	 *		|	return = 0.01;
+	 * @return 0.3 if the weapon is a bazooka
+	 * 		|if (this.weapons.get(getCurrentWeaponIndex()) == "Bazooka")
+	 *		|	return = 0.3;
+	 */
+	public double getProjectileMass(){
+		double mass = 0;
+		if (this.weapons.get(getCurrentWeaponIndex()) == "Rifle")
+			mass = 0.01;
+		if (this.weapons.get(getCurrentWeaponIndex()) == "Bazooka")
+			mass = 0.3;
+		return mass;
+		
+	}
 	
 	/**
 	 * Variable containing a list of the weapons this worm currently has.
@@ -810,6 +887,24 @@ public class Worm {
 			currentWeaponIndex = 0;
 	}
 	
+	/**
+	 * Method to check whether the given propulsion yield is valid.
+	 * @param p
+	 * 		The propulsion yield to be checked.
+	 * @return True if and only if p belongs to the interval [0,100]
+	 * 		| return == ((p >= 0) && (p <= 100))
+	 */
+	public boolean isValidPropulsionYield(int yield){
+		return ((yield >= 0) && (yield <= 100));
+	}
+	
+	/**
+	 * Method to get the index of the current weapon of the worm.
+	 */
+	@Basic
+	public int getCurrentWeaponIndex(){
+		return this.currentWeaponIndex;
+	}
 	/**
 	 * Variable registering the index of the current weapon of this worm.
 	 */
