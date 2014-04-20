@@ -987,4 +987,23 @@ public class Worm {
 	 * Variable registering the index of the current weapon of this worm.
 	 */
 	private int currentWeaponIndex = 0;
+	
+	/**
+	 * Method for a worm to see if he's in range of food and to potentially eat it.
+	 */
+	public void eatFood(){
+		for (int i=0;i<this.getWorld().getFood().size()-1; i++){
+			double foodX = this.getWorld().getFood().get(i).getX();
+			double foodY = this.getWorld().getFood().get(i).getY();
+			double wormX = this.getX();
+			double wormY = this.getY();
+			if (Math.sqrt(Math.pow((foodX - wormX), 2) + Math.pow((foodY -wormY), 2))<(this.getRadius()+0.20)){
+				this.setRadius(1.1*(this.getRadius()));
+				this.getWorld().removeAsFood(this.getWorld().getFood().get(i));
+			}
+		}
+	}
 }
+
+
+
