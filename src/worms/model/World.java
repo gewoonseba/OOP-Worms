@@ -547,4 +547,11 @@ public class World {
 		}
 		currentWorm.setCurrentAP(currentWorm.getMaxAP());
 	}
+	
+	/**
+	 * method to start the game
+	 */
+	public void startGame(){
+		currentTurn = 0;
+	}
 }
