@@ -2,12 +2,9 @@ package worms.model;
 
 public class Food {
 	/**
-	 * create a new food.
-	 * @param world
+	 * Create a new food at the given x and y coordinates.
 	 * @param x
 	 * @param y
-	 * @effect the world of this food is equal to world
-	 *         |this.world=world
 	 * @effect the x coordinate of this food is equal to x
 	 *         |this.x = x
 	 * @effect the y coordinate of this food is equal to y
@@ -15,49 +12,90 @@ public class Food {
 	 * @post   the value of the field terminated is 0
 	 *         |this.terminated=0
 	 */
-	public Food(World world,double x,double y){
-		this.setWorld(world);
+	public Food(double x,double y){
 		this.setX(x);
 	    this.setY(y);
 	    this.terminated=0;
 	}
-	
+
 	/**
-	 * variable registering the world this food was created in.
+	 * Method to check whether this food has a world.
+	 * @return True if getWorld() does not return null
+	 * 		| return == (! getWorld() == null)
 	 */
-	private World world;
+	public boolean hasWorld(){
+		return (! (getWorld() == null));
+	}
 	
 	/**
-	 * Sets the world of the food to world.
+	 * Method to set the world of this food to the given world.
 	 * @param world
-	 * @post the foods world is  equal to world.
-	 *       |new.world=world
+	 * 		The world that should be set as the world of this food.
+	 * @post If the world is valid, the new World of this food is equal to the given world.
+	 * 		| new.getWorld() == world.
+	 * @throws IllegalWorldException
+	 * 		This food cannot have the given world as its world.
+	 * 		| ! canHaveAsWorld(world)
+	 * @throws IllegalStateException
+	 * 		This food already has a world.
+	 * 		| hasWorld()
 	 */
-	public void setWorld(World world){
-		this.world=world;
+	public void setWorldTo(World world) throws IllegalWorldException, IllegalStateException{
+		if (! canHaveAsWorld(world))
+			throw new IllegalWorldException(world);
+		if (hasWorld())
+			throw new IllegalStateException();
+		this.world = world;
 	}
 	
 	/**
 	 * returns the world of the current food.
-	 * @return returns the world
-	 *         |return ==this.world
 	 */
 	public World getWorld(){
 		return this.world;
 	}
 	
 	/**
-	 * variable registering the y coordinate of the food.
+	 * Method to check whether this food can have the given world as its world.
+	 * @param world
+	 * 		The world to be checked.
+	 * @return True if and only if the given world is not null and does not already contain this worm.
+	 * 		| return == (world != null) && (! world.hasAsWorm(this))
+	 */
+	public boolean canHaveAsWorld(World world){
+		return (world != null) && (! world.hasAsFood(this));
+	}
+	
+	/**
+	 * Method to remove the world of this food and remove this food from the world it belonged to.
+	 * @throws NullPointerException
+	 * 		This food has no world
+	 * 		| ! hasWorld()
+	 */
+	public void removeWorld() throws NullPointerException{
+		if (! hasWorld())
+			throw new NullPointerException();
+		World formerWorld = getWorld();
+		this.world = null;
+		formerWorld.removeAsFood(this);
+	}
+	/**
+	 * Variable registering the world of this food.
+	 */
+	private World world;
+	
+	/**
+	 * Variable registering the y coordinate of the food.
 	 */
 	private double y;
 	
 	/**
-	 * variable registering the x coordinate of the food.
+	 * Variable registering the x coordinate of the food.
 	 */
 	private double x;
 	
 	/**
-	 * sets the x coordinate of the given food to x
+	 * Sets the x coordinate of the given food to x
 	 * @param x
 	 * @post the new x coordinate of the food is equal to x.
 	 *      |new.x== x
@@ -67,7 +105,7 @@ public class Food {
 	}
 	
 	/**
-	 * sets the y coordinate of the given food to y.
+	 * Sets the y coordinate of the given food to y.
 	 * @param y
 	 * @post the new y coordinate of the food is equal to y.
 	 *      |new.y== y
