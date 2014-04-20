@@ -1,5 +1,7 @@
 package worms.model;
 
+import be.kuleuven.cs.som.annotate.*;
+
 public class Food {
 	/**
 	 * Create a new food at the given x and y coordinates.
@@ -15,7 +17,7 @@ public class Food {
 	public Food(double x,double y){
 		this.setX(x);
 	    this.setY(y);
-	    this.terminated=0;
+	    this.terminated = false;
 	}
 
 	/**
@@ -85,16 +87,6 @@ public class Food {
 	private World world;
 	
 	/**
-	 * Variable registering the y coordinate of the food.
-	 */
-	private double y;
-	
-	/**
-	 * Variable registering the x coordinate of the food.
-	 */
-	private double x;
-	
-	/**
 	 * Sets the x coordinate of the given food to x
 	 * @param x
 	 * @post the new x coordinate of the food is equal to x.
@@ -102,16 +94,6 @@ public class Food {
 	 */
 	public void setX(double x){
 		this.x = x;
-	}
-	
-	/**
-	 * Sets the y coordinate of the given food to y.
-	 * @param y
-	 * @post the new y coordinate of the food is equal to y.
-	 *      |new.y== y
-	 */
-	public void setY(double y){
-		this.y = y;
 	}
 	
 	/**
@@ -124,6 +106,21 @@ public class Food {
 	}
 	
 	/**
+	 * Variable registering the x coordinate of the food.
+	 */
+	private double x;
+	
+	/**
+	 * Sets the y coordinate of the given food to y.
+	 * @param y
+	 * @post the new y coordinate of the food is equal to y.
+	 *      |new.y== y
+	 */
+	public void setY(double y){
+		this.y = y;
+	}
+	
+	/**
 	 * returns the y coordinate of the given food.
 	 * @return returns the y coordinate.
 	 *        |return =this.y
@@ -133,12 +130,30 @@ public class Food {
 	}
 	
 	/**
+	 * Variable registering the y coordinate of the food.
+	 */
+	private double y;
+	
+	/**
+	 * Static method to retrieve the radius of any food.
+	 */
+	@Basic
+	public static double getRadius(){
+		return radius;
+	}
+	
+	/**
+	 * Variable registering the radius of any food.
+	 */
+	private static final double radius = 0.20;
+	
+	/**
 	 * checks whether the food is active.
 	 * @return true if and only if terminated is zero
 	 *         | return = (this.terminated==0)
 	 */
 	public boolean isActive(){
-		if (this.terminated==0){
+		if (this.terminated == false){
 				return true;
 		}
 		else {
@@ -149,12 +164,12 @@ public class Food {
 	 * method to terminate the given food.
 	 */
 	public void terminate(){
-		this.terminated=1;
+		this.terminated = true;;
 	}
 	
 	/**
 	 * variable to determine whether food is terminated.
 	 */
-	private int terminated;
+	private boolean terminated = false;
 
 }

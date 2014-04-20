@@ -1,5 +1,10 @@
 package worms.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import be.kuleuven.cs.som.annotate.*;
 
 
@@ -38,6 +43,8 @@ public class Worm {
 	 *      | new.getCurrentAP() == new.getMaxAP()
 	 * @effect the new hit points are equal to to maxHitpoints possible for the given worm.
 	 *      | new.getHitPoints()== new.getMaxHitPoints()
+	 * @post the worm has "Rifle" and "Bazooka" as its only weapons.
+	 * 		| new.weapons = {"Rifle","Bazooka"}
 	 * @throws IllegalRadiusException
 	 *         The given radius is not valid.
 	 *         | (! isValidRadius(radius))
@@ -59,6 +66,8 @@ public class Worm {
 		this.setName(name);
 		this.setCurrentAP(this.getMaxAP());
 		this.setHitPoints(this.getMaxHitPoints());
+		this.addAsWeapon("Rifle");
+		this.addAsWeapon("Bazooka");
 	}
 	
 
@@ -172,17 +181,17 @@ public class Worm {
 		double thetaDown = this.getDirection();
 		double tempX = this.getX() + distance*Math.cos(this.getDirection());
 		double tempY = this.getY() + distance*Math.sin(this.getDirection());
-		while ((Math.abs(thetaUp-getDirection()) < 0.7875) || (! isAdjacent(tempX,tempY))){
+		while ((Math.abs(thetaUp-getDirection()) < 0.7875) || (! this.getWorld().isAdjacent(tempX,tempY,getRadius()))){
 			thetaUp += 0.0175;
 			tempX = this.getX() + distance*Math.cos(thetaUp);
 		    tempY = this.getY() + distance*Math.sin(thetaUp);
-	        if(!(this.getWorld().isAdjacent(tempX, tempY))){	
+	        if(!(this.getWorld().isAdjacent(tempX, tempY,getRadius()))){	
 				thetaDown -= 0.0175;
 			    tempX = this.getX() + distance*Math.cos(thetaDown);
 		        tempY = this.getY() + distance*Math.sin(thetaDown); 
 	        }
 	    }
-		if (isAdjacent(tempX,tempY)){
+		if (this.getWorld().isAdjacent(tempX,tempY,getRadius())){
 			return new double[] {tempX,tempY};	
 		}
 		return null;
@@ -263,12 +272,11 @@ public class Worm {
 			throw new IllegalAPException(this.getCurrentAP(), this);
 		if (! this.canJumpDirection())
 			throw new IllegalJumpDirectionException(this.getDirection(),this);
-		double initialSpeed = this.getInitialSpeed();
 		double time = timeStep;
 		double[] tempCoordinates = jumpStep(time);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
-		while ((! isAdjacent(tempX,tempY)) && (! getWorld().isOutOfBounds(tempX,tempY))){
+		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! getWorld().isOutOfBounds(tempX,tempY))){
 			time += timeStep;
 			tempCoordinates = jumpStep(time);
 			tempX = tempCoordinates[0];
@@ -308,7 +316,7 @@ public class Worm {
 		double[] tempCoordinates = jumpStep(jumpTime);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
-		while ((! isAdjacent(tempX,tempY)) && (! getWorld().isOutOfBounds(tempX,tempY))){
+		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! getWorld().isOutOfBounds(tempX,tempY))){
 			jumpTime += timeStep;
 			tempCoordinates = jumpStep(jumpTime);
 			tempX = tempCoordinates[0];
@@ -608,6 +616,24 @@ public class Worm {
 	}
 	
 	/**
+	 * Method to calculate the new AP after shooting the current Weapon.
+	 * @return If the current weapon is a rifle, the new AP is the current AP minus 10
+	 * 		|if (this.weapons.get(getCurrentWeaponIndex()) ==  "Rifle")
+	 *		|	return == this.getCurrentAP() - 10
+	 * @return If the current weapon is a bazooka, the new AP is the current AP minus 50
+	 * 		| if (this.weapons.get(getCurrentWeaponIndex()) == "Bazooka")
+	 * 		|	return == this.getCurrentAP() - 50
+	 */
+	public int getShootAP(){
+		int newAP = getCurrentAP();
+		if (this.weapons.get(getCurrentWeaponIndex()) ==  "Rifle")
+			newAP -= 10;
+		if (this.weapons.get(getCurrentWeaponIndex()) == "Bazooka")
+			newAP -= 50;
+		return newAP;	
+	}
+	
+	/**
 	 * Set the current Action Points of the given worm to a given value currentAP.
 	 * @param currentAP
 	 * @post the new current Action Points is equal to currentAP.
@@ -821,4 +847,144 @@ public class Worm {
 	 */
 	private int hitPoints;
 	
+	/**
+	 * Method to terminate this worm, setting its terminated value to true.
+	 */
+	public void terminate(){
+		terminated = true;
+	}
+	
+	/**
+	 * Variable registering whether or not this worm is terminated.
+	 */
+	private boolean terminated = false;
+	
+	/**
+	 * Method to check if the given weapon is a valid weapon.
+	 * @param weapon
+	 * 		The weapon to be checked.
+	 * @return True if and only if the given weapon is "Rifle" or "Bazooka"
+	 * 		| retrun == ((weapon == "Rifle") || (weapon == "Bazooka"))
+	 */
+	public boolean isValidWeapon(String weapon){
+		return ((weapon == "Rifle") || (weapon == "Bazooka"));
+	}
+	
+	/**
+	 * @Pre The weapon to be added must be a valid weapon.
+	 * 		| isValidWeapon(weapon)
+	 * Method to add a given weapon to the weapons of this worm.
+	 * @param weapon
+	 * 		The weapon to be added.
+	 * @throws IllegalArgumentException
+	 * 		The given weapon is not a valid weapon.
+	 * 		| ! isValidWeapon(weapon)
+	 */
+	public void addAsWeapon(String weapon) throws IllegalArgumentException{
+		if  (! isValidWeapon(weapon))
+			throw new IllegalArgumentException();
+		weapons.add(weapon);
+	}
+
+	/**
+	 * Method to shoot the current weapon with the given propulsion yield.
+	 * @param p
+	 * 		The given propulsion yield.
+	 * @effect The current AP of the worm shall be reduced with the appropriate amount.
+	 * 		| new.getCurrentAP() == this.getShootAP()
+	 * @throws IllegalArgumentException
+	 * 		The given propulsion yield is not valid.
+	 * 		| ! isValidPropulsionYield(yield)
+	 * @throws IllegalAPException
+	 * 		The worm doesn't have enough AP left to shoot its current weapon.
+	 * 		| getShootAP() < 0
+	 */
+	public void shoot(int yield) throws IllegalArgumentException, IllegalAPException{
+		if (! isValidPropulsionYield(yield))
+			throw new IllegalArgumentException();
+		int newAP = getShootAP();
+		if (newAP < 0)
+			throw new IllegalAPException(getCurrentAP(), this);
+		double[] location = getProjectileLocation();
+		double direction = this.getDirection();
+		double mass = getProjectileMass();
+		Projectile procectile = new Procectile(location[0],location[1],direction,mass);
+		projectile.jump();
+		setCurrentAP(newAP);
+	}
+	
+	/**
+	 * Method to return the location a new projectile should be initialized.
+	 * @return The coordinates at the circumference of the worm, following the current direction of the worm.
+	 * 		| return = new double[] {(getX() + distance*Math.cos(direction)),(getY() + distance*Math.sin(direction))}
+	 */
+	public double[] getProjectileLocation(){
+		double direction = getDirection();
+		double distance = getRadius();
+		double newX = (getX() + distance*Math.cos(direction));
+		double newY = (getY() + distance*Math.sin(direction));
+		return new double[] {newX,newY};
+	}
+	
+	/**
+	 * Method to return the mass a new projectile of the current weapon.
+	 * @return 0.01 if the weapon is a rifle
+	 * 		|if (this.weapons.get(getCurrentWeaponIndex()) == "Rifle")
+	 *		|	return = 0.01;
+	 * @return 0.3 if the weapon is a bazooka
+	 * 		|if (this.weapons.get(getCurrentWeaponIndex()) == "Bazooka")
+	 *		|	return = 0.3;
+	 */
+	public double getProjectileMass(){
+		double mass = 0;
+		if (this.weapons.get(getCurrentWeaponIndex()) == "Rifle")
+			mass = 0.01;
+		if (this.weapons.get(getCurrentWeaponIndex()) == "Bazooka")
+			mass = 0.3;
+		return mass;
+		
+	}
+	
+	/**
+	 * Variable containing a list of the weapons this worm currently has.
+	 */
+	private final List<String> weapons = new ArrayList<String>();
+	
+	/**
+	 * Method to select the next weapon of this worm.
+	 * @post the currentWeaponIndex will be increased by 1
+	 * 		| new.currentWeaponIndex = this.currentWeaponIndex + 1
+	 * @post if the new currentWeaponIndex is equal to the size of weapons, the new currentWeaponIndex
+	 * 		will be set to zero.
+	 * 		| if (new.currentWeaponIndex() == weapons.size())
+	 * 		|	new.currentWeaponIndex = 0
+	 */
+	public void selectNextWeapon(){
+		currentWeaponIndex += 1;
+		if (currentWeaponIndex == weapons.size())
+			currentWeaponIndex = 0;
+	}
+	
+	/**
+	 * Method to check whether the given propulsion yield is valid.
+	 * @param p
+	 * 		The propulsion yield to be checked.
+	 * @return True if and only if p belongs to the interval [0,100]
+	 * 		| return == ((p >= 0) && (p <= 100))
+	 */
+	public boolean isValidPropulsionYield(int yield){
+		return ((yield >= 0) && (yield <= 100));
+	}
+	
+	/**
+	 * Method to get the index of the current weapon of the worm.
+	 */
+	@Basic
+	public int getCurrentWeaponIndex(){
+		return this.currentWeaponIndex;
+	}
+	/**
+	 * Variable registering the index of the current weapon of this worm.
+	 */
+	private int currentWeaponIndex = 0;
 }

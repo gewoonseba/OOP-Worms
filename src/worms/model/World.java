@@ -225,17 +225,17 @@ public class World {
 	 * @param tempY
 	 * @return A double array, containing the position that is adjacent, if one is found, and null if none is found.
 	 */
-	public double[] searchAdjacentFrom(double tempX, double tempY){
+	public double[] searchAdjacentFrom(double tempX, double tempY,double radius){
 		tempX = coordinatesToPixels(tempX,tempY)[0];
 		tempY = coordinatesToPixels(tempX,tempY)[1];
-		while (! isAdjacent(tempX,tempY)){
+		while (! isAdjacent(tempX,tempY,radius)){
 			if (tempX < centerX)
 				tempX += 1;
 			if (tempX > centerX)
 				tempX -= 1;
-			if ((tempY < centerY) && (! isAdjacent(tempX,tempY)))
+			if ((tempY < centerY) && (! isAdjacent(tempX,tempY,radius)))
 				tempY += 1;
-			if ((tempY > centerY) && (! isAdjacent(tempX,tempY)))
+			if ((tempY > centerY) && (! isAdjacent(tempX,tempY,radius)))
 				tempY -= 1;
 			else 
 				return null;
@@ -264,7 +264,7 @@ public class World {
 	 * 		| searchAdjacentFrom(x,y) == null
 	 */
 	public void createWorm(double x,double y,double direction,double radius,String name) throws IllegalArgumentException{
-		double[] location = searchAdjacentFrom(x,y);
+		double[] location = searchAdjacentFrom(x,y,radius);
 		if (location == null)
 			throw new IllegalArgumentException();
 		Worm worm = new Worm(location[0],location[1],direction,radius,name);
@@ -358,7 +358,7 @@ public class World {
 	 * 		| searchAdjacentFrom(x,y) == null
 	 */
 	public void createFood(double x,double y) throws IllegalArgumentException{
-		double[] location = searchAdjacentFrom(x,y);
+		double[] location = searchAdjacentFrom(x,y,Food.getRadius());
 		if (location == null)
 			throw new IllegalArgumentException();
 		Food food = new Food(location[0],location[1]);
@@ -616,6 +616,7 @@ public class World {
 			change=0;
 		}	
 	}
+	
 	/**
 	 * Variable to determine which worms turn it is.
 	 */
