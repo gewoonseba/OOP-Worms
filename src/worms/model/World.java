@@ -215,5 +215,75 @@ public class World {
 		wormPosition = {tempX,tempY};
 		return wormPosition;
 	}
+	
+	public boolean isPassable(double x, double y, double radius){
+		double newX= x + radius;
+		double newY= y;
+		int pixelX= getPixelCoordinateX(newX);
+		int immPixelX = pixelX;
+		int pixelY= getPixelCoordinateY(newY);
+		int rightPixelY = pixelY;
+		int leftPixelY = pixelY;
+		double maxDistance= radius/getXScale(); 
+		while(true){
+			if (Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(leftPixelY-pixelY)*(leftPixelY-pixelY))>maxDistance){
+				pixelX+=1;
+				if (pixelX-immPixelX>maxDistance){
+					return true;
+				}
+				if (passableMap[pixelX][pixelY]==false){
+					return false;
+				}
+			}
+			pixelY-=1;
+			if (Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(leftPixelY-pixelY)*(leftPixelY-pixelY))<maxDistance){
+				if (passableMap[pixelX][pixelY]==false){
+					return false;
+				}
+				pixelY+=1;
+				if (passableMap[pixelX][pixelY]==false){
+					return false;
+				}
+			}
+		}	
+				
+	}
 
+	public boolean isAdjacent(double x,double y, double radius){
+		double newX= x + 1.1*radius;
+		double newY= y;
+		int pixelX= getPixelCoordinateX(newX);
+		int immPixelX = pixelX;
+		int pixelY= getPixelCoordinateY(newY);
+		int change = 0;
+		double maxDistance= (1.1*radius)/getXScale();
+		double minDistance= radius/getXScale();
+		while(true){
+			if (Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))>maxDistance){
+				pixelX+=1;
+				if (pixelX-immPixelX>maxDistance){
+					return false;
+				}
+				if (passableMap[pixelX][pixelY]==false){
+					return true;
+				}
+			}
+			do {
+				change+=1;
+			} while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<minDistance);
+			while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<maxDistance){
+				
+				if (passableMap[pixelX][pixelY+change]==false){
+					return true;
+				}
+				if (passableMap[pixelX][pixelY-change]==false){
+					return true;
+				}
+				change+=1;
+			}
+			change=0;
+		}	
+		
+	
+	}
 }
