@@ -252,6 +252,94 @@ public class World {
 		
 	}
 
+	/**
+	 * method to see if an object with a given radius is adjacent to impassable terrain.
+	 * @param x
+	 *       |the x coordinate of the center of the object.
+	 * @param y
+	 *       |the y coordinate of the center of the object.
+	 * @param radius
+	 *       |the radius of the object.
+	 * @return returns a boolean that is true if and only if there is an impassable location
+	 *       between the radius and 1.1*radius.
+	 */
+		public boolean isAdjacent(double x,double y, double radius){
+			double newX= x + 1.1*radius;
+			double newY= y;
+			int pixelX= coordinatesToPixels(newX, newY)[0];
+			int immPixelX = pixelX;
+			int pixelY= coordinatesToPixels(newX, newY)[1];
+			int change = 0;
+			double maxDistance= (1.1*radius)/getWidthScale();
+			double minDistance= radius/getWidthScale();
+			while(true){
+				if (Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))>maxDistance){
+					pixelX+=1;
+					if (pixelX-immPixelX>maxDistance){
+						return false;
+					}
+					if (passableMap[pixelX][pixelY]==false){
+						return true;
+					}
+				}
+				do {
+					change+=1;
+				} while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<minDistance);
+				while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<=maxDistance){
+					
+					if (passableMap[pixelX][pixelY+change]==false){
+						return true;
+					}
+					if (passableMap[pixelX][pixelY-change]==false){
+						return true;
+					}
+					change+=1;
+				}
+				change=0;
+			}	
+		}
+
+	/**
+	 * method to see if an object with a given radius is passable.
+	 * @param x
+	 *       |the x coordinate of the center of the object.
+	 * @param y
+	 *       |the y coordinate of the center of the object.
+	 * @param radius
+	 *       |the radius of the object.
+	 * @return returns a boolean that is true if and only if there is no impassable location
+	 *       in the given radius.
+	 */
+	public boolean isPassable(double x, double y, double radius){
+		double newX = x + radius;
+		double newY = y;
+		int pixelX = coordinatesToPixels(newX, newY)[0];
+		int immPixelX = pixelX;
+		int pixelY = coordinatesToPixels(newX, newY)[1];
+		int change = 0;
+		double maxDistance= radius/getHeightScale(); 
+		while(true){
+			if (pixelX-immPixelX>maxDistance){
+				return true;
+			}
+			if (passableMap[pixelX][pixelY]==false){
+				return false;
+			}
+			change=1;
+			while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<maxDistance){
+				if (passableMap[pixelX][pixelY+change]==false){
+					return false;
+				}
+				if (passableMap[pixelX][pixelY-change]==false){
+					return false;
+				}
+				change+=1;
+			}
+			pixelX+=1;
+			change=0;
+		}		
+	}
+
 	//TODO: specification
 	/**
 	 * Method to create a new Worm and put it at a random location in this world.
@@ -422,47 +510,6 @@ public class World {
 	}
 	
 	/**
-	 * method to see if an object with a given radius is passable.
-	 * @param x
-	 *       |the x coordinate of the center of the object.
-	 * @param y
-	 *       |the y coordinate of the center of the object.
-	 * @param radius
-	 *       |the radius of the object.
-	 * @return returns a boolean that is true if and only if there is no impassable location
-	 *       in the given radius.
-	 */
-	public boolean isPassable(double x, double y, double radius){
-		double newX = x + radius;
-		double newY = y;
-		int pixelX = coordinatesToPixels(newX, newY)[0];
-		int immPixelX = pixelX;
-		int pixelY = coordinatesToPixels(newX, newY)[1];
-		int change = 0;
-		double maxDistance= radius/getHeightScale(); 
-		while(true){
-			if (pixelX-immPixelX>maxDistance){
-				return true;
-			}
-			if (passableMap[pixelX][pixelY]==false){
-				return false;
-			}
-			change=1;
-			while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<maxDistance){
-				if (passableMap[pixelX][pixelY+change]==false){
-					return false;
-				}
-				if (passableMap[pixelX][pixelY-change]==false){
-					return false;
-				}
-				change+=1;
-			}
-			pixelX+=1;
-			change=0;
-		}		
-	}
-
-	/**
 	 * Method to check whether this world already contains the given food.
 	 * @param food
 	 * @return True if and only the given food is in food.
@@ -617,58 +664,6 @@ public class World {
 	private final List<Team> team = new ArrayList<Team>();
 	
 /**
- * method to see if an object with a given radius is adjacent to impassable terrain.
- * @param x
- *       |the x coordinate of the center of the object.
- * @param y
- *       |the y coordinate of the center of the object.
- * @param radius
- *       |the radius of the object.
- * @return returns a boolean that is true if and only if there is an impassable location
- *       between the radius and 1.1*radius.
- */
-	public boolean isAdjacent(double x,double y, double radius){
-		double newX= x + 1.1*radius;
-		double newY= y;
-		int pixelX= coordinatesToPixels(newX, newY)[0];
-		int immPixelX = pixelX;
-		int pixelY= coordinatesToPixels(newX, newY)[1];
-		int change = 0;
-		double maxDistance= (1.1*radius)/getWidthScale();
-		double minDistance= radius/getWidthScale();
-		while(true){
-			if (Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))>maxDistance){
-				pixelX+=1;
-				if (pixelX-immPixelX>maxDistance){
-					return false;
-				}
-				if (passableMap[pixelX][pixelY]==false){
-					return true;
-				}
-			}
-			do {
-				change+=1;
-			} while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<minDistance);
-			while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<=maxDistance){
-				
-				if (passableMap[pixelX][pixelY+change]==false){
-					return true;
-				}
-				if (passableMap[pixelX][pixelY-change]==false){
-					return true;
-				}
-				change+=1;
-			}
-			change=0;
-		}	
-	}
-	
-	/**
-	 * Variable to determine which worms turn it is.
-	 */
-	private int currentTurn;
-	
-	/**
 	 * Method to start the next turn.
 	 */
 	public void startNextTurn(){
@@ -692,4 +687,9 @@ public class World {
 	public void startGame(){
 		currentTurn = 0;
 	}
+
+	/**
+	 * Variable to determine which worms turn it is.
+	 */
+	private int currentTurn;
 }
