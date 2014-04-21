@@ -1,9 +1,6 @@
 package worms.model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import be.kuleuven.cs.som.annotate.*;
 
@@ -11,7 +8,8 @@ import be.kuleuven.cs.som.annotate.*;
 /**
  * A class of Worms. A Worm has a position (x,y), a direction (expressed as a radian value), 
  * a radius (in metres), a mass (calculated according to the radius) and a number of action points. 
- * A Worm can turn, move, jump and change its name.
+ * A Worm can turn, move, jump and change its name. A worm shall belong to one world and one world only. A worm can belong
+ * to a Team, but it doesn't have to belong to a team. Furthermore a Worm shall possess weapons and is able to shoot these weapons.
  * 
  * @author Sebastian Stoelen 2BbiCwsElt2, Matthias Maeyens 2BbiCwsElt2
  * @version 2.0
@@ -22,7 +20,7 @@ public class Worm {
 	
 	/**
 	 * Create a new worm.
-	 * @pre The given initial direction must be a valid direction.
+	 * @Pre The given initial direction must be a valid direction.
 	 *		| isValidDirection(direction)
 	 * @param x
 	 * @param y
@@ -55,10 +53,6 @@ public class Worm {
 	@Raw
 	public Worm(double x, double y, double direction, double radius, String name) 
 			throws IllegalRadiusException, IllegalNameException{
-		if (! isValidRadius(radius))
-			throw new IllegalRadiusException(radius);
-		if (! isValidName(name))
-			throw new IllegalNameException(name);
 		this.setX(x);
 		this.setY(y);
 		this.setDirection(direction);
@@ -218,7 +212,7 @@ public class Worm {
 	/**
 	 * Method to calculate and return the initial speed of the worm.
 	 * @return The initial speed of the worm.
-	 *        | return == initialSpeed
+	 *        | return == (5.0*this.getCurrentAP() + mass*g)/getMass()*0.5
 	 */
 	private double getInitialSpeed(){
 		double mass = this.getMass();
@@ -383,6 +377,7 @@ public class Worm {
 	public double getDirection(){
 		return direction;
 	}
+	
 	/**
 	 * Check whether the given direction is a valid direction for a worm.
 	 * @param direction
@@ -871,19 +866,22 @@ public class Worm {
 	}
 	
 	/**
-	 * @Pre The weapon to be added must be a valid weapon.
-	 * 		| isValidWeapon(weapon)
-	 * Method to add a given weapon to the weapons of this worm.
-	 * @param weapon
-	 * 		The weapon to be added.
-	 * @throws IllegalArgumentException
-	 * 		The given weapon is not a valid weapon.
-	 * 		| ! isValidWeapon(weapon)
+	 * Method to check whether the given propulsion yield is valid.
+	 * @param p
+	 * 		The propulsion yield to be checked.
+	 * @return True if and only if p belongs to the interval [0,100]
+	 * 		| return == ((p >= 0) && (p <= 100))
 	 */
-	public void addAsWeapon(String weapon) throws IllegalArgumentException{
-		if  (! isValidWeapon(weapon))
-			throw new IllegalArgumentException();
-		weapons.add(weapon);
+	public boolean isValidPropulsionYield(int yield){
+		return ((yield >= 0) && (yield <= 100));
+	}
+
+	/**
+	 * Method to return the projectile this worm is currently shooting, if any.
+	 */
+	@Basic
+	public Projectile getProjectile(){
+		return this.projectile;
 	}
 
 	/**
@@ -908,8 +906,9 @@ public class Worm {
 		double[] location = getProjectileLocation();
 		double direction = this.getDirection();
 		double mass = getProjectileMass();
-		Projectile procectile = new Procectile(location[0],location[1],direction,mass);
-		projectile.jump();
+		Projectile projectile = new Projectile(location[0],location[1],direction,mass,yield);
+		this.projectile = projectile;
+		projectile.setWormTo(this);
 		setCurrentAP(newAP);
 	}
 	
@@ -942,9 +941,29 @@ public class Worm {
 		if (this.weapons.get(getCurrentWeaponIndex()) == "Bazooka")
 			mass = 0.3;
 		return mass;
-		
 	}
 	
+	/**
+	 * Variable registering the projectile this worm is currently shooting, if any.
+	 */
+	private Projectile projectile;
+	
+	/**
+	 * @Pre The weapon to be added must be a valid weapon.
+	 * 		| isValidWeapon(weapon)
+	 * Method to add a given weapon to the weapons of this worm.
+	 * @param weapon
+	 * 		The weapon to be added.
+	 * @throws IllegalArgumentException
+	 * 		The given weapon is not a valid weapon.
+	 * 		| ! isValidWeapon(weapon)
+	 */
+	public void addAsWeapon(String weapon) throws IllegalArgumentException{
+		if  (! isValidWeapon(weapon))
+			throw new IllegalArgumentException();
+		weapons.add(weapon);
+	}
+
 	/**
 	 * Variable containing a list of the weapons this worm currently has.
 	 */
@@ -963,17 +982,6 @@ public class Worm {
 		currentWeaponIndex += 1;
 		if (currentWeaponIndex == weapons.size())
 			currentWeaponIndex = 0;
-	}
-	
-	/**
-	 * Method to check whether the given propulsion yield is valid.
-	 * @param p
-	 * 		The propulsion yield to be checked.
-	 * @return True if and only if p belongs to the interval [0,100]
-	 * 		| return == ((p >= 0) && (p <= 100))
-	 */
-	public boolean isValidPropulsionYield(int yield){
-		return ((yield >= 0) && (yield <= 100));
 	}
 	
 	/**
