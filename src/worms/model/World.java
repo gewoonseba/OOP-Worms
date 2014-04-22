@@ -207,7 +207,7 @@ public class World {
 	 */
 	public double[] pixelsToCoordinates(int x,int y){
 		double newX = x*getWidthScale();
-		double newY = y*getHeightScale();
+		double newY = (getPixelHeight()-y)*getHeightScale();
 		return new double[] {newX,newY};
 	}
 	
@@ -237,22 +237,29 @@ public class World {
 	public double[] searchAdjacentFrom(double x, double y,double radius){
 		System.out.println("centrum");
 		System.out.println(centerX);
+		boolean change = false;
 		int tempX = coordinatesToPixels(x,y)[0];
 		int tempY = coordinatesToPixels(x,y)[1];
+		
 		while ((! isPixelAdjacent(tempX,tempY,radius)) ){
 			//System.out.println("zoeken naar geschikte locatie");
 			//System.out.println(tempX);
 			//System.out.println(tempY);
+			change = false;
 			if (tempX < centerX){
 				tempX += 1;
+				change = true;
 				}
-			else if (tempX > centerX)
+		    if (tempX > centerX){
 				tempX -= 1;
-			else if ((tempY < centerY) && (! isPixelAdjacent(tempX,tempY,radius))  )
+		        change = true;}
+			if ((tempY < centerY) && (! isPixelAdjacent(tempX,tempY,radius))  ){
 				tempY += 1;
-			else if ((tempY > centerY) && (! isPixelAdjacent(tempX,tempY,radius)) )
+			    change = true;}
+			if ((tempY > centerY) && (! isPixelAdjacent(tempX,tempY,radius)) ){
 				tempY -= 1;
-			else 
+				change = true;}
+			if (change == false)
 				return null;
 			}
 		System.out.println("locatie in pixels");
@@ -289,24 +296,20 @@ public class World {
 			double immPixelX = x;
 			int change = 0;
 			while(true){
-				if (pixelX-immPixelX>maxDistance){
+				if (Math.abs(pixelX-immPixelX)>maxDistance+0.1){
 					return false;
 				}
 				if (passableMap[pixelY][pixelX]==false){
-					System.out.println("pixeladjacent");
-					System.out.println(pixelX);
-					System.out.println(pixelY);
 					return true;
 				}
 				do {
 					change+=1;
 				} while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<minDistance);
-				while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<=maxDistance){
-					
-					if (passableMap[pixelY + change][pixelX]==false){
+				while(Math.sqrt((immPixelX-pixelX)*(immPixelX-pixelX)+(change)*(change))<=maxDistance+0.1){
+					if (passableMap[pixelY - change][pixelX]==false){
 						return true;
 					}
-					if (passableMap[pixelY - change][pixelX]==false){
+					if (passableMap[pixelY + change][pixelX]==false){
 						return true;
 					}
 					change+=1;
@@ -339,27 +342,26 @@ public class World {
 			double maxDistance= (1.1*radius)/getWidthScale();
 			double minDistance= radius/getWidthScale();
 			while(true){
-				pixelX-=1;
-				if (pixelX-immPixelX>maxDistance){
+				if (Math.abs(pixelX-immPixelX)>maxDistance+0.1){
 					return false;
 				}
-				if (passableMap[pixelX][pixelY]==false){
+				if (passableMap[pixelY][pixelX]==false){
 					return true;
 				}
 				do {
 					change+=1;
 				} while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<minDistance);
-				while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<=maxDistance){
-					
-					if (passableMap[pixelX][pixelY+change]==false){
+				while(Math.sqrt((immPixelX-pixelX)*(immPixelX-pixelX)+(change)*(change))<=maxDistance+0.1){
+					if (passableMap[pixelY - change][pixelX]==false){
 						return true;
 					}
-					if (passableMap[pixelX][pixelY-change]==false){
+					if (passableMap[pixelY + change][pixelX]==false){
 						return true;
 					}
 					change+=1;
 				}
 				change=0;
+				pixelX-=1;
 			}	
 		}
 		
@@ -380,41 +382,20 @@ public class World {
 			int pixelY = y;
 			double immPixelX = x;
 			int change = 0;
-			System.out.println("enterPixelPassable");
-			System.out.println(maxDistance);
-			System.out.println(pixelX);
-			System.out.println(pixelY);
-			
 			while(true){
-				System.out.println("pxelx");
-				System.out.println(passableMap[pixelY][pixelX]);
-				System.out.println(pixelX);
-				System.out.println(pixelY);
 				if (Math.abs(pixelX-immPixelX)>maxDistance+0.01){
-					System.out.println("pixelpassableDistance");
-					System.out.println(pixelX);
-					System.out.println(pixelY);
 					return true;
 				}
 				
 				if (passableMap[pixelY][pixelX]==false){
-					//System.out.println("pixelpassableImpassable");
-					//System.out.println(pixelX);
-					//System.out.println(pixelY);
 					return false;
 				}
 				change=1;
 				while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<maxDistance){
 					if (passableMap[pixelY+change][pixelX]==false){
-						//System.out.println("pixelpassableImpassable");
-						//System.out.println(pixelX);
-						//System.out.println(pixelY);
 						return false;
 					}
 					if (passableMap[pixelY - change][pixelX]==false){
-						//System.out.println("pixelpassableImpassable");
-						//System.out.println(pixelX);
-						//System.out.println(pixelY);
 						return false;
 					}
 					change+=1;
@@ -444,27 +425,28 @@ public class World {
 		int change = 0;
 		double maxDistance= radius/getHeightScale(); 
 		while(true){
-			if (pixelX-immPixelX>maxDistance){
+			if (Math.abs(pixelX-immPixelX)>maxDistance+0.01){
 				return true;
 			}
 			
-			if (passableMap[pixelX][pixelY]==false){
+			if (passableMap[pixelY][pixelX]==false){
 				return false;
 			}
 			change=1;
 			while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<maxDistance){
-				if (passableMap[pixelX][pixelY+change]==false){
+				if (passableMap[pixelY+change][pixelX]==false){
 					return false;
 				}
-				if (passableMap[pixelX][pixelY-change]==false){
+				if (passableMap[pixelY - change][pixelX]==false){
 					return false;
 				}
 				change+=1;
 			}
-			pixelX+=1;
+			pixelX-=1;
 			change=0;
 		}		
 	}
+
 
 	//TODO: specification
 	/**
@@ -481,18 +463,13 @@ public class World {
 		double radius = Worm.getMinimalRadius();
 		do {
 		double randomX = randomGenerator.nextFloat()*getWidth();
-		System.out.println(randomX);
 		double randomY = randomGenerator.nextFloat()*getHeight();
-		System.out.println(randomY);
 		radius = Worm.getMinimalRadius();
-		 location = searchAdjacentFrom(randomX, randomY, radius);
+		if (!(randomX + radius>getWidth() || randomX-radius<0 || randomY+radius>getHeight() || randomY-radius<0)){
+			location = searchAdjacentFrom(randomX, randomY, radius);}
 		} while (location == null);
 		int number = worms.size() + 1;
 		String playerNumber = "Player ".concat(Integer.toString(number));
-		System.out.println(centerX);
-		System.out.println(centerY);
-		System.out.println(location[0]);
-		System.out.println(location[1]);
 		createWorm(location[0], location[1], 0, radius, playerNumber);
 	}
 	
@@ -614,12 +591,16 @@ public class World {
 	 * 		| searchAdjacentFrom(randomX,randomY,Food.getRadius()) == null
 	 */
 	public void addNewFood() throws IllegalArgumentException{
-		int randomX = randomGenerator.nextInt();
-		int randomY = randomGenerator.nextInt();
-		double[] location = searchAdjacentFrom(randomX, randomY, Food.getRadius());
-		if (location == null)
-			throw new IllegalArgumentException();
-		createFood(location[0],location[1]);
+		double[] location = null;
+		double radius = Food.getRadius();
+		do {
+		double randomX = randomGenerator.nextFloat()*getWidth();
+		double randomY = randomGenerator.nextFloat()*getHeight();
+		radius = Food.getRadius();
+		if (!(randomX + radius>getWidth() || randomX-radius<0 || randomY+radius>getHeight() || randomY-radius<0)){
+			location = searchAdjacentFrom(randomX, randomY, radius);}
+		} while (location == null);
+		createFood(location[0], location[1]);
 	}
 	//TODO: Postconditions
 	/**
