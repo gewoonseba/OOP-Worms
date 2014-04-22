@@ -131,8 +131,6 @@ public class Worm {
 	 *         | return == (newAP >= 0)
 	 */
 	public boolean canMove(){
-		if (! isAlive())
-			return false;
 		double currentDistance = getRadius();
 		double[] newLocation = null;
 		while (newLocation == null && currentDistance>=0.1){
@@ -175,23 +173,63 @@ public class Worm {
 		return null;
 	}
 	
-	//TODO: fall + implementation using slope
+	//TODO: fall + implementation using slope + currentDistance
 	/**
 	 * Method to move the worm one step, in its current direction.
 	 */
-	public void move(){
+	public void move() throws IllegalAPException{
 		double currentDistance = getRadius();
 		double[] newLocation = null;
 		while (newLocation == null && currentDistance>=0.1){
 			newLocation = searchFitLocation(currentDistance);
-			currentDistance-=0.01;
+			currentDistance -= 0.01;
 		}
-		if (!(newLocation==null)){
-			setX(newLocation[0]);
-			setY(newLocation[1]);
+		if (!(newLocation == null)){
+			double newX = newLocation[0];
+			double newY = newLocation[1];
+			double slope = Math.atan((getY() - newY)/(getX() - newX));
+			int newAP = (int) Math.round(getCurrentAP() - (Math.abs(Math.cos(slope)) + Math.abs(4*Math.sin(slope))));
+			if (newAP >= 0){
+				setX(newX);
+				setY(newY);
+				setCurrentAP(newAP);
+			}
+			else
+				throw new IllegalAPException(getCurrentAP(),this);
 		}
 	}
 	
+	/**
+	 * Method to make the given worm fall until he hits impassable terrain, or is no longer within the boundries of its world.
+	 * The worm shall lose hitpoints, according to the distance he has fallen.
+	 * @effect If there is impassable terrain under the worm, the worm will have moved to a position adjacent 
+	 * 
+	 */
+	public void fall(){
+		double oldY = getY();
+		while (! getWorld().isAdjacent(getX(),getY(),getRadius()) && ! getWorld().isOutOfBounds(getX(), getY()))
+			fallPixel();
+		if (! getWorld().isOutOfBounds(getX(), getY())){
+			int distance = (int) (oldY - getY());
+			int newHitPoints = getHitPoints() - 3*distance;
+			if (newHitPoints >= 0)
+				setHitPoints(newHitPoints);
+			else
+				setHitPoints(0);
+		}
+		else
+			setHitPoints(0);	
+	}
+	
+	/**
+	 * Method to make the given worm fall down the distance of one pixel.
+	 * @effect The new y coordinate will be its old y coordinate, minus the distance of one pixel.
+	 * 		| new.getY() = this.getY() - getWorld.getHeightScale();
+	 */
+	public void fallPixel(){
+		double distance = getWorld().getHeightScale();
+		setY(getY() - distance);
+	}
 	
 	/**
 	 * Method to calculate and return the initial speed of the worm.
@@ -982,6 +1020,14 @@ public class Worm {
 		currentWeaponIndex += 1;
 		if (currentWeaponIndex == weapons.size())
 			currentWeaponIndex = 0;
+	}
+	
+	public String getCurrentWeapon(){
+		if (getCurrentWeaponIndex() == 0)
+			return "Rifle";
+		if (getCurrentWeaponIndex() == 1)
+			return "Bazooka";
+		return null;
 	}
 	
 	/**

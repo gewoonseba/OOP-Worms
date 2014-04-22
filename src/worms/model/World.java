@@ -450,6 +450,10 @@ public class World {
 		worms.remove(worm);
 	}
 	
+	public Worm getCurrentWorm(){
+		return this.getWorms().get(currentTurn);
+	}
+	
 	/**
 	 * Method to return a list of the worms in this world.
 	 */
