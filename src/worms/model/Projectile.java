@@ -1,5 +1,6 @@
 package worms.model;
 
+import java.nio.channels.IllegalSelectorException;
 import java.util.*;
 
 import be.kuleuven.cs.som.annotate.*;
@@ -190,7 +191,9 @@ public class Projectile {
 	 * 			according to its mass, direction and propulsion yield. After the jump te projectile shall be terminated.
 	 *         |new.terminated = true;
 	 */
-	public void jump(double timeStep) {
+	public void jump(double timeStep) throws IllegalStateException {
+		if (! isAlive())
+			throw new IllegalSelectorException();
 		double time = timeStep;
 		double[] tempCoordinates = jumpStep(time);
 		double tempX = tempCoordinates[0];
@@ -202,10 +205,12 @@ public class Projectile {
 			tempX = tempCoordinates[0];
 			tempY = tempCoordinates[1];
 		}
-		if (getWorld().getDistance(getX(),getY(),tempX,tempY) > getRadius()){
+		if (! getWorld().isOutOfBounds(tempX, tempY)){
 			setX(tempX);
 			setY(tempY);
+			hit(getOverlappingWorms());
 		}
+		terminate();
 	}
 	
 	
@@ -222,14 +227,13 @@ public class Projectile {
 		double[] tempCoordinates = jumpStep(jumpTime);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
-		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! getWorld().isOutOfBounds(tempX,tempY))){
+		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! overlapsWithWorm()) 
+				&& (! getWorld().isOutOfBounds(tempX,tempY))){
 			jumpTime += timeStep;
 			tempCoordinates = jumpStep(jumpTime);
 			tempX = tempCoordinates[0];
 			tempY = tempCoordinates[1];
 		}
-		if (getWorld().getDistance(getX(),getY(),tempX,tempY) < getRadius())
-			jumpTime = 0;
 		return jumpTime;
 	}
 	
@@ -353,12 +357,41 @@ public class Projectile {
 		return affectedWorms;
 	}
 	
+	//TODO: specification
+	/**
+	 * Method to hit the overlapping worms with the given projectile, if any.
+	 * @param affectedWorms
+	 * 
+	 */
+	public void hit(List<Worm> affectedWorms){
+		int damage = 0;
+		if (getMass() == 0.01)
+			damage = 20;
+		if (getMass() == 0.3)
+			damage = 80;
+		for (Worm worm: affectedWorms){
+			int newHitpoints = worm.getHitPoints() - damage;
+			if (newHitpoints >= 0)
+				worm.setHitPoints(newHitpoints);
+			else
+				worm.setHitPoints(0);
+		}
+	}
+	
 	/**
 	 * Method to terminate the given projectile.
 	 */
 	public void terminate(){
 		removeFromWorld(getWorld());
 		this.terminated = true;
+	}
+	
+	/**
+	 * Method to check if the current projectile is still alive.
+	 * @return true if and only if terminated is false.
+	 */
+	public boolean isAlive(){
+		return (! this.terminated);
 	}
 	/**
 	 * Variable registering whether or not the given projectile is terminated.

@@ -131,41 +131,19 @@ public class Worm {
 	 *         | return == (newAP >= 0)
 	 */
 	public boolean canMove(){
+		if (! isAlive())
+			return false;
 		double currentDistance = getRadius();
 		double[] newLocation = null;
 		while (newLocation == null && currentDistance>=0.1){
 			newLocation = searchFitLocation(currentDistance);
 			currentDistance-=0.01;
 		}
-		if (newLocation==null)
+		if (newLocation == null)
 			return false;
+		
 		return true;
 	}
-	
-	/**
-	 * Method to move the given worm a given number of steps in it's current direction
-	 * if his action points allow it
-	 * 
-	 * @post the new position of the worm has to be equal to the old position plus the given number of steps in his 
-	 *       current direction
-	 *       
-	 * @post the amount of action points the given worm has left has to be higher than or equal to zero
-	 * @throws IllegalAPException
-	 *         The current AP of the worm is not sufficient to move the number of steps provided.
-	 *         | (! canMove(steps))
-	 */
-//	public void move() throws IllegalAPException {
-//		if (! this.canMove(1))
-//			throw new IllegalAPException(this.getCurrentAP(),this);
-//		double theta = this.getDirection();
-//		int newAP = (int) Math.round(this.getCurrentAP() - ((Math.abs(Math.cos(theta)) + 4*(Math.abs(Math.sin(theta))))));
-//		double distance = this.getRadius();
-//		double xDistance = distance*Math.cos(theta);
-//		double yDistance = distance*Math.sin(theta);
-//		this.setX(this.getX() + xDistance);
-//		this.setY(this.getY() + yDistance);
-//		this.setCurrentAP(newAP);
-//	}
 	
 	/**
 	 * Method to search a location which is adjacent to impassable terrain on a quarter circle, a given distance from the
@@ -832,7 +810,22 @@ public class Worm {
 	 */
 	@Basic
 	public void setHitPoints(int hitPoints){
-		this.hitPoints=hitPoints;
+		if (! isValidHitPoints(hitPoints))
+			throw new IllegalArgumentException();
+		this.hitPoints = hitPoints;
+		if (hitPoints == 0)
+			removeWorld();
+	}
+	
+	/**
+	 * Method to check if the given hitPoints is a valid number of hitPoints
+	 * @param hitPoints
+	 * 		The hitPoints to be checked.
+	 * @return True if and only if hitPoints is greater than or equal to zero and less than or equal to the maximum hitPoints.
+	 * 		| return == ((hitPoints >= 0) && (hitPoints <= getMaxHitPoints()))
+	 */
+	public boolean isValidHitPoints(int hitPoints){
+		return ((hitPoints >= 0) && (hitPoints <= getMaxHitPoints()));
 	}
 	
 	/**
@@ -843,6 +836,7 @@ public class Worm {
 	public boolean isAlive(){
 		return (this.getHitPoints()>0);
 	}	
+	
 	/**
 	 * the current hitPoints of the given Worm.
 	 */
