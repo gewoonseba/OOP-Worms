@@ -9,22 +9,7 @@ public class Facade implements IFacade{
 		
 	}
 
-	@Override
-	public Worm createWorm(double x, double y, double direction, double radius,
-			String name) {	
-		return new Worm(x,y,direction,radius,name);
-	}
 
-	@Override
-	public boolean canMove(Worm worm, int nbSteps) {	
-		return worm.canMove(nbSteps);
-	}
-
-	@Override
-	public void move(Worm worm, int nbSteps) {
-	    worm.move(nbSteps);
-		
-	}
 
 	@Override
 	public boolean canTurn(Worm worm, double angle) {	
@@ -36,23 +21,7 @@ public class Facade implements IFacade{
 		worm.turn(angle);	
 	}
 
-	@Override
-	public void jump(Worm worm) throws ModelException {
-		if (! worm.canJumpAP())
-			throw new ModelException("THE WORM HAS NO ACTION POINTS LEFT");
-		if (! worm.canJumpDirection())
-			throw new ModelException("THE DIRECTION OF THE WORM IS NOT VALID");
-		worm.jump();
-	}
 
-	@Override
-	public double getJumpTime(Worm worm) {
-		if (! worm.canJumpAP())
-			throw new ModelException("THE WORM HAS NO ACTION POINTS LEFT");
-		if (! worm.canJumpDirection())
-			throw new ModelException("THE DIRECTION OF THE WORM IS NOT VALID");
-		return worm.jumpTime();
-	}
 
 	@Override
 	public double[] getJumpStep(Worm worm, double t) {
