@@ -1,5 +1,6 @@
 package worms.model;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -24,12 +25,14 @@ public class World {
 	 */
 	@Raw
 	public World(double width, double height, boolean[][] passableMap, Random random) {
+		this.passableMap = passableMap;
 		assert isValidWidth(width);
 		assert isValidWidth(width);
 		this.width = width;
 		this.height = height;
-		this.passableMap = passableMap;
 		this.randomGenerator = random;
+		this.centerX = this.getPixelWidth()/2;
+		this.centerY = this.getPixelHeight()/2;
 	}
 	
 	/**
@@ -85,7 +88,7 @@ public class World {
 	 * 		| return == passableMap.length
 	 */
 	public int getPixelWidth(){
-		return passableMap.length;
+		return passableMap[0].length;
 	}
 	
 	/**
@@ -140,7 +143,7 @@ public class World {
 	 * 		| return == passableMap[0].length
 	 */
 	public int getPixelHeight(){
-		return passableMap[0].length;
+		return passableMap.length;
 	}
 	
 	/**
@@ -155,12 +158,12 @@ public class World {
 	/**
 	 * Variable registering the horizontal center of the world, in pixels.
 	 */
-	private final int centerX = getPixelWidth()/2;
+	private final int centerX;
 	
 	/**
 	 * Variable registering the vertical center of the world, in pixels.
 	 */
-	private final int centerY = getPixelHeight()/2;
+	private final int centerY;
 	
 	/**
 	 * Method to calculate the distance between two coordinates.
@@ -204,7 +207,7 @@ public class World {
 	 */
 	public double[] pixelsToCoordinates(int x,int y){
 		double newX = x*getWidthScale();
-		double newY = (getPixelHeight() - y)*getHeightScale();
+		double newY = y*getHeightScale();
 		return new double[] {newX,newY};
 	}
 	
@@ -231,26 +234,87 @@ public class World {
 	 * @param tempY
 	 * @return A double array, containing the position that is adjacent, if one is found, and null if none is found.
 	 */
-	public double[] searchAdjacentFrom(double tempX, double tempY,double radius){
-		tempX = coordinatesToPixels(tempX,tempY)[0];
-		tempY = coordinatesToPixels(tempX,tempY)[1];
-		while ((! isAdjacent(tempX,tempY,radius)) && (! isPassable(tempX,tempY,radius)) ){
-			if (tempX < centerX)
+	public double[] searchAdjacentFrom(double x, double y,double radius){
+		System.out.println("centrum");
+		System.out.println(centerX);
+		int tempX = coordinatesToPixels(x,y)[0];
+		int tempY = coordinatesToPixels(x,y)[1];
+		while ((! isPixelAdjacent(tempX,tempY,radius)) ){
+			//System.out.println("zoeken naar geschikte locatie");
+			//System.out.println(tempX);
+			//System.out.println(tempY);
+			if (tempX < centerX){
 				tempX += 1;
-			if (tempX > centerX)
+				}
+			else if (tempX > centerX)
 				tempX -= 1;
-			if ((tempY < centerY) && (! isAdjacent(tempX,tempY,radius)) && (! isPassable(tempX,tempY,radius)) )
+			else if ((tempY < centerY) && (! isPixelAdjacent(tempX,tempY,radius))  )
 				tempY += 1;
-			if ((tempY > centerY) && (! isAdjacent(tempX,tempY,radius)) && (! isPassable(tempX,tempY,radius)) )
+			else if ((tempY > centerY) && (! isPixelAdjacent(tempX,tempY,radius)) )
 				tempY -= 1;
 			else 
 				return null;
 			}
-		tempX = pixelsToCoordinates((int) tempX,(int) tempY)[0];
-		tempY = pixelsToCoordinates((int) tempX,(int) tempY)[1];
-		return new double[] {tempX,tempY};
+		System.out.println("locatie in pixels");
+		System.out.println(getPixelHeight());
+		System.out.println(getPixelWidth());
+		System.out.println(getHeightScale());
+		System.out.println(getWidthScale());
+		System.out.println(tempX);
+		System.out.println(tempY);
+		x = pixelsToCoordinates((int) tempX,(int) tempY)[0];
+		y = pixelsToCoordinates((int) tempX,(int) tempY)[1];
+		return new double[] {x,y};
 		
 	}
+	
+	/**
+	 * method to see if an object with a given radius is adjacent to impassable terrain.
+	 * @param x
+	 *       |the x coordinate of the center of the object.
+	 * @param y
+	 *       |the y coordinate of the center of the object.
+	 * @param radius
+	 *       |the radius of the object.
+	 * @return returns a boolean that is true if and only if there is an impassable location
+	 *       between the radius and 1.1*radius.
+	 */
+		public boolean isPixelAdjacent(int x,int y, double radius){
+			if (!isPixelPassable(x, y, radius))
+				return false;
+			int maxDistance=(int) Math.round((1.1*radius)/getWidthScale());
+			double minDistance= radius/getWidthScale();
+			int pixelX = x + Math.round(maxDistance);
+			int pixelY = y;
+			double immPixelX = x;
+			int change = 0;
+			while(true){
+				if (pixelX-immPixelX>maxDistance){
+					return false;
+				}
+				if (passableMap[pixelY][pixelX]==false){
+					System.out.println("pixeladjacent");
+					System.out.println(pixelX);
+					System.out.println(pixelY);
+					return true;
+				}
+				do {
+					change+=1;
+				} while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<minDistance);
+				while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<=maxDistance){
+					
+					if (passableMap[pixelY + change][pixelX]==false){
+						return true;
+					}
+					if (passableMap[pixelY - change][pixelX]==false){
+						return true;
+					}
+					change+=1;
+				}
+				change=0;
+				pixelX-=1;
+			}	
+		}
 
 	/**
 	 * method to see if an object with a given radius is adjacent to impassable terrain.
@@ -298,6 +362,67 @@ public class World {
 				change=0;
 			}	
 		}
+		
+		/**
+		 * method to see if an object with a given radius is passable.
+		 * @param x
+		 *       |the x coordinate of the center of the object.
+		 * @param y
+		 *       |the y coordinate of the center of the object.
+		 * @param radius
+		 *       |the radius of the object.
+		 * @return returns a boolean that is true if and only if there is no impassable location
+		 *       in the given radius.
+		 */
+		public boolean isPixelPassable(int x, int y, double radius){
+			int maxDistance=(int) Math.round((radius)/getWidthScale());
+			int pixelX = x + maxDistance;
+			int pixelY = y;
+			double immPixelX = x;
+			int change = 0;
+			System.out.println("enterPixelPassable");
+			System.out.println(maxDistance);
+			System.out.println(pixelX);
+			System.out.println(pixelY);
+			
+			while(true){
+				System.out.println("pxelx");
+				System.out.println(passableMap[pixelY][pixelX]);
+				System.out.println(pixelX);
+				System.out.println(pixelY);
+				if (Math.abs(pixelX-immPixelX)>maxDistance+0.01){
+					System.out.println("pixelpassableDistance");
+					System.out.println(pixelX);
+					System.out.println(pixelY);
+					return true;
+				}
+				
+				if (passableMap[pixelY][pixelX]==false){
+					//System.out.println("pixelpassableImpassable");
+					//System.out.println(pixelX);
+					//System.out.println(pixelY);
+					return false;
+				}
+				change=1;
+				while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<maxDistance){
+					if (passableMap[pixelY+change][pixelX]==false){
+						//System.out.println("pixelpassableImpassable");
+						//System.out.println(pixelX);
+						//System.out.println(pixelY);
+						return false;
+					}
+					if (passableMap[pixelY - change][pixelX]==false){
+						//System.out.println("pixelpassableImpassable");
+						//System.out.println(pixelX);
+						//System.out.println(pixelY);
+						return false;
+					}
+					change+=1;
+				}
+				pixelX-=1;
+				change=0;
+			}		
+		}
 
 	/**
 	 * method to see if an object with a given radius is passable.
@@ -322,6 +447,7 @@ public class World {
 			if (pixelX-immPixelX>maxDistance){
 				return true;
 			}
+			
 			if (passableMap[pixelX][pixelY]==false){
 				return false;
 			}
@@ -351,14 +477,22 @@ public class World {
 	 * 		| searchAdjacentFrom(randomX,randomY,Worm.getMinimalRadius()) == null
 	 */
 	public void addNewWorm() throws IllegalArgumentException{
-		double randomX = randomGenerator.nextInt();
-		double randomY = randomGenerator.nextInt();
+		double[] location = null;
 		double radius = Worm.getMinimalRadius();
-		double[] location = searchAdjacentFrom(randomX, randomY, radius);
-		if (location == null)
-			throw new IllegalArgumentException();
+		do {
+		double randomX = randomGenerator.nextFloat()*getWidth();
+		System.out.println(randomX);
+		double randomY = randomGenerator.nextFloat()*getHeight();
+		System.out.println(randomY);
+		radius = Worm.getMinimalRadius();
+		 location = searchAdjacentFrom(randomX, randomY, radius);
+		} while (location == null);
 		int number = worms.size() + 1;
 		String playerNumber = "Player ".concat(Integer.toString(number));
+		System.out.println(centerX);
+		System.out.println(centerY);
+		System.out.println(location[0]);
+		System.out.println(location[1]);
 		createWorm(location[0], location[1], 0, radius, playerNumber);
 	}
 	
@@ -449,7 +583,10 @@ public class World {
 			throw new IllegalStateException();
 		worms.remove(worm);
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public Worm getCurrentWorm(){
 		return this.getWorms().get(currentTurn);
 	}

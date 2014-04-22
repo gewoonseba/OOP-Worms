@@ -21,6 +21,7 @@ public class Projectile {
 		this.setDirection(direction);
 		this.mass = mass;
 		this.yield = yield;
+		this.terminated = false;
 	}
 	
 	/**
@@ -393,6 +394,13 @@ public class Projectile {
 	 */
 	public boolean isAlive(){
 		return (! this.terminated);
+	}
+	/**
+	 * method to see whether projectile is terminated
+	 * @return
+	 */
+	public boolean isActive(){
+		return (!this.terminated);
 	}
 	/**
 	 * Variable registering whether or not the given projectile is terminated.

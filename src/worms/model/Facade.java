@@ -133,7 +133,7 @@ public class Facade implements IFacade{
 	public World createWorld(double width, double height,
 			boolean[][] passableMap, Random random) {
 		// TODO Auto-generated method stub
-		return createWorld(width, height, passableMap, random);
+		return new World(width, height, passableMap, random);
 	}
 
 	@Override
@@ -266,7 +266,7 @@ public class Facade implements IFacade{
 	@Override
 	public boolean isActive(Projectile projectile) {
 		// TODO Auto-generated method stub
-		return projectile.;
+		return projectile.isActive();
 	}
 
 	@Override
@@ -296,43 +296,43 @@ public class Facade implements IFacade{
 	@Override
 	public void jump(Projectile projectile, double timeStep) {
 		// TODO Auto-generated method stub
-		
+		projectile.jump(timeStep);
 	}
 
 	@Override
 	public void jump(Worm worm, double timeStep) {
 		// TODO Auto-generated method stub
-		
+		worm.jump(timeStep);
 	}
 
 	@Override
 	public void move(Worm worm) {
 		// TODO Auto-generated method stub
-		
+		worm.move();
 	}
 
 	@Override
 	public void selectNextWeapon(Worm worm) {
 		// TODO Auto-generated method stub
-		
+		worm.selectNextWeapon();
 	}
 
 	@Override
 	public void shoot(Worm worm, int yield) {
 		// TODO Auto-generated method stub
-		
+		worm.shoot(yield);
 	}
 
 	@Override
 	public void startGame(World world) {
 		// TODO Auto-generated method stub
-		
+		world.startGame();
 	}
 
 	@Override
 	public void startNextTurn(World world) {
 		// TODO Auto-generated method stub
-		
+		world.startNextTurn();
 	}
 	
 
