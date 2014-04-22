@@ -130,10 +130,16 @@ public class Worm {
 	 * @return True if and only if the new AP of the worm is equal to or higher than zero.
 	 *         | return == (newAP >= 0)
 	 */
-	public boolean canMove(int steps){
-		double theta = this.getDirection();
-		int newAP = (int) Math.round(this.getCurrentAP() - (steps*(Math.abs(Math.cos(theta)) + 4*(Math.abs(Math.sin(theta))))));
-		return (newAP >= 0);
+	public boolean canMove(){
+		double currentDistance = getRadius();
+		double[] newLocation = null;
+		while (newLocation == null && currentDistance>=0.1){
+			newLocation = searchFitLocation(currentDistance);
+			currentDistance-=0.01;
+		}
+		if (newLocation==null)
+			return false;
+		return true;
 	}
 	
 	/**
@@ -175,7 +181,7 @@ public class Worm {
 		double thetaDown = this.getDirection();
 		double tempX = this.getX() + distance*Math.cos(this.getDirection());
 		double tempY = this.getY() + distance*Math.sin(this.getDirection());
-		while ((Math.abs(thetaUp-getDirection()) < 0.7875) || (! this.getWorld().isAdjacent(tempX,tempY,getRadius()))){
+		while ((Math.abs(thetaUp-getDirection()) < 0.7875) && (! this.getWorld().isAdjacent(tempX,tempY,getRadius()))){
 			thetaUp += 0.0175;
 			tempX = this.getX() + distance*Math.cos(thetaUp);
 		    tempY = this.getY() + distance*Math.sin(thetaUp);
@@ -198,7 +204,7 @@ public class Worm {
 	public void move(){
 		double currentDistance = getRadius();
 		double[] newLocation = null;
-		while (newLocation == null||currentDistance>=0.1){
+		while (newLocation == null && currentDistance>=0.1){
 			newLocation = searchFitLocation(currentDistance);
 			currentDistance-=0.01;
 		}
