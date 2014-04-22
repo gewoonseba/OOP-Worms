@@ -95,20 +95,20 @@ public class Facade implements IFacade{
 
 	@Override
 	public void addEmptyTeam(World world, String newName) {
-		// TODO Auto-generated method stub
+		world.createTeam(newName);
 		
 	}
 
 	@Override
 	public void addNewFood(World world) {
 		// TODO Auto-generated method stub
-		
+		world.addNewFood();
 	}
 
 	@Override
 	public void addNewWorm(World world) {
 		// TODO Auto-generated method stub
-		
+		world.addNewWorm();
 	}
 
 	@Override
@@ -120,27 +120,27 @@ public class Facade implements IFacade{
 	@Override
 	public boolean canMove(Worm worm) {
 		// TODO Auto-generated method stub
-		return false;
+		return worm.canMove();
 	}
 
 	@Override
 	public Food createFood(World world, double x, double y) {
 		// TODO Auto-generated method stub
-		return null;
+		return world.createFood(x, y);
 	}
 
 	@Override
 	public World createWorld(double width, double height,
 			boolean[][] passableMap, Random random) {
 		// TODO Auto-generated method stub
-		return null;
+		return createWorld(width, height, passableMap, random);
 	}
 
 	@Override
 	public Worm createWorm(World world, double x, double y, double direction,
 			double radius, String name) {
 		// TODO Auto-generated method stub
-		return null;
+		return world.createWorm(x, y, direction, radius, name);
 	}
 
 	@Override
@@ -152,73 +152,73 @@ public class Facade implements IFacade{
 	@Override
 	public Projectile getActiveProjectile(World world) {
 		// TODO Auto-generated method stub
-		return null;
+		return world.getActiveProjectile();
 	}
 
 	@Override
 	public Worm getCurrentWorm(World world) {
 		// TODO Auto-generated method stub
-		return null;
+		return world.getCurrentWorm();
 	}
 
 	@Override
 	public Collection<Food> getFood(World world) {
 		// TODO Auto-generated method stub
-		return null;
+		return world.getFood();
 	}
 
 	@Override
 	public int getHitPoints(Worm worm) {
 		// TODO Auto-generated method stub
-		return 0;
+		return worm.getHitPoints();
 	}
 
 	@Override
 	public double[] getJumpStep(Projectile projectile, double t) {
 		// TODO Auto-generated method stub
-		return null;
+		return projectile.jumpStep(t);
 	}
 
 	@Override
 	public double getJumpTime(Projectile projectile, double timeStep) {
 		// TODO Auto-generated method stub
-		return 0;
+		return projectile.jumpTime(timeStep);
 	}
 
 	@Override
 	public double getJumpTime(Worm worm, double timeStep) {
 		// TODO Auto-generated method stub
-		return 0;
+		return worm.jumpTime(timeStep);
 	}
 
 	@Override
 	public int getMaxHitPoints(Worm worm) {
 		// TODO Auto-generated method stub
-		return 0;
+		return worm.getMaxHitPoints();
 	}
 
 	@Override
 	public double getRadius(Food food) {
 		// TODO Auto-generated method stub
-		return 0;
+		return 0.20;
 	}
 
 	@Override
 	public double getRadius(Projectile projectile) {
 		// TODO Auto-generated method stub
-		return 0;
+		return projectile.getRadius();
 	}
 
 	@Override
 	public String getSelectedWeapon(Worm worm) {
 		// TODO Auto-generated method stub
-		return null;
+		return worm.getCurrentWeapon();
 	}
 
 	@Override
 	public String getTeamName(Worm worm) {
 		// TODO Auto-generated method stub
-		return null;
+		return worm.getTeamName();
 	}
 
 	@Override
@@ -230,55 +230,55 @@ public class Facade implements IFacade{
 	@Override
 	public Collection<Worm> getWorms(World world) {
 		// TODO Auto-generated method stub
-		return null;
+		return world.getWorms();
 	}
 
 	@Override
 	public double getX(Food food) {
 		// TODO Auto-generated method stub
-		return 0;
+		return food.getX();
 	}
 
 	@Override
 	public double getX(Projectile projectile) {
 		// TODO Auto-generated method stub
-		return 0;
+		return projectile.getX();
 	}
 
 	@Override
 	public double getY(Food food) {
 		// TODO Auto-generated method stub
-		return 0;
+		return food.getY();
 	}
 
 	@Override
 	public double getY(Projectile projectile) {
 		// TODO Auto-generated method stub
-		return 0;
+		return projectile.getY();
 	}
 
 	@Override
 	public boolean isActive(Food food) {
 		// TODO Auto-generated method stub
-		return false;
+		return food.isActive();
 	}
 
 	@Override
 	public boolean isActive(Projectile projectile) {
 		// TODO Auto-generated method stub
-		return false;
+		return projectile.;
 	}
 
 	@Override
 	public boolean isAdjacent(World world, double x, double y, double radius) {
 		// TODO Auto-generated method stub
-		return false;
+		return world.isAdjacent(x, y, radius);
 	}
 
 	@Override
 	public boolean isAlive(Worm worm) {
 		// TODO Auto-generated method stub
-		return false;
+		return worm.isAlive();
 	}
 
 	@Override
@@ -290,7 +290,7 @@ public class Facade implements IFacade{
 	@Override
 	public boolean isImpassable(World world, double x, double y, double radius) {
 		// TODO Auto-generated method stub
-		return false;
+		return (!world.isPassable(x, y, radius));
 	}
 
 	@Override

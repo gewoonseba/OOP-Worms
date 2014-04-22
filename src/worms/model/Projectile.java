@@ -313,6 +313,7 @@ public class Projectile {
 		world.setActiveProjectile(null);
 	}
 	
+	
 	/**
 	 * Method to return the world this projectile (indirectly) belongs to.
 	 * @return The world of the worm of this projectile.

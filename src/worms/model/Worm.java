@@ -990,6 +990,14 @@ public class Worm {
 			currentWeaponIndex = 0;
 	}
 	
+	public String getCurrentWeapon(){
+		if (getCurrentWeaponIndex() == 0)
+			return "Rifle";
+		if (getCurrentWeaponIndex() == 1)
+			return "Bazooka";
+		return null;
+	}
+	
 	/**
 	 * Method to get the index of the current weapon of the worm.
 	 */
