@@ -190,12 +190,13 @@ public class Projectile {
 	 * 			according to its mass, direction and propulsion yield. After the jump te projectile shall be terminated.
 	 *         |new.terminated = true;
 	 */
-	public void jump(double timeStep) throws IllegalAPException, IllegalJumpDirectionException{
+	public void jump(double timeStep) {
 		double time = timeStep;
 		double[] tempCoordinates = jumpStep(time);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
-		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! getWorld().isOutOfBounds(tempX,tempY))){
+		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! overlapsWithWorm()) 
+				&& (! getWorld().isOutOfBounds(tempX,tempY))){
 			time += timeStep;
 			tempCoordinates = jumpStep(time);
 			tempX = tempCoordinates[0];
@@ -328,6 +329,18 @@ public class Projectile {
 	public static final double g = 9.80665;
 	
 	/**
+	 * Method to check if the projectile currently overlaps with a worm.
+	 * @return True if and only if the distance between this projectile and any worm is smaller than the sum of their radii.
+	 */
+	public boolean overlapsWithWorm(){
+		for (Worm worm: getWorld().getWorms()){
+			if (getWorld().getDistance(getX(), getY(), worm.getX(), worm.getY()) < (getRadius() + worm.getRadius()))
+				return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Method to return all the affected worms if a projectile is terminated.
 	 * @return All the worms which are closer to the projectile than the sum of the projectiles radius and the worms radius.
 	 */
@@ -339,5 +352,17 @@ public class Projectile {
 		}
 		return affectedWorms;
 	}
+	
+	/**
+	 * Method to terminate the given projectile.
+	 */
+	public void terminate(){
+		removeFromWorld(getWorld());
+		this.terminated = true;
+	}
+	/**
+	 * Variable registering whether or not the given projectile is terminated.
+	 */
+	private boolean terminated = false;
 
 }
