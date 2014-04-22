@@ -1000,6 +1000,7 @@ public class Worm {
 			if (Math.sqrt(Math.pow((foodX - wormX), 2) + Math.pow((foodY -wormY), 2))<(this.getRadius()+0.20)){
 				this.setRadius(1.1*(this.getRadius()));
 				this.getWorld().removeAsFood(this.getWorld().getFood().get(i));
+				this.getWorld().getFood().get(i).terminate();
 			}
 		}
 	}
