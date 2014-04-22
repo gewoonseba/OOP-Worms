@@ -234,14 +234,14 @@ public class World {
 	public double[] searchAdjacentFrom(double tempX, double tempY,double radius){
 		tempX = coordinatesToPixels(tempX,tempY)[0];
 		tempY = coordinatesToPixels(tempX,tempY)[1];
-		while (! isAdjacent(tempX,tempY,radius)){
+		while ((! isAdjacent(tempX,tempY,radius)) && (! isPassable(tempX,tempY,radius)) ){
 			if (tempX < centerX)
 				tempX += 1;
 			if (tempX > centerX)
 				tempX -= 1;
-			if ((tempY < centerY) && (! isAdjacent(tempX,tempY,radius)))
+			if ((tempY < centerY) && (! isAdjacent(tempX,tempY,radius)) && (! isPassable(tempX,tempY,radius)) )
 				tempY += 1;
-			if ((tempY > centerY) && (! isAdjacent(tempX,tempY,radius)))
+			if ((tempY > centerY) && (! isAdjacent(tempX,tempY,radius)) && (! isPassable(tempX,tempY,radius)) )
 				tempY -= 1;
 			else 
 				return null;
@@ -267,20 +267,18 @@ public class World {
 			double newX = x + 1.1*radius;
 			double newY = y;
 			int pixelX = coordinatesToPixels(newX, newY)[0];
-			int immPixelX = pixelX;
-			int pixelY= coordinatesToPixels(newX, newY)[1];
+			int immPixelX = coordinatesToPixels(x, newY)[0];
+			int pixelY = coordinatesToPixels(newX, newY)[1];
 			int change = 0;
 			double maxDistance= (1.1*radius)/getWidthScale();
 			double minDistance= radius/getWidthScale();
 			while(true){
-				if (Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))>maxDistance){
-					pixelX+=1;
-					if (pixelX-immPixelX>maxDistance){
-						return false;
-					}
-					if (passableMap[pixelX][pixelY]==false){
-						return true;
-					}
+				pixelX-=1;
+				if (pixelX-immPixelX>maxDistance){
+					return false;
+				}
+				if (passableMap[pixelX][pixelY]==false){
+					return true;
 				}
 				do {
 					change+=1;
@@ -314,7 +312,7 @@ public class World {
 		double newX = x + radius;
 		double newY = y;
 		int pixelX = coordinatesToPixels(newX, newY)[0];
-		int immPixelX = pixelX;
+		int immPixelX = coordinatesToPixels(x, newY)[0];
 		int pixelY = coordinatesToPixels(newX, newY)[1];
 		int change = 0;
 		double maxDistance= radius/getHeightScale(); 
@@ -382,10 +380,11 @@ public class World {
 	 * @post The new worm belongs to this world.
 	 * 		| this.worms.contains(worm)
 	 */
-	public void createWorm(double x,double y,double direction,double radius,String name){
+	public Worm createWorm(double x,double y,double direction,double radius,String name){
 		Worm worm = new Worm(x,y,direction,radius,name);
 		worm.setWorldTo(this);
 		addAsWorm(worm);
+		return worm;
 	}
 	
 	/**
@@ -493,10 +492,11 @@ public class World {
 	 * @post This world contains the given food
 	 * 		| this.food.contains(food)	
 	 */
-	public void createFood(double x,double y){
+	public Food createFood(double x,double y){
 		Food food = new Food(x,y);
 		food.setWorldTo(this);
 		addAsFood(food);
+		return food;
 	}
 	
 	/**
@@ -692,4 +692,23 @@ public class World {
 	 * Variable to determine which worms turn it is.
 	 */
 	private int currentTurn;
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Projectile getActiveProjectile(){
+		return this.activeProjectile;
+	}
+	/**
+	 * 
+	 * @param projectile
+	 */
+	public void setActiveProjectile(Projectile projectile){
+		this.activeProjectile=projectile;	
+	}
+	/**
+	 * 
+	 */
+	private Projectile activeProjectile;
 }
