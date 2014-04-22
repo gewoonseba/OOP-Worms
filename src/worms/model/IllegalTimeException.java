@@ -5,10 +5,12 @@ import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Raw;
 
 public class IllegalTimeException extends RuntimeException {
+	
 	/**
 	 * Initialize this new illegal time exception with the given time.
 	 * 
 	 * @param t
+	 * @param worm
 	 * @post The time of this new illegal time exception is equal to the given time.
 	 *      | new.getTime() == t
 	 * @post The worm of this new illegal time direction exception is equal to the given worm.
@@ -20,6 +22,26 @@ public class IllegalTimeException extends RuntimeException {
 	public IllegalTimeException(double t, Worm worm){
 		this.time = t;
 		this.worm = worm;
+		this.projectile = null;
+	}
+	
+	/**
+	 * Initialize this new illegal time exception with the given time.
+	 * 
+	 * @param t
+	 * @param projectile
+	 * @post The time of this new illegal time exception is equal to the given time.
+	 *      | new.getTime() == t
+	 * @post The projectile of this new illegal time direction exception is equal to the given projectile.
+	 *      | new.getProjectile() == projectile
+	 * @effect This new illegal time exception is further initialized 
+	 *        as a new runtime exception involving no diagnostic message and no cause
+	 *        | super()
+	 */
+	public IllegalTimeException(double t, Projectile projectile){
+		this.time = t;
+		this.projectile = projectile;
+		this.worm = null;
 	}
 	
 	/**
@@ -48,4 +70,17 @@ public class IllegalTimeException extends RuntimeException {
 	 */
 	private final Worm worm;
     
+	/**
+	 * Retrun the projectile of this illegal time exception.
+	 * @return
+	 */
+	@Basic @Raw @Immutable
+	public Projectile getProjectile(){
+		return projectile;
+	}
+	
+	/**
+	 * Variable registering the projectile of this illegal time exception.
+	 */
+	private final Projectile projectile;
 }
