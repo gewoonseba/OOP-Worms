@@ -1,5 +1,7 @@
 package worms.model;
 
+import java.util.*;
+
 import be.kuleuven.cs.som.annotate.*;
 
 /**
@@ -167,6 +169,7 @@ public class Projectile {
 		return Math.pow((3.0/4)*getMass()/Projectile.density,1.0/3);
 	}
 	
+	
 	private double getInitialSpeed(){
 		double force = 0;
 		if (getMass() == 0.01)
@@ -175,7 +178,6 @@ public class Projectile {
 			force = 2.5 + 0.7*yield;
 		double initialSpeed = (force/getMass())*0.5;
 		return initialSpeed;
-		
 	}
 	
 	//TODO: Formal specification second @effect
@@ -290,6 +292,28 @@ public class Projectile {
 	private Worm worm;
 	
 	/**
+	 * Adds the given projectile to the given world.
+	 * @param world
+	 * 		The world in which the projectile should be added.
+	 * @post This projectile is added to the world.
+	 * 		| new.world.getActiveProjectile() == this
+	 */
+	public void addToWorld(World world){
+		world.setActiveProjectile(this);
+	}
+	
+	/**
+	 * Removes this projectile from the given world.
+	 * @param world
+	 * 		The world from which this projectile has to be removed
+	 * @post The new active projectile of the given world is null.
+	 * 		| new.world.getActiveProjectile() == null
+	 */
+	public void removeFromWorld(World world){
+		world.setActiveProjectile(null);
+	}
+	
+	/**
 	 * Method to return the world this projectile (indirectly) belongs to.
 	 * @return The world of the worm of this projectile.
 	 * 		| return == getWorm().getWorld()
@@ -302,5 +326,18 @@ public class Projectile {
 	 * The gravitational constant.
 	 */
 	public static final double g = 9.80665;
+	
+	/**
+	 * Method to return all the affected worms if a projectile is terminated.
+	 * @return All the worms which are closer to the projectile than the sum of the projectiles radius and the worms radius.
+	 */
+	public List<Worm> getOverlappingWorms(){
+		List<Worm> affectedWorms = new ArrayList<Worm>();
+		for (Worm worm: getWorld().getWorms()){
+			if (getWorld().getDistance(getX(), getY(), worm.getX(), worm.getY()) < (getRadius() + worm.getRadius()))
+				affectedWorms.add(worm);
+		}
+		return affectedWorms;
+	}
 
 }
