@@ -27,8 +27,6 @@ public class Facade implements IFacade{
 	public double[] getJumpStep(Worm worm, double t) {
 		if (! worm.canJumpAP())
 			throw new ModelException("THE WORM HAS NO ACTION POINTS LEFT");
-		if (! worm.canJumpDirection())
-			throw new ModelException("THE DIRECTION OF THE WORM IS NOT VALID");
 		return worm.jumpStep(t);
 	}
 

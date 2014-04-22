@@ -262,7 +262,7 @@ public class Worm {
 	 * 			| result == (this.getCurrentAP() > 0)
 	 */
 	public boolean canJumpAP(){
-		return (this.getCurrentAP() > 0);
+		return true;
 	}
 	
 	/**
@@ -299,8 +299,6 @@ public class Worm {
 	public void jump(double timeStep) throws IllegalAPException, IllegalJumpDirectionException{
 		if (! this.canJumpAP())
 			throw new IllegalAPException(this.getCurrentAP(), this);
-		if (! this.canJumpDirection())
-			throw new IllegalJumpDirectionException(this.getDirection(),this);
 		double time = timeStep;
 		double[] tempCoordinates = jumpStep(time);
 		double tempX = tempCoordinates[0];
@@ -339,8 +337,6 @@ public class Worm {
 	public double jumpTime(double timeStep) throws IllegalAPException, IllegalJumpDirectionException{
 		if (! this.canJumpAP())
 			throw new IllegalAPException(this.getCurrentAP(), this);
-		if (! this.canJumpDirection())
-			throw new IllegalJumpDirectionException(this.getDirection(),this);
 		double jumpTime = timeStep;
 		double[] tempCoordinates = jumpStep(jumpTime);
 		double tempX = tempCoordinates[0];
@@ -375,8 +371,6 @@ public class Worm {
 	public double[] jumpStep(double t) throws IllegalAPException, IllegalJumpDirectionException, IllegalTimeException{
 		if (! this.canJumpAP())
 			throw new IllegalAPException(this.getCurrentAP(), this);
-		if (! this.canJumpDirection())
-			throw new IllegalJumpDirectionException(this.getDirection(),this);
 		if (! this.canHaveAsTime(t))
 			throw new IllegalTimeException(t, this);
 		double initialSpeed = this.getInitialSpeed();
