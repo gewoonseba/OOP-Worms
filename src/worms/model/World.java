@@ -264,9 +264,9 @@ public class World {
 	 *       between the radius and 1.1*radius.
 	 */
 		public boolean isAdjacent(double x,double y, double radius){
-			double newX= x + 1.1*radius;
-			double newY= y;
-			int pixelX= coordinatesToPixels(newX, newY)[0];
+			double newX = x + 1.1*radius;
+			double newY = y;
+			int pixelX = coordinatesToPixels(newX, newY)[0];
 			int immPixelX = pixelX;
 			int pixelY= coordinatesToPixels(newX, newY)[1];
 			int change = 0;
