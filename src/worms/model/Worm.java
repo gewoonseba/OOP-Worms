@@ -996,6 +996,7 @@ public class Worm {
 	 */
 	private int currentWeaponIndex = 0;
 	
+	
 	/**
 	 * Method for a worm to see if he's in range of food and to potentially eat it.
 	 */
