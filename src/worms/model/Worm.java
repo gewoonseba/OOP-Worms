@@ -197,13 +197,28 @@ public class Worm {
 			else
 				throw new IllegalAPException(getCurrentAP(),this);
 		}
+		if (! getWorld().isAdjacent(getX(),getY(),getRadius()))
+				fall();
 	}
 	
+	//TODO: specification 'if'
 	/**
 	 * Method to make the given worm fall until he hits impassable terrain, or is no longer within the boundries of its world.
 	 * The worm shall lose hitpoints, according to the distance he has fallen.
-	 * @effect If there is impassable terrain under the worm, the worm will have moved to a position adjacent 
-	 * 
+	 * @effect If there is impassable terrain under the worm, the worm shall move to that location, without changing its x coordinate
+	 * 		and only by lowering its y coordinate.
+	 * 		| isAdjacent(new.getY(),new.getX(),new.getRadius())
+	 * 		| new.getY() < this.getY()
+	 * @effect If there is impassable terrain under the worm, the worm shall lose hitPoints. The worm shall lose three times the
+	 * 		amount of meters it has fallen (rounded down) worth of hitPoints.
+	 * 		| new.getHitPoints() == this.getHitPoints() - 3*distance
+	 * @effect If the new hitPoints are less than zero, the hitpoints will be set to zero. The worm will thus leave
+	 * 		the world he belonged to.
+	 * 		| if(this.getHitPoints() - 3*distance < 0)
+	 * 		|	new.getHitPoints() == 0
+	 * @effect If there is no impassable terrain under the worm, its hitPoints will be set to zero. The worm will thus leave the world
+	 * 		he belonged to.
+	 * 		| setHitPoints(0)
 	 */
 	public void fall(){
 		double oldY = getY();
@@ -214,11 +229,9 @@ public class Worm {
 			int newHitPoints = getHitPoints() - 3*distance;
 			if (newHitPoints >= 0)
 				setHitPoints(newHitPoints);
-			else
-				setHitPoints(0);
 		}
 		else
-			setHitPoints(0);	
+			setHitPoints(0);
 	}
 	
 	/**
@@ -845,6 +858,10 @@ public class Worm {
 	 * @param hitPoints
 	 * @post the new hit points are equal to hitPoints.
 	 *      |new.getHitPoints() == hitPoints
+	 * @effect if hitPoints = zero, the method shall check if there is a winnar and the worm shall leave the world it belonged to
+	 * 		and its current world will be set to null. 
+	 * 		| ! new.getWorld().hasAsWorm(this)
+	 * 		| new.getWorld() == null
 	 */
 	@Basic
 	public void setHitPoints(int hitPoints){
@@ -852,6 +869,7 @@ public class Worm {
 			throw new IllegalArgumentException();
 		this.hitPoints = hitPoints;
 		if (hitPoints == 0)
+			getWorld().getWinner();
 			removeWorld();
 	}
 	

@@ -447,7 +447,6 @@ public class World {
 			if (pixelX-immPixelX>maxDistance){
 				return true;
 			}
-			
 			if (passableMap[pixelX][pixelY]==false){
 				return false;
 			}
@@ -589,6 +588,33 @@ public class World {
 	 */
 	public Worm getCurrentWorm(){
 		return this.getWorms().get(currentTurn);
+	}
+	
+	/**
+	 * Method to return the name of the winner of the game, or the name of the only team that is left. 
+	 * If none of those two are existent, the method shall return null.
+	 * @return if there is only one worm left, the method returns the name of that worm.
+	 * 		| if (worms.size() == 1)
+	 *		|	return ==  worms.get(0).getName()
+	 * @return if there is only one team left, the method returns the name of that team.
+	 * 		| while ((i  <= worms.size() - 1) && (worms.get(i).getTeamName() == worms.get(i+1).getTeamName()))
+	 *		|	counter += 1;
+	 * 		| if counter == worms.size() - 1
+	 * 		| 	return == worms.ge(0).getTeamName()
+	 * @return in the case where there is no victor or victorious team, the method returns null.
+	 * 		| if (( ! worms.size() = 1) && ( counter != worms.size() -1
+	 * 		|	return == null
+	 */
+	public String getWinner(){
+		if (worms.size() == 1)
+			return worms.get(0).getName();
+		int i = 0;
+		while (i  <= worms.size() - 1){
+			if (worms.get(i).getTeamName() != worms.get(i+1).getTeamName())
+				return null;
+			i += 1;
+		}
+		return worms.get(0).getTeamName();	
 	}
 	
 	/**
@@ -829,6 +855,15 @@ public class World {
 	 */
 	public void startGame(){
 		currentTurn = 0;
+	}
+	
+	/**
+	 * Method to check if the game is finished.
+	 * @return If getWinner() yields a result other than null, the method shall return true.
+	 * 		| return == getWinner() != null
+	 */
+	public boolean isGameFinished(){
+		return (getWinner() != null);
 	}
 
 	/**
