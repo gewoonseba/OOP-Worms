@@ -132,8 +132,9 @@ public class Worm {
 	public boolean canMove(){
 		double currentDistance = getRadius();
 		double[] newLocation = null;
+		System.out.println("Het gaat erin");
 		while (newLocation == null && currentDistance >= 0.1){
-			newLocation = searchFitLocation(currentDistance);
+			newLocation = searchFallLocation(currentDistance);
 			currentDistance -= 0.01;
 		}
 		if (newLocation == null)
@@ -166,6 +167,38 @@ public class Worm {
 	        }
 	    }
 		if (this.getWorld().isAdjacent(tempX,tempY,getRadius())){
+			return new double[] {tempX,tempY};	
+		}
+		return null;
+	}
+	
+	/**
+	 * Method to search a location which is on passable terrain on a quarter circle, a given distance from the
+	 * center of the Worm. The method shall search for fit locations, beginning in the current  direction of the Worm. When
+	 * none is found, the method shall alternately add or remove 0.0175 radians from the optimal angle.
+	 * @param distance
+	 * 		The at which the method will search for adjacent locations.
+	 * @return The coordinate which is on passable terrain and closest to the optimal angle, if one is found. 
+	 * 		   If none is found, the method will return null.
+	 */
+	public double[] searchFallLocation(double distance) {
+		double thetaUp = this.getDirection();
+		double thetaDown = this.getDirection();
+		double tempX = this.getX() + distance*Math.cos(this.getDirection());
+		double tempY = this.getY() + distance*Math.sin(this.getDirection());
+		System.out.println("falltest");
+		System.out.println(this.getWorld().isPassable(tempX,tempY,this.getRadius()));
+		while ((Math.abs(thetaUp-getDirection()) < 0.7875) && (! this.getWorld().isPassable(tempX,tempY,this.getRadius()))){
+			thetaUp += 0.0175;
+			tempX = this.getX() + distance*Math.cos(thetaUp);
+		    tempY = this.getY() + distance*Math.sin(thetaUp);
+	        if(!(this.getWorld().isPassable(tempX, tempY,getRadius()))){	
+				thetaDown -= 0.0175;
+			    tempX = this.getX() + distance*Math.cos(thetaDown);
+		        tempY = this.getY() + distance*Math.sin(thetaDown); 
+	        }
+	    }
+		if (this.getWorld().isPassable(tempX,tempY,getRadius())){
 
 			return new double[] {tempX,tempY};	
 		}
@@ -183,6 +216,10 @@ public class Worm {
 			newLocation = searchFitLocation(currentDistance);
 			currentDistance -= 0.01;
 		}
+		while (newLocation == null && currentDistance>=0.1){
+			newLocation = searchFallLocation(currentDistance);
+			currentDistance -= 0.01;
+		}
 		if (!(newLocation == null)){
 			double newX = newLocation[0];
 			double newY = newLocation[1];
@@ -196,9 +233,11 @@ public class Worm {
 			else
 				throw new IllegalAPException(getCurrentAP(),this);
 		}
+		
+		
 		if (! getWorld().isAdjacent(getX(),getY(),getRadius()))
 				fall();
-		eatFood();
+		//eatFood();
 	}
 	
 	//TODO: specification 'if'
@@ -222,7 +261,7 @@ public class Worm {
 	 */
 	public void fall(){
 		double oldY = getY();
-		while (! getWorld().isAdjacent(getX(),getY(),getRadius()) && ! getWorld().isOutOfBounds(getX(), getY(),getRadius()))
+		while (! (getWorld().isAdjacent(getX(),getY(),getRadius()))&& ! (getWorld().isOutOfBounds(getX(), getY(),getRadius())) && this.getWorld().isPassable(getX(), getY(), getRadius()))
 			fallPixel();
 		if (! getWorld().isOutOfBounds(getX(), getY(),getRadius())){
 			int distance = (int) (oldY - getY());
@@ -242,6 +281,7 @@ public class Worm {
 	public void fallPixel(){
 		double distance = getWorld().getHeightScale();
 		setY(getY() - distance);
+		System.out.println(this.getY());
 	}
 	
 	/**
@@ -872,8 +912,9 @@ public class Worm {
 			throw new IllegalArgumentException();
 		this.hitPoints = hitPoints;
 		if (hitPoints == 0) {
-			getWorld().getWinner();
+			World oldWorld = getWorld();
 			removeWorld();
+			oldWorld.getWinner();
 		}
 	}
 	
@@ -1060,19 +1101,22 @@ public class Worm {
 	 */
 	public void eatFood(){
 		List<Food> removeFoods= new ArrayList<Food>();
-		for (Food food:this.getWorld().getFood()){
-			double foodX = food.getX();
-			double foodY = food.getY();
-			double wormX = this.getX();
-			double wormY = this.getY();
-			if (Math.sqrt(Math.pow((foodX - wormX), 2) + Math.pow((foodY -wormY), 2))<(this.getRadius()+Food.getRadius())){
-				removeFoods.add(food);
+		if (!(this.getWorld().getFood().size()==0)){
+				
+			for (Food food:this.getWorld().getFood()){
+				double foodX = food.getX();
+				double foodY = food.getY();
+				double wormX = this.getX();
+				double wormY = this.getY();
+				if (Math.sqrt(Math.pow((foodX - wormX), 2) + Math.pow((foodY -wormY), 2))<(this.getRadius()+Food.getRadius())){
+					removeFoods.add(food);
+				}
 			}
-		}
-		for (Food food:removeFoods){
-			this.setRadius(1.1*(this.getRadius()));
-			this.getWorld().removeAsFood(food);
-			food.terminate();
+			for (Food food:removeFoods){
+				this.setRadius(1.1*(this.getRadius()));
+				this.getWorld().removeAsFood(food);
+				food.terminate();
+			}
 		}
 	}
 }

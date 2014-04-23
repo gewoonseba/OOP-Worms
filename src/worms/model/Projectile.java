@@ -200,7 +200,7 @@ public class Projectile {
 		double[] tempCoordinates = jumpStep(time);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
-		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! overlapsWithWorm()) 
+		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! overlapsWithWorm(tempX,tempY)) 
 				&& (! getWorld().isOutOfBounds(tempX,tempY,getRadius()) && this.getWorld().isPassable(tempX, tempY, this.getRadius()))){
 			time += timeStep;
 			tempCoordinates = jumpStep(time);
@@ -229,7 +229,7 @@ public class Projectile {
 		double[] tempCoordinates = jumpStep(jumpTime);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
-		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! overlapsWithWorm()) 
+		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! overlapsWithWorm(tempX,tempY)) 
 				&& (! getWorld().isOutOfBounds(tempX,tempY,getRadius()) && this.getWorld().isPassable(tempX, tempY, getRadius()))){
 			jumpTime += timeStep;
 			tempCoordinates = jumpStep(jumpTime);
@@ -339,9 +339,9 @@ public class Projectile {
 	 * Method to check if the projectile currently overlaps with a worm.
 	 * @return True if and only if the distance between this projectile and any worm is smaller than the sum of their radii.
 	 */
-	public boolean overlapsWithWorm(){
+	public boolean overlapsWithWorm(double x, double y){
 		for (Worm worm: getWorld().getWorms()){
-			if (getWorld().getDistance(getX(), getY(), worm.getX(), worm.getY()) < (getRadius() + worm.getRadius()) && (worm!=this.getWorm()))
+			if (getWorld().getDistance(x, y, worm.getX(), worm.getY()) < (getRadius() + worm.getRadius()) && (worm!=this.getWorm()))
 				return true;
 		}
 		return false;
