@@ -168,9 +168,7 @@ public class Worm {
 	        }
 	    }
 		if (this.getWorld().isAdjacent(tempX,tempY,getRadius())){
-			System.out.println("isadjacenttest");
-			System.out.println(tempX);
-			System.out.println(tempY);
+
 			return new double[] {tempX,tempY};	
 		}
 		return null;
@@ -187,8 +185,6 @@ public class Worm {
 			newLocation = searchFitLocation(currentDistance);
 			currentDistance -= 0.01;
 		}
-		System.out.println(newLocation[0]);
-		System.out.println(newLocation[1]);
 		if (!(newLocation == null)){
 			double newX = newLocation[0];
 			double newY = newLocation[1];
@@ -204,6 +200,7 @@ public class Worm {
 		}
 		if (! getWorld().isAdjacent(getX(),getY(),getRadius()))
 				fall();
+		eatFood();
 	}
 	
 	//TODO: specification 'if'
@@ -267,7 +264,7 @@ public class Worm {
 	 * 			| result == (this.getCurrentAP() > 0)
 	 */
 	public boolean canJumpAP(){
-		return true;
+		return (this.getCurrentAP()>0);
 	}
 	
 	/**
@@ -308,7 +305,7 @@ public class Worm {
 		double[] tempCoordinates = jumpStep(time);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
-		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! getWorld().isOutOfBounds(tempX,tempY,getRadius()))){
+		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! getWorld().isOutOfBounds(tempX,tempY,getRadius()) && this.getWorld().isPassable(tempX, tempY, getRadius()))){
 			time += timeStep;
 			tempCoordinates = jumpStep(time);
 			tempX = tempCoordinates[0];
@@ -341,19 +338,21 @@ public class Worm {
 	 */
 	public double jumpTime(double timeStep) throws IllegalAPException, IllegalJumpDirectionException{
 		if (! this.canJumpAP())
-			throw new IllegalAPException(this.getCurrentAP(), this);
-		double jumpTime = timeStep;
+			return 0;
+			
+		double jumpTime = (0.1*this.getRadius())/getInitialSpeed();
 		double[] tempCoordinates = jumpStep(jumpTime);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
-		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! getWorld().isOutOfBounds(tempX,tempY,getRadius()))){
+		
+		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! getWorld().isOutOfBounds(tempX,tempY,getRadius()) && this.getWorld().isPassable(tempX, tempY, getRadius()))){
 			jumpTime += timeStep;
 			tempCoordinates = jumpStep(jumpTime);
 			tempX = tempCoordinates[0];
 			tempY = tempCoordinates[1];
 		}
-		if (getWorld().getDistance(getX(),getY(),tempX,tempY) < getRadius())
-			jumpTime = 0;
+		if (getWorld().getDistance(getX(),getY(),tempX,tempY) < getRadius()){
+			jumpTime = 0;}
 		return jumpTime;
 	}
 	
@@ -374,8 +373,6 @@ public class Worm {
 	 *        | (! this.canHaveAsTime(t))
 	 */
 	public double[] jumpStep(double t) throws IllegalAPException, IllegalJumpDirectionException, IllegalTimeException{
-		if (! this.canJumpAP())
-			throw new IllegalAPException(this.getCurrentAP(), this);
 		if (! this.canHaveAsTime(t))
 			throw new IllegalTimeException(t, this);
 		double initialSpeed = this.getInitialSpeed();
@@ -385,6 +382,7 @@ public class Worm {
 		double newX = this.getX() + (initialSpeedX * t);
 		double newY = this.getY() + (initialSpeedY * t -0.5*g*Math.pow(t,2));
 		double[] stepArray = {newX,newY};
+		//this.eatFood();
 		return stepArray;
 	}
 	
@@ -867,9 +865,9 @@ public class Worm {
 		if (! isValidHitPoints(hitPoints))
 			throw new IllegalArgumentException();
 		this.hitPoints = hitPoints;
-		if (hitPoints == 0)
-			getWorld().getWinner();
-			removeWorld();
+		//if (hitPoints == 0)
+			//getWorld().getWinner();
+			//removeWorld();
 	}
 	
 	/**

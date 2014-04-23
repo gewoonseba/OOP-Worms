@@ -25,8 +25,8 @@ public class Facade implements IFacade{
 
 	@Override
 	public double[] getJumpStep(Worm worm, double t) {
-		if (! worm.canJumpAP())
-			throw new ModelException("THE WORM HAS NO ACTION POINTS LEFT");
+		//if (! worm.canJumpAP())
+			//throw new ModelException("THE WORM HAS NO ACTION POINTS LEFT");
 		return worm.jumpStep(t);
 	}
 
