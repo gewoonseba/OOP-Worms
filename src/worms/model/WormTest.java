@@ -30,9 +30,9 @@ public class WormTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		testWormImmBasic = new Worm(0,0,0,0.25,"James o'Hara");
-		testWormImmSmallDirection = new Worm(0,0,Math.PI/4,0.25,"William o'Hara");
-		testWormImmBigDirection = new Worm(0,0,Math.PI+1,0.25,"Henry o' Hara");
+		testWormImmBasic = new Worm(0,0,0,0.25,"James o'Hara 1");
+		testWormImmSmallDirection = new Worm(0,0,Math.PI/4,0.25,"William o'Hara 2");
+		testWormImmBigDirection = new Worm(0,0,Math.PI+1,0.25,"Henry o' Hara 3");
 		
 	}
 	
@@ -55,9 +55,9 @@ public class WormTest {
 
 	@Before
 	public void setUp() throws Exception {
-		testWormMutBasic = new Worm(0,0,0,0.25,"Jimmy o'Hara");
-		testWormMutSmallDirection = new Worm(0,0,Math.PI/4,0.25,"Ricky o'Hara");
-		testWormMutBigDirection = new Worm(0,0,Math.PI+1,0.25,"Thomas o'Hara");
+		testWormMutBasic = new Worm(0,0,0,0.25,"Jimmy o'Hara 4");
+		testWormMutSmallDirection = new Worm(0,0,Math.PI/4,0.25,"Ricky o'Hara 5");
+		testWormMutBigDirection = new Worm(0,0,Math.PI+1,0.25,"Thomas o'Hara 6");
 	}
 	
 	
@@ -66,12 +66,12 @@ public class WormTest {
 	 */
 	@Test
 	public  void constructor_LegalCase() {
-		Worm newWorm = new Worm(5,10,3,1,"Mike o'Brien");
+		Worm newWorm = new Worm(5,10,3,1,"Mike o'Brien 2");
 		assertEquals(5,newWorm.getX(),0);
 		assertEquals(10,newWorm.getY(),0);
 		assertEquals(3,newWorm.getDirection(),0);
 		assertEquals(1,newWorm.getRadius(),0);
-		assertEquals("Mike o'Brien",newWorm.getName());
+		assertEquals("Mike o'Brien 2",newWorm.getName());
 	}
 	
 	/**
@@ -135,7 +135,7 @@ public class WormTest {
 	 */
 	@Test
 	public void isValidName_TrueCase(){
-		assertTrue(Worm.isValidName("James o'Hara"));
+		assertTrue(Worm.isValidName("James o'Hara 1"));
 	}
 	
 	/**
@@ -191,7 +191,7 @@ public class WormTest {
 	}
 	
 	/**
-	 * Test to chech whether canHaveAsTime returns true in the legal case.
+	 * Test to check whether canHaveAsTime returns true in the legal case.
 	 */
 	@Test
 	public void canHaveAsTime_Truecase(){
@@ -206,14 +206,15 @@ public class WormTest {
 		assertFalse(testWormImmSmallDirection.canHaveAsTime(-0.1));
 	}
 	
-	/**
-	 * Test check whether canHaveAsTime returns false in the case where the given time exceeds
-	 * the time the worm will actually jump.
-	 */
-	@Test
-	public void canHaveAsTime_TimeExceedingLimit(){
-		assertFalse(testWormImmSmallDirection.canHaveAsTime(1.08));
-	}
+	//TODO: needs passableMap
+//	/**
+//	 * Test check whether canHaveAsTime returns false in the case where the given time exceeds
+//	 * the time the worm will actually jump.
+//	 */
+//	@Test
+//	public void canHaveAsTime_TimeExceedingLimit(){
+//		assertFalse(testWormImmSmallDirection.canHaveAsTime(1.08));
+//	}
 	
 	/**
 	 * Test to check whether canTurn returns true in the legal case.
@@ -224,7 +225,7 @@ public class WormTest {
 	}
 	
 	/**
-	 * Test to check whether canTurn returns false in the case where the angle is greater than 2*PI.
+	 * Test to check whether canTurn returns false in the case where the angle is equal to 2*PI.
 	 */
 	@Test
 	public void canTurn_AngleExceedingLimit(){
@@ -238,7 +239,7 @@ public class WormTest {
 	@Test
 	public void canTurn_InsufficientAP(){
 		testWormMutBasic.setCurrentAP(20);
-		assertFalse(testWormMutBasic.canTurn((2*Math.PI)/3.0+0.1));//grenswaarde is (2*Math.PI)/3.0 => ???
+		assertFalse(testWormMutBasic.canTurn((2*Math.PI)/3.0+0.1));
 	}
 	
 	/**
@@ -251,42 +252,46 @@ public class WormTest {
 		assertEquals(22,testWormMutBasic.getCurrentAP());
 	}
 	
-	/**
-	 * Test to check whether canMove returns true in the legal case.
-	 */
-	@Test
-	public void canMove_TrueCase(){
-		assertTrue(testWormImmBasic.canMove(70));
-	}
+	//TODO: Needs passableMap
+//	/**
+//	 * Test to check whether canMove returns true in the legal case.
+//	 */
+//	@Test
+//	public void canMove_TrueCase(){
+//		assertTrue(testWormImmBasic.canMove());
+//	}
 	
-	/**
-	 * Test to check whether canMove returns false in the case where the worm has insufficient AP.
-	 */
-	@Test
-	public void canMove_FalseCase(){
-		assertFalse(testWormImmBasic.canMove(71));
-	}
+	//TODO: Needs passableMap
+//	/**
+//	 * Test to check whether canMove returns false in the case where the worm has insufficient AP.
+//	 */
+//	@Test
+//	public void canMove_FalseCase(){
+//		assertFalse(testWormImmBasic.canMove());
+//	}
 	
-	/**
-	 * Test to check whether, after moving, the new coordinates of the worm are correct and whether
-	 * the AP is decreased with the right amount.
-	 */
-	@Test
-	public void move_LegalCase(){
-		testWormMutSmallDirection.move(5);
-		assert (Util.fuzzyEquals(((Math.sqrt(2)/2))*1.25,testWormMutSmallDirection.getX()));
-		assert (Util.fuzzyEquals(((Math.sqrt(2)/2))*1.25,testWormMutSmallDirection.getY()));
-		assertEquals(52,testWormMutSmallDirection.getCurrentAP());
-	}
+	//TODO: Needs passableMap
+//	/**
+//	 * Test to check whether, after moving, the new coordinates of the worm are correct and whether
+//	 * the AP is decreased with the right amount.
+//	 */
+//	@Test
+//	public void move_LegalCase(){
+//		testWormMutSmallDirection.move();
+//		assert (Util.fuzzyEquals(((Math.sqrt(2)/2))*1.25,testWormMutSmallDirection.getX()));
+//		assert (Util.fuzzyEquals(((Math.sqrt(2)/2))*1.25,testWormMutSmallDirection.getY()));
+//		assertEquals(52,testWormMutSmallDirection.getCurrentAP());
+//	}
 	
-	/**
+	//TODO: Needs passableMap
+/*	*//**
 	 * Test to check whether the right exception is thrown when the worm has insufficient AP
 	 * to move the given number of steps.
-	 */
+	 *//*
 	@Test (expected = IllegalAPException.class)
 	public void move_IllegalAPException(){
-		testWormMutBasic.move(71);
-	}
+		testWormMutBasic.move();
+	}*/
 	
 	/**
 	 * Test to check whether canJumpAP returns true in the legal case.
@@ -305,23 +310,16 @@ public class WormTest {
 		assertFalse(testWormMutBasic.canJumpAP());
 	}
 	
-	/**
+	//TODO: Needs passableMap
+/*	*//**
 	 * Test to check whether Jump jumps to the correct x coordinate in a legal case.
-	 */
+	 *//*
 	@Test
 	public void jump_LegalCase(){
 		testWormMutSmallDirection.jump();
 		assert (Util.fuzzyEquals(5.615749611534734,testWormMutSmallDirection.getX()));
 		assertEquals(0,testWormMutSmallDirection.getCurrentAP());
-	}
-	
-	/**
-	 * Test to check whether jump returns an illegaljumpdirectionexception if the direction of the jump is wrong
-	 */
-	@Test (expected = IllegalJumpDirectionException.class)
-	public void jump_IllegalJumpDirectionException(){
-		testWormMutBigDirection.jump();
-	}
+	}*/
 	
 	/**
 	 * Test to check whether jump returns an IllegalAPException if the given worm has 0 AP.
@@ -329,24 +327,17 @@ public class WormTest {
 	@Test (expected = IllegalAPException.class)
 	public void jump_IllegalAPException(){
 		testWormMutSmallDirection.setCurrentAP(0);
-		testWormMutSmallDirection.jump();
+		testWormMutSmallDirection.jump(0.0001);
 	}
 	
-	/**
+	//TODO: Needs passableMap
+/*	*//**
 	 * Test to check if jumpTime returns the correct time in a legal case.
-	 */
+	 *//*
 	@Test
 	public void jumpTime_LegalCase(){
-		assert (Util.fuzzyEquals(1.070184182924273,testWormMutSmallDirection.jumpTime()));
-	}
-	
-	/**
-	 * Test to check whether jumpTime returns an illegaljumpdirectionexception if the direction of the jump is wrong
-	 */
-	@Test (expected = IllegalJumpDirectionException.class)
-	public void jumpTime_IllegalJumpDirectionException(){
-		testWormMutBigDirection.jumpTime();
-	}
+		assert (Util.fuzzyEquals(1.070184182924273,testWormMutSmallDirection.jumpTime(0.0001)));
+	}*/
 	
 	/**
 	 * Test to check whether jumpTime returns an IllegalAPException if the given worm has 0 AP.
@@ -354,25 +345,18 @@ public class WormTest {
 	@Test (expected = IllegalAPException.class)
 	public void jumpTime_IllegalAPException(){
 		testWormMutSmallDirection.setCurrentAP(0);
-		testWormMutSmallDirection.jumpTime();
+		testWormMutSmallDirection.jumpTime(0.0001);
 	}
 	
-	/**
+	//TODO: Needs passableMap
+/*	*//**
 	 * Test to check if jumpStep returns the correct position or a given time in a legal case.
-	 */
+	 *//*
 	@Test
 	public void jumpStep_LegalCase(){
 		double[] actuals = {0.5247460858737162, 0.47571283587371604};
 		assertArrayEquals(testWormMutSmallDirection.jumpStep(0.1), actuals, 0.00001);
-	}
-	
-	/**
-	 * Test to check whether jumpStep returns an IllegalJumpDirectionException if the direction of the jump is wrong
-	 */
-	@Test (expected = IllegalJumpDirectionException.class)
-	public void jumpStep_IllegalJumpDirectionException(){
-		testWormMutBigDirection.jumpStep(0.2);
-	}
+	}*/
 	
 	/**
 	 * Test to check whether jumpStep returns an IllegalAPException if the given worm has 0 AP.
@@ -380,7 +364,7 @@ public class WormTest {
 	@Test (expected = IllegalAPException.class)
 	public void jumpStep_IllegalAPException(){
 		testWormMutSmallDirection.setCurrentAP(0);
-		testWormMutSmallDirection.jumpStep(0.1);
+		testWormMutSmallDirection.jumpStep(0.0001);
 	}
 	
 	/**
@@ -397,14 +381,6 @@ public class WormTest {
 	@Test
 	public void canJumpDirection_TrueCase(){
 		assertTrue(testWormImmBasic.canJumpDirection());
-	}
-	
-	/**
-	 * Test to check whether canJumpDirection returns False in the case where the worm has a direction greater than PI
-	 */
-	@Test
-	public void canJumpDirection_FalseCase(){
-		assertFalse(testWormImmBigDirection.canJumpDirection());
 	}
 	
 	/**

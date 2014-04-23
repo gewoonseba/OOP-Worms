@@ -123,23 +123,21 @@ public class Worm {
 		return (coordinate != Double.NaN);
 	}
 	
-	
+	//TODO: Formal specification
 	/**
-	 * Check whether the worm can move the given number of steps.
-	 * @param steps
-	 * @return True if and only if the new AP of the worm is equal to or higher than zero.
-	 *         | return == (newAP >= 0)
+	 * Check whether the worm can move one step.
+	 * @return True if and only if searchFitLocation can find a fit location in the worms current direction.
+	 * 		| 
 	 */
 	public boolean canMove(){
 		double currentDistance = getRadius();
 		double[] newLocation = null;
-		while (newLocation == null && currentDistance>=0.1){
+		while (newLocation == null && currentDistance >= 0.1){
 			newLocation = searchFitLocation(currentDistance);
-			currentDistance-=0.01;
+			currentDistance -= 0.01;
 		}
 		if (newLocation == null)
 			return false;
-		
 		return true;
 	}
 	
@@ -174,7 +172,7 @@ public class Worm {
 		return null;
 	}
 	
-	//TODO: fall + implementation using slope + currentDistance
+	//TODO:implementation using slope + currentDistance - 0.01?
 	/**
 	 * Method to move the worm one step, in its current direction.
 	 */
@@ -294,11 +292,8 @@ public class Worm {
 	 * @throws IllegalAPException
 	 *        The worm has no AP left.
 	 *        | this.getCurrentAP() <= 0
-	 * @throws IllegalJumpDirectionException
-	 * 		  The direction of the worm is not valid for jumping.
-	 *        | (! this.canJumpDirection())
 	 */
-	public void jump(double timeStep) throws IllegalAPException, IllegalJumpDirectionException{
+	public void jump(double timeStep) throws IllegalAPException{
 		if (! this.canJumpAP())
 			throw new IllegalAPException(this.getCurrentAP(), this);
 		double time = timeStep;
@@ -332,11 +327,8 @@ public class Worm {
 	 * @throws IllegalAPException
 	 *        The worm has no AP left.
 	 *        | this.getCurrentAP() <= 0
-	 * @throws IllegalJumpDirectionException
-	 * 		  The direction of the worm is not valid for jumping.
-	 *        | (! this.canJumpDirection())
 	 */
-	public double jumpTime(double timeStep) throws IllegalAPException, IllegalJumpDirectionException{
+	public double jumpTime(double timeStep) throws IllegalAPException{
 		if (! this.canJumpAP())
 			return 0;
 			
@@ -365,14 +357,13 @@ public class Worm {
 	 * @throws IllegalAPException
 	 *        The worm has no AP left.
 	 *        | this.getCurrentAP() <= 0
-	 * @throws IllegalJumpDirectionException
-	 * 		  The direction of the worm is not valid for jumping.
-	 *        | (! this.canJumpDirection())
 	 * @throws IllegalTimeException
 	 *        The time given is not valid for the given worm.
 	 *        | (! this.canHaveAsTime(t))
 	 */
-	public double[] jumpStep(double t) throws IllegalAPException, IllegalJumpDirectionException, IllegalTimeException{
+	public double[] jumpStep(double t) throws IllegalAPException, IllegalTimeException{
+		//if (! this.canJumpAP())
+			//throw new IllegalAPException(this.getCurrentAP(), this);
 		if (! this.canHaveAsTime(t))
 			throw new IllegalTimeException(t, this);
 		double initialSpeed = this.getInitialSpeed();
@@ -865,9 +856,11 @@ public class Worm {
 		if (! isValidHitPoints(hitPoints))
 			throw new IllegalArgumentException();
 		this.hitPoints = hitPoints;
-		//if (hitPoints == 0)
-			//getWorld().getWinner();
-			//removeWorld();
+		if (hitPoints == 0) {
+			getWorld().getWinner();
+			removeWorld();
+		}
+
 	}
 	
 	/**
