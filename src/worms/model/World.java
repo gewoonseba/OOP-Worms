@@ -376,9 +376,6 @@ public class World {
 				return false;
 			double immPixelX = x;
 			int change = 0;
-			System.out.println("testjump");
-			System.out.println(pixelX);
-			System.out.println(pixelY);
 			while(true){
 				if (Math.abs(pixelX-immPixelX)>maxDistance+0.01){
 					return true;
@@ -419,7 +416,8 @@ public class World {
 		int pixelX = coordinatesToPixels(newX, newY)[0];
 		int immPixelX = coordinatesToPixels(x, newY)[0];
 		int pixelY = coordinatesToPixels(newX, newY)[1];
-		return this.isPixelPassable(immPixelX,pixelY,radius);}
+		return this.isPixelPassable(immPixelX,pixelY,radius);
+		}
 //		int change = 0;
 //		double maxDistance= radius/getHeightScale(); 
 //		while(true){
