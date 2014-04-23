@@ -132,7 +132,6 @@ public class Worm {
 	public boolean canMove(){
 		double currentDistance = getRadius();
 		double[] newLocation = null;
-		System.out.println("Het gaat erin");
 		while (newLocation == null && currentDistance >= 0.1){
 			newLocation = searchFallLocation(currentDistance);
 			currentDistance -= 0.01;
@@ -235,9 +234,9 @@ public class Worm {
 		}
 		
 		
-		if (! getWorld().isAdjacent(getX(),getY(),getRadius()))
-				fall();
-		//eatFood();
+		//if (! getWorld().isAdjacent(getX(),getY(),getRadius()))
+		//		fall();
+		eatFood();
 	}
 	
 	//TODO: specification 'if'
@@ -402,8 +401,8 @@ public class Worm {
 	 *        | (! this.canHaveAsTime(t))
 	 */
 	public double[] jumpStep(double t) throws IllegalAPException, IllegalTimeException{
-		//if (! this.canJumpAP())
-			//throw new IllegalAPException(this.getCurrentAP(), this);
+		if (! this.canJumpAP())
+			throw new IllegalAPException(this.getCurrentAP(), this);
 		if (! this.canHaveAsTime(t))
 			throw new IllegalTimeException(t, this);
 		double initialSpeed = this.getInitialSpeed();
@@ -984,7 +983,9 @@ public class Worm {
 	 * 		The worm doesn't have enough AP left to shoot its current weapon.
 	 * 		| getShootAP() < 0
 	 */
-	public void shoot(int yield) throws IllegalArgumentException, IllegalAPException{
+	public void shoot(int yield) throws IllegalArgumentException, IllegalAPException, IllegalStateException{
+		if (! getWorld().isPassable(getX(), getY(), getRadius()))
+			throw new IllegalStateException();
 		if (! isValidPropulsionYield(yield))
 			throw new IllegalArgumentException();
 		int newAP = getShootAP();
