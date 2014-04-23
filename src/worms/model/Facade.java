@@ -17,16 +17,20 @@ public class Facade implements IFacade{
 	}
 
 	@Override
-	public void turn(Worm worm, double angle) {
+	public void turn(Worm worm, double angle) throws ModelException {
+		if (!worm.canTurn(angle))
+			throw new ModelException("No AP");
 		worm.turn(angle);	
 	}
 
 
 
 	@Override
-	public double[] getJumpStep(Worm worm, double t) {
-		//if (! worm.canJumpAP())
-			//throw new ModelException("THE WORM HAS NO ACTION POINTS LEFT");
+	public double[] getJumpStep(Worm worm, double t) throws ModelException {
+		if (! worm.canJumpAP())
+			throw new ModelException("THE WORM HAS NO ACTION POINTS LEFT");
+		if (! worm.canHaveAsTime(t))
+			throw new ModelException("illegal time");
 		return worm.jumpStep(t);
 	}
 
@@ -87,57 +91,57 @@ public class Facade implements IFacade{
 
 	@Override
 	public double getMass(Worm worm) {
-		// TODO Auto-generated method stub
 		return worm.getMass();
 	}
 
 	@Override
-	public void addEmptyTeam(World world, String newName) {
+	public void addEmptyTeam(World world, String newName) throws ModelException {
+		if (! Team.isValidName(newName))
+			throw new ModelException("Illegal name");
 		world.createTeam(newName);
 		
 	}
 
 	@Override
 	public void addNewFood(World world) {
-		// TODO Auto-generated method stub
 		world.addNewFood();
 	}
 
 	@Override
 	public void addNewWorm(World world) {
-		// TODO Auto-generated method stub
 		world.addNewWorm();
 	}
 
 	@Override
 	public boolean canFall(Worm worm) {
-		// TODO Auto-generated method stub
-		return false;
+		return !(worm.getWorld().isAdjacent(worm.getX(),worm.getY(), worm.getRadius()));
 	}
 
 	@Override
 	public boolean canMove(Worm worm) {
-		// TODO Auto-generated method stub
 		return worm.canMove();
 	}
 
 	@Override
-	public Food createFood(World world, double x, double y) {
-		// TODO Auto-generated method stub
+	public Food createFood(World world, double x, double y) throws ModelException {
+		if ((world==null)||world.isOutOfBounds(x, y, Food.getRadius()))
+				throw new ModelException("Can't create this food.");
 		return world.createFood(x, y);
 	}
 
+	
 	@Override
 	public World createWorld(double width, double height,
 			boolean[][] passableMap, Random random) {
-		// TODO Auto-generated method stub
+		if (! World.isValidWidth(width) || ! World.isValidHeight(height) )
+			throw new ModelException("Cannot create this world.");
 		return new World(width, height, passableMap, random);
 	}
 
 	@Override
 	public Worm createWorm(World world, double x, double y, double direction,
 			double radius, String name) {
-		// TODO Auto-generated method stub
+		
 		return world.createWorm(x, y, direction, radius, name);
 	}
 

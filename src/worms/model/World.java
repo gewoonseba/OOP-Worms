@@ -58,7 +58,7 @@ public class World {
 	 * @return 	True if and only if width is grater than zero an less than maxWidth.
 	 * 			| return == (width >= 0) && (width <= maxWidth)
 	 */
-	public boolean isValidWidth(double width){
+	public static boolean isValidWidth(double width){
 		return (width >= 0) && (width <= maxWidth);
 	}
 	
@@ -113,7 +113,7 @@ public class World {
 	 * @return 	True if and only if height is grater than zero an less than maxHeight.
 	 * 			| return == (height >= 0) && (height <= maxHeight)
 	 */
-	public boolean isValidHeight(double height){
+	public static boolean isValidHeight(double height){
 		return (height >= 0) && (height <= maxHeight);
 	}
 	
@@ -454,11 +454,8 @@ public class World {
 	 * @effect The new worm is created with a random x and y coordinate (which results in an adjacent position), the minimal radius, direction set to zero
 	 * 		and a name with a number, which is a representation of how many worms are already in this world.
 	 * 		| new Worm worm = createWorm(randomX,randomY,0,Worm.getMinimalRadius(),"player x")
-	 * @throws IllegalArgumentException
-	 * 		No random adjacent position could be found.
-	 * 		| searchAdjacentFrom(randomX,randomY,Worm.getMinimalRadius()) == null
 	 */
-	public void addNewWorm() throws IllegalArgumentException{
+	public void addNewWorm() {
 		double[] location = null;
 		double radius = Worm.getMinimalRadius();
 		do {
@@ -625,11 +622,8 @@ public class World {
 	 * Method to add a new food at a random location in this world.
 	 * @effect The new food is initialized with a random x and y.
 	 * 		| food = new Food(randomX,randomY)
-	 * @throws IllegalArgumentException
-	 * 		No random position could be found
-	 * 		| searchAdjacentFrom(randomX,randomY,Food.getRadius()) == null
 	 */
-	public void addNewFood() throws IllegalArgumentException{
+	public void addNewFood() {
 		double[] location = null;
 		double radius = Food.getRadius();
 		do {
