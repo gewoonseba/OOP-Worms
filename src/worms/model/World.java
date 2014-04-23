@@ -588,12 +588,21 @@ public class World {
 		if (worms.size() == 1)
 			return worms.get(0).getName();
 		int i = 0;
-		while (i  <= worms.size() - 1){
+		while (i  <= worms.size() - 2){
 			if (worms.get(i).getTeamName() != worms.get(i+1).getTeamName())
 				return null;
 			i += 1;
 		}
 		return worms.get(0).getTeamName();	
+	}
+	/**
+	 * Method to check whether the game is finished.
+	 * @return returns true if and only if getWinner != null
+	 */
+	public boolean isGameFinished(){
+		if (getWinner()!=null)
+			return true;
+		return false;
 	}
 	
 	/**
