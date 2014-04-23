@@ -136,8 +136,10 @@ public class Worm {
 			newLocation = searchFallLocation(currentDistance);
 			currentDistance -= 0.01;
 		}
-		if (newLocation == null)
-			return false;
+		if (newLocation == null){
+			System.out.println("partyhard");
+			return false;}
+		System.out.println("partysoft");
 		return true;
 	}
 	
@@ -211,11 +213,16 @@ public class Worm {
 	public void move() throws IllegalAPException{
 		double currentDistance = getRadius();
 		double[] newLocation = null;
+		System.out.println("lijst van x en y coordinaat");
+		System.out.println(getX());
+		System.out.println(getY());
 		while (newLocation == null && currentDistance>=0.1){
 			newLocation = searchFitLocation(currentDistance);
 			currentDistance -= 0.01;
 		}
+		currentDistance = getRadius();
 		while (newLocation == null && currentDistance>=0.1){
+			System.out.println("fallekeleggen");
 			newLocation = searchFallLocation(currentDistance);
 			currentDistance -= 0.01;
 		}
@@ -278,6 +285,9 @@ public class Worm {
 	 * 		| new.getY() = this.getY() - getWorld.getHeightScale();
 	 */
 	public void fallPixel(){
+		System.out.println("voor de val");
+		System.out.println(this.getX());
+		System.out.println(this.getY());
 		double distance = getWorld().getHeightScale();
 		setY(getY() - distance);
 		System.out.println(this.getY());
