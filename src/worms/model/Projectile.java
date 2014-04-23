@@ -22,6 +22,7 @@ public class Projectile {
 		this.mass = mass;
 		this.yield = yield;
 		this.terminated = false;
+		
 	}
 	
 	/**
@@ -194,13 +195,13 @@ public class Projectile {
 	 */
 	public void jump(double timeStep) throws IllegalStateException {
 		if (! isAlive())
-			throw new IllegalSelectorException();
-		double time = timeStep;
+			throw new IllegalStateException();
+		double time = (0.1*this.getRadius())/getInitialSpeed();
 		double[] tempCoordinates = jumpStep(time);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
 		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! overlapsWithWorm()) 
-				&& (! getWorld().isOutOfBounds(tempX,tempY,getRadius()))){
+				&& (! getWorld().isOutOfBounds(tempX,tempY,getRadius()) && this.getWorld().isPassable(tempX, tempY, this.getRadius()))){
 			time += timeStep;
 			tempCoordinates = jumpStep(time);
 			tempX = tempCoordinates[0];
@@ -224,12 +225,12 @@ public class Projectile {
 	 *        | return == (distance/(initialSpeed*Math.cos(this.getDirection())))
 	 */
 	public double jumpTime(double timeStep) throws IllegalJumpDirectionException{
-		double jumpTime = timeStep;
+		double jumpTime = (0.1*this.getRadius())/getInitialSpeed();
 		double[] tempCoordinates = jumpStep(jumpTime);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
 		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! overlapsWithWorm()) 
-				&& (! getWorld().isOutOfBounds(tempX,tempY,getRadius()))){
+				&& (! getWorld().isOutOfBounds(tempX,tempY,getRadius()) && this.getWorld().isPassable(tempX, tempY, getRadius()))){
 			jumpTime += timeStep;
 			tempCoordinates = jumpStep(jumpTime);
 			tempX = tempCoordinates[0];
@@ -340,7 +341,7 @@ public class Projectile {
 	 */
 	public boolean overlapsWithWorm(){
 		for (Worm worm: getWorld().getWorms()){
-			if (getWorld().getDistance(getX(), getY(), worm.getX(), worm.getY()) < (getRadius() + worm.getRadius()))
+			if (getWorld().getDistance(getX(), getY(), worm.getX(), worm.getY()) < (getRadius() + worm.getRadius()) && (worm!=this.getWorm()))
 				return true;
 		}
 		return false;
