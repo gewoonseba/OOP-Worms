@@ -332,6 +332,8 @@ public class World {
 			int change = 0;
 			double maxDistance= (1.1*radius)/getWidthScale();
 			double minDistance= radius/getWidthScale();
+			if ((immPixelX + maxDistance>(getPixelWidth()-1) || immPixelX - maxDistance< 0 || pixelY + maxDistance>(getPixelHeight()-1) || pixelY-maxDistance<0))
+				return false;
 			while(true){
 				if (Math.abs(pixelX-immPixelX)>maxDistance+0.1){
 					return false;
