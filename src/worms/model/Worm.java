@@ -116,11 +116,11 @@ public class Worm {
 	/**
 	 * Method to check whether the given coordinate is not equal to NaN
 	 * @param coordinate
-	 * @return True if and only if coordinate does not equal Nan
+	 * @return True if and only if coordinate does not equal NaN
 	 * 			| result == (coordinate != Double.Nan)
 	 */
-	public boolean isValidCoordinate(double coordinate){
-		return (coordinate != Double.NaN);
+	public static boolean isValidCoordinate(double coordinate){
+		return (! Double.isNaN(coordinate));
 	}
 	
 	//TODO: Formal specification
@@ -330,8 +330,7 @@ public class Worm {
 	 */
 	public double jumpTime(double timeStep) throws IllegalAPException{
 		if (! this.canJumpAP())
-			return 0;
-			
+			return 0;	
 		double jumpTime = (0.1*this.getRadius())/getInitialSpeed();
 		double[] tempCoordinates = jumpStep(jumpTime);
 		double tempX = tempCoordinates[0];
@@ -344,7 +343,8 @@ public class Worm {
 			tempY = tempCoordinates[1];
 		}
 		if (getWorld().getDistance(getX(),getY(),tempX,tempY) < getRadius()){
-			jumpTime = 0;}
+			jumpTime = 0;
+			}
 		return jumpTime;
 	}
 	
@@ -842,6 +842,18 @@ public class Worm {
 	}
 	
 	/**
+	 * Method to check if the given hitPoints is a valid number of hitPoints
+	 * @param hitPoints
+	 * 		The hitPoints to be checked.
+	 * @return True if and only if hitPoints is greater than or equal to zero and less than or equal to the maximum hitPoints.
+	 * 		| return == ((hitPoints >= 0) && (hitPoints <= getMaxHitPoints()))
+	 */
+	public boolean isValidHitPoints(int hitPoints){
+		return ((hitPoints >= 0) && (hitPoints <= getMaxHitPoints()));
+	}
+
+
+	/**
 	 * Set the current Hit Points of the worm to the given value hitPoints
 	 * @param hitPoints
 	 * @post the new hit points are equal to hitPoints.
@@ -860,18 +872,6 @@ public class Worm {
 			getWorld().getWinner();
 			removeWorld();
 		}
-
-	}
-	
-	/**
-	 * Method to check if the given hitPoints is a valid number of hitPoints
-	 * @param hitPoints
-	 * 		The hitPoints to be checked.
-	 * @return True if and only if hitPoints is greater than or equal to zero and less than or equal to the maximum hitPoints.
-	 * 		| return == ((hitPoints >= 0) && (hitPoints <= getMaxHitPoints()))
-	 */
-	public boolean isValidHitPoints(int hitPoints){
-		return ((hitPoints >= 0) && (hitPoints <= getMaxHitPoints()));
 	}
 	
 	/**

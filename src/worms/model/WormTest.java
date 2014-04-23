@@ -91,6 +91,22 @@ public class WormTest {
 	}
 	
 	/**
+	 * Test to check whether isValidCoordinate returns true in the legal case.
+	 */
+	@Test
+	public void isValidCoordinate_LegalCase(){
+		assertTrue(Worm.isValidCoordinate(0));
+	}
+	
+	/**
+	 * Test to check whether isValidCoordinate returns false in the illegal case.
+	 */
+	@Test
+	public void isValidCoordinate_IllegalCase(){
+		assertFalse(Worm.isValidCoordinate(Double.NaN));
+	}
+	
+	/**
 	 * Test to check whether isValidDirection returns true in the legal case.
 	 */
 	@Test
@@ -188,6 +204,32 @@ public class WormTest {
 	@Test
 	public void isValidCurrentAP_APExceedingMax(){
 		assertFalse(testWormImmBasic.isValidCurrentAP(71));
+	}
+	
+	/**
+	 * Test to check whether isValidHitPoints returns true in the legal case.
+	 */
+	@Test
+	public void isValidHitPoints_LegalCase(){
+		assertTrue(testWormImmBasic.isValidHitPoints(70));
+	}
+	
+	/**
+	 * Test to check whether isValidHitPoints returns false in the case where a negative
+	 * value for hitPoints is given.
+	 */
+	@Test
+	public void isValidHitPoints_NegativeHitPoints(){
+		assertFalse(testWormImmBasic.isValidHitPoints(-1));
+	}
+	
+	/**
+	 * Test to check whether isValidHitPoints returns false in the caxe wher the given hitPoints
+	 * exceeds the maxHitPoints for the given worm.
+	 */
+	@Test
+	public void isValidHitPoints_HitPointsExceedingMax(){
+		assertFalse(testWormImmBasic.isValidHitPoints(71));
 	}
 	
 	/**
