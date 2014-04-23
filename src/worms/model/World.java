@@ -710,7 +710,7 @@ public class World {
 	public void removeAsFood(Food food) throws IllegalFoodException, IllegalStateException{
 		if ((food == null) || (! hasAsFood(food)))
 			throw new IllegalFoodException(food);
-		if (food.hasWorld())
+		if (!food.hasWorld())
 			throw new IllegalStateException();
 		this.food.remove(food);
 	}

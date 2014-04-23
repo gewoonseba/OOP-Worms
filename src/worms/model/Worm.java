@@ -296,7 +296,7 @@ public class Worm {
 	public void jump(double timeStep) throws IllegalAPException{
 		if (! this.canJumpAP())
 			throw new IllegalAPException(this.getCurrentAP(), this);
-		double time = timeStep;
+		double time = (0.1*this.getRadius())/getInitialSpeed();
 		double[] tempCoordinates = jumpStep(time);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
@@ -955,6 +955,7 @@ public class Worm {
 		Projectile projectile = new Projectile(location[0],location[1],direction,mass,yield);
 		this.projectile = projectile;
 		projectile.setWormTo(this);
+		getWorld().setActiveProjectile(projectile);
 		setCurrentAP(newAP);
 	}
 	
@@ -1055,16 +1056,20 @@ public class Worm {
 	 * Method for a worm to see if he's in range of food and to potentially eat it.
 	 */
 	public void eatFood(){
-		for (int i=0;i<this.getWorld().getFood().size()-1; i++){
-			double foodX = this.getWorld().getFood().get(i).getX();
-			double foodY = this.getWorld().getFood().get(i).getY();
+		List<Food> removeFoods= new ArrayList<Food>();
+		for (Food food:this.getWorld().getFood()){
+			double foodX = food.getX();
+			double foodY = food.getY();
 			double wormX = this.getX();
 			double wormY = this.getY();
-			if (Math.sqrt(Math.pow((foodX - wormX), 2) + Math.pow((foodY -wormY), 2))<(this.getRadius()+0.20)){
-				this.setRadius(1.1*(this.getRadius()));
-				this.getWorld().removeAsFood(this.getWorld().getFood().get(i));
-				this.getWorld().getFood().get(i).terminate();
+			if (Math.sqrt(Math.pow((foodX - wormX), 2) + Math.pow((foodY -wormY), 2))<(this.getRadius()+Food.getRadius())){
+				removeFoods.add(food);
 			}
+		}
+		for (Food food:removeFoods){
+			this.setRadius(1.1*(this.getRadius()));
+			this.getWorld().removeAsFood(food);
+			food.terminate();
 		}
 	}
 }
