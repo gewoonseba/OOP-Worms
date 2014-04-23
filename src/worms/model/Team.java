@@ -129,13 +129,13 @@ public class Team {
 	private World world;
 
 	/**
-	 * Method to check whether the team can have the given worm as one of its worms
+	 * Method to check whether the team can have the given worm as one of its worms.
 	 * @param worm
 	 * @return False if the given worm is null.
-	 * 			| return == (worm != null)
+	 * 			| return == (worm != null) && (! hasAsWorm(worm))
 	 */
 	public boolean canHaveAsWorm(Worm worm){
-		return (worm != null);
+		return (worm != null) && (! hasAsWorm(worm));
 	}
 	
 	/**
@@ -161,12 +161,17 @@ public class Team {
 	 * 		| ! canHaveAsWorm(worm)
 	 * @throws IllegalStateException
 	 * 		The given worm does not have this teams world as its world, or this team already contains the given worm.
-	 * 		| (worm.getWorld() != this) || (hasAsWorm(worm))
+	 * 		| (worm.getWorld() != this)
+	 * @throws IllegalStateException
+	 * 		The given worm does not have this team as its team.
+	 * 		| (! worm.getTeam() == this )
 	 */
 	public void addAsWorm(Worm worm) throws IllegalWormException, IllegalStateException{
 		if(! canHaveAsWorm(worm))
 			throw new IllegalWormException(worm);
-		if ((worm.getWorld() != this.getWorld()) || (hasAsWorm(worm)))
+		if (worm.getWorld() != this.getWorld())
+			throw new IllegalStateException();
+		if (worm.getTeam() != this)
 			throw new IllegalStateException();
 		worms.add(worm);
 	}

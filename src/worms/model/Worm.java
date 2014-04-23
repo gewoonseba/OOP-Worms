@@ -640,7 +640,7 @@ public class Worm {
 	 *		|	return == this.getCurrentAP() - 10
 	 * @return If the current weapon is a bazooka, the new AP is the current AP minus 50
 	 * 		| if (this.weapons.get(getCurrentWeaponIndex()) == "Bazooka")
-	 * 		|	return == this.getCurrentAP() - 50
+	 * 		|	return == this.getCurrentAP() - 5
 	 */
 	public int getShootAP(){
 		int newAP = getCurrentAP();
@@ -664,6 +664,8 @@ public class Worm {
 		if (! isValidCurrentAP(currentAP))
 			throw new IllegalAPException(currentAP,this);
 		this.currentAP = currentAP;
+		if((currentAP == 0) && (getWorld() != null))
+			getWorld().startNextTurn();
 	}
 	
 	/**
@@ -758,6 +760,7 @@ public class Worm {
 		if (hasTeam())
 			throw new IllegalStateException();
 		this.team = team;
+		team.addAsWorm(this);
 	}
 	
 	/**

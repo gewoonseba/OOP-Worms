@@ -28,12 +28,19 @@ public class WormTest {
 	 */
 	private static Worm testWormImmBigDirection;
 	
+	/**
+	 * References an immutable Team with TestTeam as its name.
+	 */
+	private static Team testTeam;
+	
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		testWormImmBasic = new Worm(0,0,0,0.25,"James o'Hara 1");
 		testWormImmSmallDirection = new Worm(0,0,Math.PI/4,0.25,"William o'Hara 2");
 		testWormImmBigDirection = new Worm(0,0,Math.PI+1,0.25,"Henry o' Hara 3");
-		
+		testTeam = new Team("TestTeam");
+		testWormImmBasic.setTeamTo(testTeam);
 	}
 	
 	/**
@@ -58,6 +65,7 @@ public class WormTest {
 		testWormMutBasic = new Worm(0,0,0,0.25,"Jimmy o'Hara 4");
 		testWormMutSmallDirection = new Worm(0,0,Math.PI/4,0.25,"Ricky o'Hara 5");
 		testWormMutBigDirection = new Worm(0,0,Math.PI+1,0.25,"Thomas o'Hara 6");
+		testWormMutBasic.setTeamTo(testTeam);
 	}
 	
 	
@@ -285,6 +293,31 @@ public class WormTest {
 	}
 	
 	/**
+	 * Test to check whether canHaveAsTeam returns true in the legal case.
+	 */
+	@Test
+	public void canHaveAsTeam_TrueCase(){
+		assertTrue(testWormImmSmallDirection.canHaveAsTeam(testTeam));
+	}
+	
+	/**
+	 * Test to check whether canHaveAsTeam returns false in the case null is given.
+	 */
+	@Test
+	public void canHaveAsTeam_NullPointerTeam(){
+		assertFalse(testWormImmSmallDirection.canHaveAsTeam(null));
+	}
+	
+	/**
+	 * Test to check whether canHaveAsTeam returns false in the case where
+	 * the worm already belongs to that team.
+	 */
+	@Test
+	public void canHaveAsTeam_AlreadyInTeam(){
+		assertFalse(testWormImmBasic.canHaveAsTeam(testTeam));
+	}
+	
+	/**
 	 * Test to check whether the worm turns to the right angle and his current AP is altered correspondingly.
 	 */
 	@Test
@@ -441,6 +474,85 @@ public class WormTest {
 		assertEquals(testWormImmBasic.getMaxAP(),70);
 	}
 	
+	/**
+	 * Test to check whether getMaxHitPoints returns the proper hitPoints
+	 */
+	@Test
+	public void getMaxHitPoints_SingleCase(){
+		assertEquals(70,testWormImmBasic.getMaxHitPoints());
+	}
+	
+	/**
+	 * Test to check whether selectNextWeapon works properly.
+	 */
+	@Test
+	public void selectNextWeapon_SingleCase(){
+		testWormMutBasic.selectNextWeapon();
+		assertEquals(1,testWormMutBasic.getCurrentWeaponIndex());
+		testWormMutBasic.selectNextWeapon();
+		assertEquals(0,testWormMutBasic.getCurrentWeaponIndex());
+	}
+	
+	/**
+	 * Test to check whether getShootAP returns the right AP in the case where
+	 * the current weapon is a Rifle.
+	 */
+	@Test
+	public void getShootAP_Rifle(){
+		assertEquals(60,testWormImmBasic.getShootAP());
+	}
+	
+	/**
+	 * Test to check whether getShootAP returns the right AP in the case where 
+	 * the current weapon is a Bazooka.
+	 */
+	@Test
+	public void getShootAP_Bazooka(){
+		testWormMutBasic.selectNextWeapon();
+		assertEquals(20,testWormMutBasic.getShootAP());
+	}
+	
+	/**
+	 * Test to check whether getTeamName returns the proper name of the team.
+	 */
+	@Test
+	public void getTeamName_SingleCase(){
+		assertEquals("TestTeam",testWormImmBasic.getTeamName());
+	}
+	
+	/**
+	 * Test to check whether hasTeam returns true if the worm has a team.
+	 */
+	@Test
+	public void hasTeam_TrueCase(){
+		assertTrue(testWormImmBasic.hasTeam());
+	}
+	
+	/**
+	 * Test to check whether hasTeam returns false if the worm has no team.
+	 */
+	@Test
+	public void hasTeam_FalseCase(){
+		assertFalse(testWormImmSmallDirection.hasTeam());
+	}
+	
+	/**
+	 * Test to check whether removeTeam works correctly if the given worm has a Team.
+	 */
+	@Test
+	public void removeTeam_LegalCase(){
+		testWormMutBasic.removeTeam();
+		assertEquals(null,testWormMutBasic.getTeam());
+	}
+
+	/**
+	 * Test to check whether removeTeam throws a NullPointerException if the given worm
+	 * has no team.
+	 */
+	@Test (expected = NullPointerException.class)
+	public void removeTeam_NoTeam(){
+		testWormImmSmallDirection.removeTeam();
+	}
 	
 
 }
