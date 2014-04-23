@@ -2,6 +2,8 @@ package worms.model;
 
 import static org.junit.Assert.*;
 
+import java.util.Random;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,20 +28,42 @@ public class WormTest {
 	 * References an immutable Worm with 0 as its x-coordinate, y-coordinate, PI+1 as its direction,
 	 *  0.25 as its radius and a valid name. 
 	 */
-	private static Worm testWormImmBigDirection;
+	private static Worm testWormImmWithWorld;
 	
 	/**
 	 * References an immutable Team with TestTeam as its name.
 	 */
 	private static Team testTeam;
 	
+	/**
+	 * References an immutable World with 10 as its height and width, a completely passable map and randomGenerator as 
+	 * its random generator.
+	 */
+	private static World testWorld;
 	
+	private static boolean[][] passableMap;
+	
+	/**
+	 * References a random generator with seed 1
+	 */
+	private static Random randomGenerator;
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		testWormImmBasic = new Worm(0,0,0,0.25,"James o'Hara 1");
 		testWormImmSmallDirection = new Worm(0,0,Math.PI/4,0.25,"William o'Hara 2");
-		testWormImmBigDirection = new Worm(0,0,Math.PI+1,0.25,"Henry o' Hara 3");
+		testWormImmWithWorld = new Worm(0,0,0,0.25,"Henry o' Hara 3");
 		testTeam = new Team("TestTeam");
+		passableMap = new boolean[][]{
+				{ true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true },
+				{ true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true }, 
+				{ true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true },
+				{ true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true },
+				{ true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true }};
+		randomGenerator = new Random(1);
+		testWorld = new World(10,10,passableMap,randomGenerator);
+		testWormImmWithWorld.setWorldTo(testWorld);
+		testWorld.addAsWorm(testWormImmWithWorld);
 		testWormImmBasic.setTeamTo(testTeam);
 	}
 	
@@ -58,14 +82,16 @@ public class WormTest {
 	 * References a mutable Worm with 0 as its x-coordinate, y-coordinate, PI+1 as its direction,
 	 *  0.25 as its radius and a valid name. 
 	 */
-	private Worm testWormMutBigDirection;
+	private Worm testWormMutWithWorld;
 
 	@Before
 	public void setUp() throws Exception {
 		testWormMutBasic = new Worm(0,0,0,0.25,"Jimmy o'Hara 4");
 		testWormMutSmallDirection = new Worm(0,0,Math.PI/4,0.25,"Ricky o'Hara 5");
-		testWormMutBigDirection = new Worm(0,0,Math.PI+1,0.25,"Thomas o'Hara 6");
+		testWormMutWithWorld = new Worm(0,0,0,0.25,"Thomas o'Hara 6");
 		testWormMutBasic.setTeamTo(testTeam);
+		testWormMutWithWorld.setWorldTo(testWorld);
+		testWorld.addAsWorm(testWormMutWithWorld);
 	}
 	
 	
@@ -238,6 +264,46 @@ public class WormTest {
 	@Test
 	public void isValidHitPoints_HitPointsExceedingMax(){
 		assertFalse(testWormImmBasic.isValidHitPoints(71));
+	}
+	
+	/**
+	 * Test to check whether isValidWeapon returns true in the legal case.
+	 */
+	@Test
+	public void isValidWeapon_TrueCase(){
+		assertTrue(Worm.isValidWeapon("Rifle"));
+	}
+	
+	/**
+	 * Test to check whether isValidWeapon returns false in the case an illegal weapon is given.
+	 */
+	@Test
+	public void isValidWeapon_FalseCase(){
+		assertFalse(Worm.isValidWeapon("Catapult"));
+	}
+	
+	/**
+	 * Test to check whether isValidPropulsionYield returns true in the legal case.
+	 */
+	@Test
+	public void isValidPropulsionYield_TrueCase(){
+		assertTrue(Worm.isValidPropulsionYield(100));
+	}
+	
+	/**
+	 * Test to check whether isValidPropulsionYield returns false when a negative yield is given.
+	 */
+	@Test
+	public void isValidPropulsionYield_NegativeYield(){
+		assertFalse(Worm.isValidPropulsionYield(-1));
+	}
+	
+	/**
+	 * Test to check whether isValidPropulsionYield returns false when a yield greater than 100 is given.
+	 */
+	@Test
+	public void isValidPropulsionYield_YieldExceedsMax(){
+		assertFalse(Worm.isValidPropulsionYield(101));
 	}
 	
 	/**
@@ -494,6 +560,14 @@ public class WormTest {
 	}
 	
 	/**
+	 * Test to check whether getCurrentWeapon returns "Rifle" if the current weapon index is zero.
+	 */
+	@Test
+	public void getCurrentWeapon_SingleCase(){
+		assertEquals("Rifle",testWormImmBasic.getCurrentWeapon());
+	}
+	
+	/**
 	 * Test to check whether getShootAP returns the right AP in the case where
 	 * the current weapon is a Rifle.
 	 */
@@ -553,6 +627,32 @@ public class WormTest {
 	public void removeTeam_NoTeam(){
 		testWormImmSmallDirection.removeTeam();
 	}
+	
+	/**
+	 * Test to check whether isAlive returns true if the worm has more than zero hitPoints.
+	 */
+	@Test
+	public void isAlive_TrueCase(){
+		assertTrue(testWormImmBasic.isAlive());
+	}
+	
+	/**
+	 * Test to check whether isAlive returns false if the worm has zero hitPoints left.
+	 */
+	@Test
+	public void isAlive_FalseCase(){
+		testWormMutWithWorld.setHitPoints(0);
+		assertFalse(testWormMutWithWorld.isAlive());
+	}
+	
+	//TODO: Needs passableMap
+/*	@Test
+	public void shoot_SingleCase(){
+		testWormMutWithWorld.shoot(10);
+		assert(testWormMutWithWorld.getProjectile() != null);
+		assertEquals(60,testWormMutWithWorld.getCurrentAP());
+		assert(testWorld.getActiveProjectile() != null);
+	}*/
 	
 
 }

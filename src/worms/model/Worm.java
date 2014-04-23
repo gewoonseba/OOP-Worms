@@ -346,7 +346,7 @@ public class Worm {
 			tempY = tempCoordinates[1];
 		}
 		if (getWorld().isOutOfBounds(tempX, tempY,getRadius()))
-			terminate();
+			setHitPoints(0);
 		else {
 			if (getWorld().getDistance(getX(),getY(),tempX,tempY) > getRadius()){
 				setX(tempX);
@@ -369,7 +369,7 @@ public class Worm {
 	 */
 	public double jumpTime(double timeStep) throws IllegalAPException{
 		if (! this.canJumpAP())
-			return 0;	
+			throw new IllegalAPException(getCurrentAP(),this);	
 		double jumpTime = (0.1*this.getRadius())/getInitialSpeed();
 		double[] tempCoordinates = jumpStep(jumpTime);
 		double tempX = tempCoordinates[0];
@@ -932,36 +932,13 @@ public class Worm {
 	private int hitPoints;
 	
 	/**
-	 * Method to terminate this worm, setting its terminated value to true.
-	 */
-	public void terminate(){
-		terminated = true;
-	}
-	
-	/**
-	 * Variable registering whether or not this worm is terminated.
-	 */
-	private boolean terminated = false;
-	
-	/**
-	 * Method to check if the given weapon is a valid weapon.
-	 * @param weapon
-	 * 		The weapon to be checked.
-	 * @return True if and only if the given weapon is "Rifle" or "Bazooka"
-	 * 		| retrun == ((weapon == "Rifle") || (weapon == "Bazooka"))
-	 */
-	public boolean isValidWeapon(String weapon){
-		return ((weapon == "Rifle") || (weapon == "Bazooka"));
-	}
-	
-	/**
 	 * Method to check whether the given propulsion yield is valid.
 	 * @param p
 	 * 		The propulsion yield to be checked.
 	 * @return True if and only if p belongs to the interval [0,100]
 	 * 		| return == ((p >= 0) && (p <= 100))
 	 */
-	public boolean isValidPropulsionYield(int yield){
+	public static boolean isValidPropulsionYield(int yield){
 		return ((yield >= 0) && (yield <= 100));
 	}
 
@@ -1009,7 +986,7 @@ public class Worm {
 	 * @return The coordinates at the circumference of the worm, following the current direction of the worm.
 	 * 		| return = new double[] {(getX() + distance*Math.cos(direction)),(getY() + distance*Math.sin(direction))}
 	 */
-	public double[] getProjectileLocation(){
+	private double[] getProjectileLocation(){
 		double direction = getDirection();
 		double distance = getRadius();
 		double newX = (getX() + distance*Math.cos(direction));
@@ -1026,7 +1003,7 @@ public class Worm {
 	 * 		|if (this.weapons.get(getCurrentWeaponIndex()) == "Bazooka")
 	 *		|	return = 0.3;
 	 */
-	public double getProjectileMass(){
+	private double getProjectileMass(){
 		double mass = 0;
 		if (this.weapons.get(getCurrentWeaponIndex()) == "Rifle")
 			mass = 0.01;
@@ -1050,17 +1027,29 @@ public class Worm {
 	 * 		The given weapon is not a valid weapon.
 	 * 		| ! isValidWeapon(weapon)
 	 */
-	public void addAsWeapon(String weapon) throws IllegalArgumentException{
+	private void addAsWeapon(String weapon) throws IllegalArgumentException{
 		if  (! isValidWeapon(weapon))
 			throw new IllegalArgumentException();
 		weapons.add(weapon);
 	}
 
 	/**
+	 * Method to check if the given weapon is a valid weapon.
+	 * @param weapon
+	 * 		The weapon to be checked.
+	 * @return True if and only if the given weapon is "Rifle" or "Bazooka"
+	 * 		| retrun == ((weapon == "Rifle") || (weapon == "Bazooka"))
+	 */
+	public static boolean isValidWeapon(String weapon){
+		return ((weapon == "Rifle") || (weapon == "Bazooka"));
+	}
+
+
+	/**
 	 * Variable containing a list of the weapons this worm currently has.
 	 */
 	private final List<String> weapons = new ArrayList<String>();
-	
+
 	/**
 	 * Method to select the next weapon of this worm.
 	 * @post the currentWeaponIndex will be increased by 1
@@ -1076,6 +1065,17 @@ public class Worm {
 			currentWeaponIndex = 0;
 	}
 	
+	/**
+	 * Method to return the name of the current weapon of the worm.
+	 * @return "Rifle" if the current weapon index is 0, "Bazooka" if the current weapon index is 1
+	 * 		|if (getCurrentWeaponIndex() == 0)
+	 *		| 	return == "Rifle";
+	 *		|if (getCurrentWeaponIndex() == 1)
+	 *		|	return == "Bazooka";
+	 * @return If the current weapon index is not zero nor 1, the method shall return null.
+	 * 		|if (getCurrentWeaponIndex() != 0) && (getCurrentWeaponIndex() != 1)
+	 * 		| 	return == null
+	 */
 	public String getCurrentWeapon(){
 		if (getCurrentWeaponIndex() == 0)
 			return "Rifle";
@@ -1099,6 +1099,7 @@ public class Worm {
 	
 	/**
 	 * Method for a worm to see if he's in range of food and to potentially eat it.
+	 * 
 	 */
 	public void eatFood(){
 		List<Food> removeFoods= new ArrayList<Food>();
