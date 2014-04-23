@@ -157,7 +157,7 @@ public class Worm {
 		double thetaDown = this.getDirection();
 		double tempX = this.getX() + distance*Math.cos(this.getDirection());
 		double tempY = this.getY() + distance*Math.sin(this.getDirection());
-		while ((Math.abs(thetaUp-getDirection()) < 0.7875) && (! this.getWorld().isAdjacent(tempX,tempY,getRadius()))){
+		while ((Math.abs(thetaUp-getDirection()) < 0.7875) && (! this.getWorld().isAdjacent(tempX,tempY,this.getRadius()))){
 			thetaUp += 0.0175;
 			tempX = this.getX() + distance*Math.cos(thetaUp);
 		    tempY = this.getY() + distance*Math.sin(thetaUp);
@@ -168,6 +168,9 @@ public class Worm {
 	        }
 	    }
 		if (this.getWorld().isAdjacent(tempX,tempY,getRadius())){
+			System.out.println("isadjacenttest");
+			System.out.println(tempX);
+			System.out.println(tempY);
 			return new double[] {tempX,tempY};	
 		}
 		return null;
@@ -184,6 +187,8 @@ public class Worm {
 			newLocation = searchFitLocation(currentDistance);
 			currentDistance -= 0.01;
 		}
+		System.out.println(newLocation[0]);
+		System.out.println(newLocation[1]);
 		if (!(newLocation == null)){
 			double newX = newLocation[0];
 			double newY = newLocation[1];
@@ -207,9 +212,9 @@ public class Worm {
 	 */
 	public void fall(){
 		double oldY = getY();
-		while (! getWorld().isAdjacent(getX(),getY(),getRadius()) && ! getWorld().isOutOfBounds(getX(), getY()))
+		while (! getWorld().isAdjacent(getX(),getY(),getRadius()) && ! getWorld().isOutOfBounds(getX(), getY(),getRadius()))
 			fallPixel();
-		if (! getWorld().isOutOfBounds(getX(), getY())){
+		if (! getWorld().isOutOfBounds(getX(), getY(),getRadius())){
 			int distance = (int) (oldY - getY());
 			int newHitPoints = getHitPoints() - 3*distance;
 			if (newHitPoints >= 0)
@@ -290,13 +295,13 @@ public class Worm {
 		double[] tempCoordinates = jumpStep(time);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
-		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! getWorld().isOutOfBounds(tempX,tempY))){
+		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! getWorld().isOutOfBounds(tempX,tempY,getRadius()))){
 			time += timeStep;
 			tempCoordinates = jumpStep(time);
 			tempX = tempCoordinates[0];
 			tempY = tempCoordinates[1];
 		}
-		if (getWorld().isOutOfBounds(tempX, tempY))
+		if (getWorld().isOutOfBounds(tempX, tempY,getRadius()))
 			terminate();
 		else {
 			if (getWorld().getDistance(getX(),getY(),tempX,tempY) > getRadius()){
@@ -328,7 +333,7 @@ public class Worm {
 		double[] tempCoordinates = jumpStep(jumpTime);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
-		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! getWorld().isOutOfBounds(tempX,tempY))){
+		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! getWorld().isOutOfBounds(tempX,tempY,getRadius()))){
 			jumpTime += timeStep;
 			tempCoordinates = jumpStep(jumpTime);
 			tempX = tempCoordinates[0];

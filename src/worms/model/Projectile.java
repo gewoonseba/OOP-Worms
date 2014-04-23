@@ -200,13 +200,13 @@ public class Projectile {
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
 		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! overlapsWithWorm()) 
-				&& (! getWorld().isOutOfBounds(tempX,tempY))){
+				&& (! getWorld().isOutOfBounds(tempX,tempY,getRadius()))){
 			time += timeStep;
 			tempCoordinates = jumpStep(time);
 			tempX = tempCoordinates[0];
 			tempY = tempCoordinates[1];
 		}
-		if (! getWorld().isOutOfBounds(tempX, tempY)){
+		if (! getWorld().isOutOfBounds(tempX, tempY,getRadius())){
 			setX(tempX);
 			setY(tempY);
 			hit(getOverlappingWorms());
@@ -229,7 +229,7 @@ public class Projectile {
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
 		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! overlapsWithWorm()) 
-				&& (! getWorld().isOutOfBounds(tempX,tempY))){
+				&& (! getWorld().isOutOfBounds(tempX,tempY,getRadius()))){
 			jumpTime += timeStep;
 			tempCoordinates = jumpStep(jumpTime);
 			tempX = tempCoordinates[0];
