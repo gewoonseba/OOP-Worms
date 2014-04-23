@@ -132,15 +132,25 @@ public class Worm {
 	public boolean canMove(){
 		double currentDistance = getRadius();
 		double[] newLocation = null;
+		while (newLocation == null && currentDistance>=0.1){
+			newLocation = searchFitLocation(currentDistance);
+			currentDistance -= 0.01;
+		}
+		currentDistance = getRadius();
 		while (newLocation == null && currentDistance >= 0.1){
 			newLocation = searchFallLocation(currentDistance);
 			currentDistance -= 0.01;
 		}
-		if (newLocation == null){
-			System.out.println("partyhard");
-			return false;}
-		System.out.println("partysoft");
-		return true;
+		if (!(newLocation == null)){
+			double newX = newLocation[0];
+			double newY = newLocation[1];
+			double slope = Math.atan((getY() - newY)/(getX() - newX));
+			int newAP = (int) Math.round(getCurrentAP() - (Math.abs(Math.cos(slope)) + Math.abs(4*Math.sin(slope))));
+			if (newAP >= 0){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -213,16 +223,12 @@ public class Worm {
 	public void move() throws IllegalAPException{
 		double currentDistance = getRadius();
 		double[] newLocation = null;
-		System.out.println("lijst van x en y coordinaat");
-		System.out.println(getX());
-		System.out.println(getY());
 		while (newLocation == null && currentDistance>=0.1){
 			newLocation = searchFitLocation(currentDistance);
 			currentDistance -= 0.01;
 		}
 		currentDistance = getRadius();
 		while (newLocation == null && currentDistance>=0.1){
-			System.out.println("fallekeleggen");
 			newLocation = searchFallLocation(currentDistance);
 			currentDistance -= 0.01;
 		}
@@ -267,13 +273,15 @@ public class Worm {
 	 */
 	public void fall(){
 		double oldY = getY();
-		while (! (getWorld().isAdjacent(getX(),getY(),getRadius()))&& ! (getWorld().isOutOfBounds(getX(), getY(),getRadius())) && this.getWorld().isPassable(getX(), getY(), getRadius()))
+		while (! (getWorld().isAdjacent(getX(),getY(),getRadius()))
+				&& ! (getWorld().isOutOfBounds(getX(), getY(),getRadius())))
 			fallPixel();
 		if (! getWorld().isOutOfBounds(getX(), getY(),getRadius())){
 			int distance = (int) (oldY - getY());
 			int newHitPoints = getHitPoints() - 3*distance;
 			if (newHitPoints >= 0)
 				setHitPoints(newHitPoints);
+			eatFood();
 		}
 		else
 			setHitPoints(0);
@@ -285,12 +293,9 @@ public class Worm {
 	 * 		| new.getY() = this.getY() - getWorld.getHeightScale();
 	 */
 	public void fallPixel(){
-		System.out.println("voor de val");
-		System.out.println(this.getX());
-		System.out.println(this.getY());
 		double distance = getWorld().getHeightScale();
-		setY(getY() - distance);
-		System.out.println(this.getY());
+		setY(getY() - (distance/2));
+		
 	}
 	
 	/**
@@ -361,9 +366,11 @@ public class Worm {
 			if (getWorld().getDistance(getX(),getY(),tempX,tempY) > getRadius()){
 				setX(tempX);
 				setY(tempY);
+				eatFood();
 			}
 			setCurrentAP(0);	
 		}
+		
 	}
 	
 	//TODO:Formal specification
@@ -384,7 +391,6 @@ public class Worm {
 		double[] tempCoordinates = jumpStep(jumpTime);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
-		
 		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! getWorld().isOutOfBounds(tempX,tempY,getRadius()) && this.getWorld().isPassable(tempX, tempY, getRadius()))){
 			jumpTime += timeStep;
 			tempCoordinates = jumpStep(jumpTime);
@@ -1080,7 +1086,6 @@ public class Worm {
 	 * @return "Rifle" if the current weapon index is 0, "Bazooka" if the current weapon index is 1
 	 * 		|if (getCurrentWeaponIndex() == 0)
 	 *		| 	return == "Rifle";
-	 *		|if (getCurrentWeaponIndex() == 1)
 	 *		|	return == "Bazooka";
 	 * @return If the current weapon index is not zero nor 1, the method shall return null.
 	 * 		|if (getCurrentWeaponIndex() != 0) && (getCurrentWeaponIndex() != 1)
@@ -1089,9 +1094,7 @@ public class Worm {
 	public String getCurrentWeapon(){
 		if (getCurrentWeaponIndex() == 0)
 			return "Rifle";
-		if (getCurrentWeaponIndex() == 1)
-			return "Bazooka";
-		return null;
+		return "Bazooka";
 	}
 	
 	/**

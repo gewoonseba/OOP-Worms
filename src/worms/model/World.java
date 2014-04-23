@@ -532,6 +532,8 @@ public class World {
 		Worm worm = new Worm(x,y,direction,radius,name);
 		worm.setWorldTo(this);
 		addAsWorm(worm);
+		if (this.getTeam().size()>0)
+			worm.setTeamTo(getTeam().get(this.getTeam().size()-1));
 		return worm;
 	}
 	
@@ -594,6 +596,7 @@ public class World {
 		if (worm.hasWorld())
 			throw new IllegalStateException();
 		worms.remove(worm);
+		currentTurn-=1;
 	}
 	/**
 	 * 
@@ -881,6 +884,14 @@ public class World {
 	 */
 	public void startGame(){
 		currentTurn = 0;
+	}
+	
+	/**
+	 * Method that returns the current turn.
+	 * @return this.currentTurn
+	 */
+	public int getCurrentTurn(){
+		return this.currentTurn;
 	}
 
 	/**
