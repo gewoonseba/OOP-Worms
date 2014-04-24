@@ -252,11 +252,7 @@ public class World {
 		boolean change = false;
 		int tempX = coordinatesToPixels(x,y)[0];
 		int tempY = coordinatesToPixels(x,y)[1];
-		
 		while ((! isPixelAdjacent(tempX,tempY,radius)) ){
-			//System.out.println("zoeken naar geschikte locatie");
-			//System.out.println(tempX);
-			//System.out.println(tempY);
 			change = false;
 			if (tempX < centerX){
 				tempX += 1;
@@ -324,55 +320,6 @@ public class World {
 			}	
 		}
 
-	/**
-	 * method to see if an object with a given radius is adjacent to impassable terrain.
-	 * @param x
-	 *       |the x coordinate of the center of the object.
-	 * @param y
-	 *       |the y coordinate of the center of the object.
-	 * @param radius
-	 *       |the radius of the object.
-	 * @return returns a boolean that is true if and only if there is an impassable location
-	 *       between the radius and 1.1*radius.
-	 */
-		public boolean oldisAdjacent(double x,double y, double radius){
-			if (!isPassable(x, y, radius))
-				return false;
-			double newX = x + 1.1*radius;
-			double newY = y;
-			int pixelX = coordinatesToPixels(newX, newY)[0];
-			int immPixelX = coordinatesToPixels(x, newY)[0];
-			int pixelY = coordinatesToPixels(newX, newY)[1];
-			int change = 0;
-			double maxDistance= (1.1*radius)/getWidthScale();
-			double minDistance= radius/getWidthScale();
-			if ((immPixelX + maxDistance>(getPixelWidth()-1) || immPixelX - maxDistance< 0 || pixelY + maxDistance>(getPixelHeight()-1) || pixelY-maxDistance<0))
-				
-				return false;
-			while(true){
-				if (Math.abs(pixelX-immPixelX)>maxDistance+1){
-					return false;
-				}
-				if (passableMap[pixelY][pixelX]==false){
-					return true;
-				}
-				do {
-					change+=1;
-				} while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<minDistance-0.1);
-				while(Math.sqrt((immPixelX-pixelX)*(immPixelX-pixelX)+(change)*(change))<=maxDistance+0.1){
-					if (passableMap[pixelY - change][pixelX]==false){
-						return true;
-					}
-					if (passableMap[pixelY + change][pixelX]==false){
-						return true;
-					}
-					change+=1;
-				}
-				change=0;
-				pixelX-=1;
-			}	
-		}
-		
 		/**
 		 * method to see if an object with a given radius is adjacent to impassable terrain.
 		 * @param x
@@ -383,11 +330,12 @@ public class World {
 		 *       |the radius of the object.
 		 * @return returns a boolean that is true if and only if there is an impassable location
 		 *       between the radius and 1.1*radius.
-		 */
+	     */
 		
 		public boolean isAdjacent(double x,double y,double radius){
-			if (!isPassable(x,y,radius))
-				return false;
+			if (!isPassable(x,y,radius)){
+				System.out.println("nietPassabble");
+				return false;}
 			double change=0.0;
 			double maxDistance = 1.1 * radius;
 			double minDistance = radius;
@@ -472,32 +420,7 @@ public class World {
 		int pixelY = coordinatesToPixels(newX, newY)[1];
 		return this.isPixelPassable(immPixelX,pixelY,radius);
 		}
-//		int change = 0;
-//		double maxDistance= radius/getHeightScale(); 
-//		while(true){
-//			System.out.println("1keer");
-//			if (Math.abs(pixelX-immPixelX)>maxDistance+0.01){
-//				System.out.println("pasableklaar");
-//				return true;
-//			}
-//			
-//			if (passableMap[pixelY][pixelX]==false){
-//				return false;
-//			}
-//			change=1;
-//			while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<maxDistance){
-//				if (passableMap[pixelY+change][pixelX]==false){
-//					return false;
-//				}
-//				if (passableMap[pixelY - change][pixelX]==false){
-//					return false;
-//				}
-//				change+=1;
-//			}
-//			pixelX-=1;
-//			change=0;
-//		}		
-//	}
+
 
 
 	//TODO: specification
@@ -610,7 +533,9 @@ public class World {
 		if (worm.hasWorld())
 			throw new IllegalStateException();
 		worms.remove(worm);
-		currentTurn-=1;
+		if (currentTurn>=worms.size()){
+			currentTurn=0;
+		}
 	}
 	/**
 	 * 
@@ -619,7 +544,9 @@ public class World {
 	 * 
 	 * @return
 	 */
-	public Worm getCurrentWorm(){
+	public Worm getCurrentWorm() throws IndexOutOfBoundsException{
+		if (getCurrentTurn()>=getWorms().size())
+			throw new IndexOutOfBoundsException("currentTurn is too high.");
 		return this.getWorms().get(currentTurn);
 	}
 	
@@ -768,7 +695,7 @@ public class World {
 	public void removeAsFood(Food food) throws IllegalFoodException, IllegalStateException{
 		if ((food == null) || (! hasAsFood(food)))
 			throw new IllegalFoodException(food);
-		if (!food.hasWorld())
+		if (food.hasWorld())
 			throw new IllegalStateException();
 		this.food.remove(food);
 	}

@@ -341,7 +341,7 @@ public class Projectile {
 	 */
 	public boolean overlapsWithWorm(double x, double y){
 		for (Worm worm: getWorld().getWorms()){
-			if (getWorld().getDistance(x, y, worm.getX(), worm.getY()) < (getRadius() + worm.getRadius()) && (worm!=this.getWorm()))
+			if (World.getDistance(x, y, worm.getX(), worm.getY()) < (getRadius() + worm.getRadius()) && (worm!=this.getWorm()))
 				return true;
 		}
 		return false;
@@ -354,7 +354,7 @@ public class Projectile {
 	public List<Worm> getOverlappingWorms(){
 		List<Worm> affectedWorms = new ArrayList<Worm>();
 		for (Worm worm: getWorld().getWorms()){
-			if (getWorld().getDistance(getX(), getY(), worm.getX(), worm.getY()) < (getRadius() + worm.getRadius()))
+			if (World.getDistance(getX(), getY(), worm.getX(), worm.getY()) < (getRadius() + worm.getRadius()))
 				affectedWorms.add(worm);
 		}
 		return affectedWorms;
