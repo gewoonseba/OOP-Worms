@@ -285,9 +285,9 @@ public class Worm {
 	public void fall(){
 		double oldY = getY();
 		while (! (getWorld().isAdjacent(getX(),getY(),getRadius()))
-				&& ! (getWorld().isOutOfBounds(getX(), getY(),getRadius())))
+				&& ! (getWorld().isValidLocation(getX(), getY(),getRadius())))
 			fallStep();
-		if (! getWorld().isOutOfBounds(getX(), getY(),getRadius())){
+		if (! getWorld().isValidLocation(getX(), getY(),getRadius())){
 			int distance = (int) (oldY - getY());
 			int newHitPoints = getHitPoints() - 3*distance;
 			if (newHitPoints >= 0)
@@ -357,13 +357,13 @@ public class Worm {
 		double[] tempCoordinates = jumpStep(time);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
-		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! getWorld().isOutOfBounds(tempX,tempY,getRadius()) && this.getWorld().isPassable(tempX, tempY, getRadius()))){
+		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! getWorld().isValidLocation(tempX,tempY,getRadius()) && this.getWorld().isPassable(tempX, tempY, getRadius()))){
 			time += timeStep;
 			tempCoordinates = jumpStep(time);
 			tempX = tempCoordinates[0];
 			tempY = tempCoordinates[1];
 		}
-		if (getWorld().isOutOfBounds(tempX, tempY,getRadius()))
+		if (getWorld().isValidLocation(tempX, tempY,getRadius()))
 			setHitPoints(0);
 		else {
 			if (World.getDistance(getX(),getY(),tempX,tempY) > getRadius()){
@@ -396,7 +396,7 @@ public class Worm {
 		double[] tempCoordinates = jumpStep(jumpTime);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
-		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! getWorld().isOutOfBounds(tempX,tempY,getRadius()) && this.getWorld().isPassable(tempX, tempY, getRadius()))){
+		while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! getWorld().isValidLocation(tempX,tempY,getRadius()) && this.getWorld().isPassable(tempX, tempY, getRadius()))){
 			jumpTime += timeStep;
 			tempCoordinates = jumpStep(jumpTime);
 			tempX = tempCoordinates[0];

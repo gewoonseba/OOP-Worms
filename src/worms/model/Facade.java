@@ -124,7 +124,7 @@ public class Facade implements IFacade{
 
 	@Override
 	public Food createFood(World world, double x, double y) throws ModelException {
-		if ((world==null)||world.isOutOfBounds(x, y, Food.getRadius()))
+		if ((world==null)||world.isValidLocation(x, y, Food.getRadius()))
 				throw new ModelException("Can't create this food.");
 		return world.createFood(x, y);
 	}

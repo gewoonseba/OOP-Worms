@@ -16,12 +16,18 @@ import be.kuleuven.cs.som.annotate.*;
 public class World {
 
 	/**
-	 * Create a new World.
-	 * 
+	 * Create a new World. A world has a height, a width, a passableMap and a random generator. There are
+	 * methods to add worms and food to and delete worms and food from a world. Furthermore, methods shall be 
+	 * provided to check if a certain position is passable, impassable or adjacent to impassable terrain. 
 	 * @param width
 	 * @param height
 	 * @param passableMap
 	 * @param random
+	 * @post new.getWidth() = width
+	 * @post new.getHeight() = height
+	 * @post new.getRandomGenerator() = random
+	 * @post new.centerX = this.getPixelWidth()/2
+	 * @post new.centerY = this.getPixelHeight()/2
 	 */
 	@Raw
 	public World(double width, double height, boolean[][] passableMap, Random random) {
@@ -45,7 +51,7 @@ public class World {
 	/**
 	 * Variable registering the random generator of this world.
 	 */
-	private Random randomGenerator;
+	private final Random randomGenerator;
 	
 	/**
 	 * Returns the passableMap of this world.
@@ -99,7 +105,7 @@ public class World {
 	/**
 	 * Method to return the amount of pixels on the horizontal axis of the World.
 	 * @return The length of passableMap
-	 * 		| return == passableMap.length
+	 * 		| return == passableMap[0].length
 	 */
 	public int getPixelWidth(){
 		return passableMap[0].length;
@@ -154,7 +160,7 @@ public class World {
 	/**
 	 * Method to return the amount of pixels on the vertical axis of the World.
 	 * @return The length of the first array of passableMap
-	 * 		| return == passableMap[0].length
+	 * 		| return == passableMap.length
 	 */
 	public int getPixelHeight(){
 		return passableMap.length;
@@ -203,9 +209,9 @@ public class World {
 	 * @param y
 	 * 		The y coordinate to be checked.
 	 * @return False if x or y is less than zero, or if x is greater than the width or y greater than the height.
-	 * 		result == ( (x < 0) || (x > getWidth()) || (y < 0) || (y > getHeight()) )
+	 * 		result == ( (x < 0) || (x > getWidth()) || (y < 0) || (y > getHeight()) || Double.isNaN(x) || Double.isNaN(y) )
 	 */
-	public boolean isOutOfBounds(double x, double y,double radius){
+	public boolean isValidLocation(double x, double y,double radius){
 		return ( (x-radius < 0) || (x+radius > getWidth()) || (y-radius < 0) 
 				|| (y+radius > getHeight()) || Double.isNaN(x) || Double.isNaN(y) );
 	}
@@ -222,7 +228,7 @@ public class World {
 	 */
 	private double[] pixelsToCoordinates(int x,int y){
 		double newX = x*getWidthScale();
-		double newY = (getPixelHeight()-y)*getHeightScale();
+		double newY = (getPixelHeight() - y)*getHeightScale();
 		return new double[] {newX,newY};
 	}
 	
@@ -243,6 +249,7 @@ public class World {
 		return new int[] {newX,newY};
 	}
 	
+	//TODO: Formal specification
 	/**
 	 * Method to search for a position adjacent to impassable terrain, beginning from a given position.
 	 * @param tempX
@@ -348,7 +355,7 @@ public class World {
 				do {change+=(getWidthScale()/2);
 					}while((Math.sqrt((xchange)*(xchange)+(change)*(change))<minDistance-0.01));
 				while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<=maxDistance )){
-					if (isOutOfBounds(x+xchange, y-change,1.1* radius)||isOutOfBounds(x+xchange, y+change,1.1* radius))
+					if (isValidLocation(x+xchange, y-change,1.1* radius)||isValidLocation(x+xchange, y+change,1.1* radius))
 						break;
 					if (passableMap[coordinatesToPixels(x + xchange, y+change)[1]][coordinatesToPixels(x + xchange, y+ change)[0]]==false)
 						return true;
@@ -371,26 +378,23 @@ public class World {
 		 *       |the radius of the object.
 		 * @return returns a boolean that is true if and only if there is no impassable location
 		 *       in the given radius.
+		 *       
 		 */
 		public boolean isPixelPassable(int x, int y, double radius){
-			
 			int maxDistance=(int) Math.round((radius)/getWidthScale());
 			int pixelX = x + maxDistance;
 			int pixelY = y;
-			//if ((x + maxDistance>(getPixelWidth()-1) || x - maxDistance< 0 || pixelY + maxDistance>(getPixelHeight()-1) || pixelY-maxDistance<0))
-			//	return false;
 			double immPixelX = x;
 			int change = 0;
 			while(true){
-				if (Math.abs(pixelX-immPixelX)>maxDistance+0.01){
+				if (Math.abs(pixelX-immPixelX) > maxDistance + 0.01){
 					return true;
 				}
-				
 				if (passableMap[pixelY][pixelX]==false){
 					return false;
 				}
 				change=1;
-				while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<maxDistance){
+				while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change)) < maxDistance){
 					if (passableMap[pixelY+change][pixelX]==false){
 						return false;
 					}
@@ -416,7 +420,7 @@ public class World {
 	 *       in the given radius.
 	 */
 	public boolean isPassable(double x, double y, double radius){
-		if (isOutOfBounds(x, y, radius))
+		if (isValidLocation(x, y, radius))
 			return false;
 		double newX = x + radius;
 		double newY = y;
@@ -426,14 +430,11 @@ public class World {
 		return this.isPixelPassable(immPixelX,pixelY,radius);
 		}
 
-
-
-	//TODO: specification
 	/**
 	 * Method to create a new Worm and put it at a random location in this world.
 	 * @effect The new worm is created with a random x and y coordinate (which results in an adjacent position), the minimal radius, direction set to zero
 	 * 		and a name with a number, which is a representation of how many worms are already in this world.
-	 * 		| new Worm worm = createWorm(randomX,randomY,0,Worm.getMinimalRadius(),"player x")
+	 * 		| createWorm(searchAdjacentFrom(randomX,randomY)[0],searchAdjacentFrom(randomX,randomY)[1,]0,Worm.getMinimalRadius(),"player x")
 	 */
 	public void addNewWorm() {
 		double[] location = null;
@@ -450,7 +451,7 @@ public class World {
 		createWorm(location[0], location[1], 0, radius, playerNumber);
 	}
 	
-	//TODO: Postconditions
+	//XXX: ok?
 	/**
 	 * Method to create a worm and add it to this world.
 	 * @param x
@@ -464,17 +465,19 @@ public class World {
 	 * @param name
 	 * 		The name the new worm should have.
 	 * @effect The new worm is initialized with x,y,direction,radius and name.
-	 * 		| worm = new Worm(x,y,direction,radius,name)
-	 * @post The world of the new worm is this world.
-	 * 		| new.worm.getWorld() == this
-	 * @post The new worm belongs to this world.
-	 * 		| this.worms.contains(worm)
+	 * 		| new Worm(x,y,direction,radius,name)
+	 * @effect Set the world of the new worm to this.
+	 * 		| new.worm.setWorldTo(this)
+	 * @effect Add the new worm to this world.
+	 * 		| addAsWorm(new.worm)
+	 * @return The newly created worm is returned.
+	 * 		| new Worm(x,y,direction,radius,name)
 	 */
 	public Worm createWorm(double x,double y,double direction,double radius,String name) throws IllegalArgumentException
 	,IllegalRadiusException,IllegalNameException{
 		if (!Worm.isValidRadius(radius))
 			throw new IllegalRadiusException(radius);
-		if (isOutOfBounds(x, y, radius))
+		if (isValidLocation(x, y, radius))
 			throw new IllegalArgumentException("These coordinates won't work");
 		if (!Worm.isValidName(name))
 			throw new IllegalNameException(name);
@@ -511,7 +514,7 @@ public class World {
 	 * @param worm
 	 * 		 the worm to be added
 	 * @post If the worm is valid, this world has the given worm as one of its worms.
-	 * 		| worms.contains(worm)
+	 * 		| new.worms.contains(worm)
 	 * @post If the worm is not valid, no worm will be added.
 	 * 		| new.worms == this.worms
 	 * @throws IllegalWormException
@@ -532,6 +535,11 @@ public class World {
 	/**
 	 * Method to remove the given worm from this world.
 	 * @param worm
+	 * @post The given worm will be removed from this world.
+	 * 		|new.worms.contains(worm) == false
+	 * @post If the currentTurn is at the last worm, the currentTurn is set to zero.
+	 * 		| if (currentTurn>=worms.size()){
+	 *		|	new.currentTurn == 0
 	 * @throws IllegalWormException
 	 * 		The given worm is not effective, or this world does not contain the given worm.
 	 * 		| (worm == null) || (! hasAsWorm(worm))
@@ -550,10 +558,6 @@ public class World {
 		}
 	}
 	/**
-	 * 
-	 * 
-	 * 
-	 * 
 	 * @return
 	 */
 	public Worm getCurrentWorm() throws IndexOutOfBoundsException{

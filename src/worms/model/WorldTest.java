@@ -158,7 +158,7 @@ public class WorldTest {
 	 */
 	@Test
 	public void isOutOfBounds_NearOrigin(){
-		assertTrue(testWorldImm.isOutOfBounds(0, 0, 0.1));
+		assertTrue(testWorldImm.isValidLocation(0, 0, 0.1));
 	}
 	
 	/**
@@ -167,7 +167,7 @@ public class WorldTest {
 	 */
 	@Test
 	public void isOutOfBounds_NearMax(){
-		assertTrue(testWorldImm.isOutOfBounds(10, 10, 0.1));
+		assertTrue(testWorldImm.isValidLocation(10, 10, 0.1));
 	}
 	
 	/**
@@ -176,7 +176,7 @@ public class WorldTest {
 	 */
 	@Test
 	public void isOutOfBounds_FalseCase(){
-		assertFalse(testWorldImm.isOutOfBounds(9, 9, 1));
+		assertFalse(testWorldImm.isValidLocation(9, 9, 1));
 	}
 	
 	/**
