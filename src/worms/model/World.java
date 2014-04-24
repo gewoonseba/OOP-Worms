@@ -333,28 +333,30 @@ public class World {
 	     */
 		
 		public boolean isAdjacent(double x,double y,double radius){
-			if (!isPassable(x,y,radius)){
-				System.out.println("nietPassabble");
-				return false;}
+			if (!isPassable(x,y,radius))
+				return false;
 			double change=0.0;
 			double maxDistance = 1.1 * radius;
 			double minDistance = radius;
 			double xchange=maxDistance;
 			while(true){
-				if (Math.abs(xchange)>maxDistance+0.1){
+				if (Math.abs(xchange)>maxDistance){
 					return false;}
 				if (passableMap[coordinatesToPixels(x+xchange, y)[1]][coordinatesToPixels(x+xchange, y)[0]]==false)
 					return true;
-				do {change+=(getWidthScale()/3);
-					}while((Math.sqrt((xchange)*(xchange)+(change)*(change))<minDistance-0.1));
-				while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<=maxDistance + 0.1)){
-					if (passableMap[coordinatesToPixels(x+ xchange, y+change)[1]][coordinatesToPixels(x+xchange, y+change)[0]]==false)
+				do {change+=(getWidthScale()/2);
+					}while((Math.sqrt((xchange)*(xchange)+(change)*(change))<minDistance-0.01));
+				while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<=maxDistance )){
+					if (isOutOfBounds(x+xchange, y-change,1.1* radius)||isOutOfBounds(x+xchange, y+change,1.1* radius))
+						break;
+					if (passableMap[coordinatesToPixels(x + xchange, y+change)[1]][coordinatesToPixels(x + xchange, y+ change)[0]]==false)
 						return true;
-					if (passableMap[coordinatesToPixels(x +xchange, y-change)[1]][coordinatesToPixels(x+xchange, y-change)[0]]==false)
+					if (passableMap[coordinatesToPixels(x + xchange, y-change)[1]][coordinatesToPixels(x + xchange, y- change)[0]]==false)
 						return true;
-					change+=(getWidthScale()/3);
+					change+=(getWidthScale()/2);
 				}
-				xchange-=(getWidthScale()/3);
+				xchange-=(getWidthScale()/2);
+				change =0;
 			}
 		}
 		
