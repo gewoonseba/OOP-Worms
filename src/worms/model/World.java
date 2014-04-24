@@ -335,7 +335,7 @@ public class World {
 	 * @return returns a boolean that is true if and only if there is an impassable location
 	 *       between the radius and 1.1*radius.
 	 */
-		public boolean isAdjacent(double x,double y, double radius){
+		public boolean oldisAdjacent(double x,double y, double radius){
 			if (!isPassable(x, y, radius))
 				return false;
 			double newX = x + 1.1*radius;
@@ -347,9 +347,10 @@ public class World {
 			double maxDistance= (1.1*radius)/getWidthScale();
 			double minDistance= radius/getWidthScale();
 			if ((immPixelX + maxDistance>(getPixelWidth()-1) || immPixelX - maxDistance< 0 || pixelY + maxDistance>(getPixelHeight()-1) || pixelY-maxDistance<0))
+				
 				return false;
 			while(true){
-				if (Math.abs(pixelX-immPixelX)>maxDistance+0.1){
+				if (Math.abs(pixelX-immPixelX)>maxDistance+1){
 					return false;
 				}
 				if (passableMap[pixelY][pixelX]==false){
@@ -357,7 +358,7 @@ public class World {
 				}
 				do {
 					change+=1;
-				} while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<minDistance);
+				} while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<minDistance-0.1);
 				while(Math.sqrt((immPixelX-pixelX)*(immPixelX-pixelX)+(change)*(change))<=maxDistance+0.1){
 					if (passableMap[pixelY - change][pixelX]==false){
 						return true;
@@ -370,6 +371,43 @@ public class World {
 				change=0;
 				pixelX-=1;
 			}	
+		}
+		
+		/**
+		 * method to see if an object with a given radius is adjacent to impassable terrain.
+		 * @param x
+		 *       |the x coordinate of the center of the object.
+		 * @param y
+		 *       |the y coordinate of the center of the object.
+		 * @param radius
+		 *       |the radius of the object.
+		 * @return returns a boolean that is true if and only if there is an impassable location
+		 *       between the radius and 1.1*radius.
+		 */
+		
+		public boolean isAdjacent(double x,double y,double radius){
+			if (!isPassable(x,y,radius))
+				return false;
+			double change=0.0;
+			double maxDistance = 1.1 * radius;
+			double minDistance = radius;
+			double xchange=maxDistance;
+			while(true){
+				if (Math.abs(xchange)>maxDistance+0.1){
+					return false;}
+				if (passableMap[coordinatesToPixels(x+xchange, y)[1]][coordinatesToPixels(x+xchange, y)[0]]==false)
+					return true;
+				do {change+=(getWidthScale()/3);
+					}while((Math.sqrt((xchange)*(xchange)+(change)*(change))<minDistance-0.1));
+				while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<=maxDistance + 0.1)){
+					if (passableMap[coordinatesToPixels(x+ xchange, y+change)[1]][coordinatesToPixels(x+xchange, y+change)[0]]==false)
+						return true;
+					if (passableMap[coordinatesToPixels(x +xchange, y-change)[1]][coordinatesToPixels(x+xchange, y-change)[0]]==false)
+						return true;
+					change+=(getWidthScale()/3);
+				}
+				xchange-=(getWidthScale()/3);
+			}
 		}
 		
 		/**
@@ -508,6 +546,8 @@ public class World {
 		Worm worm = new Worm(x,y,direction,radius,name);
 		worm.setWorldTo(this);
 		addAsWorm(worm);
+		if (this.getTeam().size()>0)
+			worm.setTeamTo(getTeam().get(this.getTeam().size()-1));
 		return worm;
 	}
 	
@@ -570,6 +610,7 @@ public class World {
 		if (worm.hasWorld())
 			throw new IllegalStateException();
 		worms.remove(worm);
+		currentTurn-=1;
 	}
 	/**
 	 * 
@@ -857,6 +898,14 @@ public class World {
 	 */
 	public void startGame(){
 		currentTurn = 0;
+	}
+	
+	/**
+	 * Method that returns the current turn.
+	 * @return this.currentTurn
+	 */
+	public int getCurrentTurn(){
+		return this.currentTurn;
 	}
 
 	/**

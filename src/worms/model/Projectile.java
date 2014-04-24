@@ -224,7 +224,7 @@ public class Projectile {
 	 * @return Returns the time it takes to jump.
 	 *        | return == (distance/(initialSpeed*Math.cos(this.getDirection())))
 	 */
-	public double jumpTime(double timeStep) throws IllegalJumpDirectionException{
+	public double jumpTime(double timeStep) {
 		double jumpTime = (0.1*this.getRadius())/getInitialSpeed();
 		double[] tempCoordinates = jumpStep(jumpTime);
 		double tempX = tempCoordinates[0];
