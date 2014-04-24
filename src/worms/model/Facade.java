@@ -312,6 +312,10 @@ public class Facade implements IFacade{
 	public void shoot(Worm worm, int yield) throws ModelException{
 		if (!Worm.isValidPropulsionYield(yield))
 			throw new ModelException("Yield is incorrect");
+		if (! worm.getWorld().isPassable(worm.getX(), worm.getY(), worm.getRadius()))
+			throw  new ModelException("This worm is standing on impassable terrain.");
+		if (worm.getShootAP()<0)
+			throw new ModelException("Not enough AP to shoot.");
 		worm.shoot(yield);
 	}
 
