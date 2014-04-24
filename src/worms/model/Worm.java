@@ -207,8 +207,6 @@ public class Worm {
 		double thetaDown = this.getDirection();
 		double tempX = this.getX() + distance*Math.cos(this.getDirection());
 		double tempY = this.getY() + distance*Math.sin(this.getDirection());
-		System.out.println("falltest");
-		System.out.println(this.getWorld().isPassable(tempX,tempY,this.getRadius()));
 		while ((Math.abs(thetaUp-getDirection()) < 0.7875) && (! this.getWorld().isPassable(tempX,tempY,this.getRadius()))){
 			thetaUp += 0.0175;
 			tempX = this.getX() + distance*Math.cos(thetaUp);
@@ -1048,6 +1046,7 @@ public class Worm {
 		getWorld().setActiveProjectile(projectile);
 		setCurrentAP(newAP);
 	}
+	
 	
 	/**
 	 * Method to return the location a new projectile should be initialized.
