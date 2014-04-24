@@ -515,14 +515,6 @@ public class WormTest {
 	public void jumpStep_IllegalTimeException(){
 		testWormImmBasic.jumpStep(-0.1);
 	}
-
-	/**
-	 * Test to check whether canJumpDirection returns True in the legal case.
-	 */
-	@Test
-	public void canJumpDirection_TrueCase(){
-		assertTrue(testWormImmBasic.canJumpDirection());
-	}
 	
 	/**
 	 * Test to check whether getMass returns the proper mass.
