@@ -197,7 +197,7 @@ public class World {
 	}
 	
 	/**
-	 * Method to check wheter the given coordinate is outside the boundaries of this world.
+	 * Method to check whether the given coordinate is outside the boundaries of this world.
 	 * @param x
 	 * 		The x coordinate to be checked.
 	 * @param y
@@ -206,7 +206,8 @@ public class World {
 	 * 		result == ( (x < 0) || (x > getWidth()) || (y < 0) || (y > getHeight()) )
 	 */
 	public boolean isOutOfBounds(double x, double y,double radius){
-		return ( (x-radius < 0) || (x+radius > getWidth()) || (y-radius < 0) || (y+radius > getHeight()) );
+		return ( (x-radius < 0) || (x+radius > getWidth()) || (y-radius < 0) 
+				|| (y+radius > getHeight()) || Double.isNaN(x) || Double.isNaN(y) );
 	}
 	
 	/**
@@ -376,8 +377,8 @@ public class World {
 			int maxDistance=(int) Math.round((radius)/getWidthScale());
 			int pixelX = x + maxDistance;
 			int pixelY = y;
-			if ((x + maxDistance>(getPixelWidth()-1) || x - maxDistance< 0 || pixelY + maxDistance>(getPixelHeight()-1) || pixelY-maxDistance<0))
-				return false;
+			//if ((x + maxDistance>(getPixelWidth()-1) || x - maxDistance< 0 || pixelY + maxDistance>(getPixelHeight()-1) || pixelY-maxDistance<0))
+			//	return false;
 			double immPixelX = x;
 			int change = 0;
 			while(true){
@@ -415,6 +416,8 @@ public class World {
 	 *       in the given radius.
 	 */
 	public boolean isPassable(double x, double y, double radius){
+		if (isOutOfBounds(x, y, radius))
+			return false;
 		double newX = x + radius;
 		double newY = y;
 		int pixelX = coordinatesToPixels(newX, newY)[0];
@@ -467,7 +470,14 @@ public class World {
 	 * @post The new worm belongs to this world.
 	 * 		| this.worms.contains(worm)
 	 */
-	public Worm createWorm(double x,double y,double direction,double radius,String name){
+	public Worm createWorm(double x,double y,double direction,double radius,String name) throws IllegalArgumentException
+	,IllegalRadiusException,IllegalNameException{
+		if (!Worm.isValidRadius(radius))
+			throw new IllegalRadiusException(radius);
+		if (isOutOfBounds(x, y, radius))
+			throw new IllegalArgumentException("These coordinates won't work");
+		if (!Worm.isValidName(name))
+			throw new IllegalNameException(name);
 		Worm worm = new Worm(x,y,direction,radius,name);
 		worm.setWorldTo(this);
 		addAsWorm(worm);
