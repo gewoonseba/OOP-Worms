@@ -41,6 +41,11 @@ public class WorldTest {
 	private static Food testFoodMut;
 	
 	/**
+	 * Variable registering a mutable legal team.
+	 */
+	private static Team testTeamMut;
+	
+	/**
 	 * Variable registering a mutable legal worm.
 	 */
 	private static Worm testWormMut;
@@ -56,6 +61,7 @@ public class WorldTest {
 		testFoodMut = new Food(5,5);
 		testWorldMut = new World(10,10, testCheckered, randomGenerator1);
 		testWormMut = new Worm(5,5,0,0.25,"Johnny");
+		testTeamMut = new Team("Random");
 	}
 
 	/**
@@ -409,4 +415,95 @@ public class WorldTest {
 	    testWorldMut.addAsFood(testFoodMut);
 	    testWorldMut.removeAsFood(testFoodMut);
 	}
+
+	/**
+	 * Test to check whether canHaveAsWorm returns true in the case where the world can have the 
+	 * given food.
+	 */
+	@Test
+	public void canHaveAsTeam_TrueCase(){
+		assertTrue(testWorldImm.canHaveAsTeam(testTeamMut));
+	}
+	
+	/**
+	 *  Test to check whether canHaveAsTeam returns false in the case where the world can't have the 
+	 * given food.
+	 */
+	@Test
+	public void canHaveAsTeam_FalseCase(){
+		Team falseTestTeam = null;
+		assertFalse(testWorldImm.canHaveAsTeam(falseTestTeam));
+	}
+	
+	/**
+	 * Test to check whether addAsTeam returns true in the case where the world can add the food.
+	 */
+	@Test
+	public void addAsTeam_TrueCase(){
+	    testTeamMut.setWorldTo(testWorldMut);
+	    testWorldMut.addAsTeam(testTeamMut);
+	    assertTrue(testWorldMut.hasAsTeam(testTeamMut));
+	}
+	
+	/**
+	 * Test to whether addAsTeam throws an IllegalTeamexception if the given world
+	 * can't add the given food.
+	 */
+	@Test (expected = IllegalTeamException.class)
+	public void addAsTeam_IllegalTeamException(){
+		Team falseTestTeam = null;
+		testWorldMut.addAsTeam(falseTestTeam);
+	}
+	
+	/**
+	 * Test to whether addAsTeam throws an IllegalTeamexception if the given world
+	 * can't add the given food.
+	 */
+	@Test (expected = IllegalStateException.class)
+	public void addAsTeam_IllegalStateException(){
+		testWorldMut.addAsTeam(testTeamMut);
+	}
+	
+	/**
+	 * Test to check whether removeAsTeam removes a food from the world in a legal case.
+	 */
+	@Test
+	public void RemoveAsTeam_TrueCase(){
+		testTeamMut.setWorldTo(testWorldMut);
+	    testWorldMut.addAsTeam(testTeamMut);
+	    testTeamMut.removeWorld();
+	    assertFalse(testWorldMut.hasAsTeam(testTeamMut));
+	}
+	
+	/**
+	 * Test to check whether removeAsTeam throws an IllegalTeamException in the case the given Team is null.
+	 */
+	@Test (expected = IllegalTeamException.class)
+	public void RemoveAsTeam_IllegalTeamException(){
+		Team falseTestTeam = null;
+	    testWorldMut.removeAsTeam(falseTestTeam);
+	}
+	
+	/**
+	 * Test to check whether removeAsTeam throws an IllegaStateException in the case the given Team still
+	 * has a world.
+	 */
+	@Test (expected = IllegalStateException.class)
+	public void RemoveAsTeam_IllegalStateException(){
+		testTeamMut.setWorldTo(testWorldMut);
+	    testWorldMut.addAsTeam(testTeamMut);
+	    testWorldMut.removeAsTeam(testTeamMut);
+	}
+	
+	/**
+	 * Test to check whether createWorm creates a worm correctly.
+	 */
+	@Test
+	public void createWorm_SingleCase(){
+		testWorldMut.createWorm(5, 5, 0, 0.25, "Mike");
+		assertTrue(testWorldMut.getWorms().size()==1);
+	}
+	/**
+	 * Test to check whether createWorm throws IllegalArgumentException if given a wrong coordinate.
+	 */
 }
