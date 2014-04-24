@@ -27,7 +27,7 @@ public class World {
 	public World(double width, double height, boolean[][] passableMap, Random random) {
 		this.passableMap = passableMap;
 		assert isValidWidth(width);
-		assert isValidWidth(width);
+		assert isValidHeight(height);
 		this.width = width;
 		this.height = height;
 		this.randomGenerator = random;
@@ -36,10 +36,24 @@ public class World {
 	}
 	
 	/**
+	 * Returns the randomGenerator of this world.
+	 */
+	@Basic
+	public Random getRandomGenerator(){
+		return this.randomGenerator;
+	}
+	/**
 	 * Variable registering the random generator of this world.
 	 */
 	private Random randomGenerator;
 	
+	/**
+	 * Returns the passableMap of this world.
+	 */
+	@Basic
+	public boolean[][] getPassableMap(){
+		return this.passableMap;
+	}
 	/**
 	 * Variable registering the passableMap of this World.
 	 */
@@ -178,7 +192,7 @@ public class World {
 	 * @return The square root of the sum of the square of the differences between x coordinates and y coordinates. 
 	 * 		return == Math.sqrt(Math.pow((newX - x), 2) + Math.pow((newY -y), 2))
 	 */
-	public double getDistance(double x,double y,double newX,double newY){
+	public static double getDistance(double x,double y,double newX,double newY){
 		return Math.sqrt(Math.pow((newX - x), 2) + Math.pow((newY -y), 2));
 	}
 	
@@ -205,7 +219,7 @@ public class World {
 	 * 			and then multiplied with the height scale. The result is returned as an array of doubles.
 	 * 			| return == {x*getWidthScale(),(getPixelHeight() - y)*getHeightScale()}
 	 */
-	public double[] pixelsToCoordinates(int x,int y){
+	private double[] pixelsToCoordinates(int x,int y){
 		double newX = x*getWidthScale();
 		double newY = (getPixelHeight()-y)*getHeightScale();
 		return new double[] {newX,newY};
@@ -221,7 +235,7 @@ public class World {
 	 * 			the result is rounded to an integer and returned as an array of integer values.
 	 * 			| return == {Math.round(x/getWidthScale()),getPixelHeight() - Math.round(y/getHeightScale())}
 	 */
-	public int[] coordinatesToPixels(double x,double y){
+	private int[] coordinatesToPixels(double x,double y){
 		int newX = (int) Math.round(x/getWidthScale());
 		int newY = (int) Math.round(y/getHeightScale());
 		newY = getPixelHeight() - newY;
