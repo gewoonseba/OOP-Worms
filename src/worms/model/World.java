@@ -248,35 +248,30 @@ public class World {
 	
 	/**
 	 * Method to search for a position adjacent to impassable terrain, beginning from a given position.
-	 * @param tempX
-	 * @param tempY
+	 * @param x
+	 * @param y
 	 * @return A double array, containing the position that is adjacent, if one is found, and null if none is found.
 	 */
 	private double[] searchAdjacentFrom(double x, double y,double radius){
-		boolean change = false;
-		int tempX = coordinatesToPixels(x,y)[0];
-		int tempY = coordinatesToPixels(x,y)[1];
-		int maxX = coordinatesToPixels(x+radius,y)[0];
-		while ((! isPixelAdjacent(tempX,tempY,radius)) ){
+		boolean change = false;;
+		while ((! isAdjacent(x,y,radius)) ){
 			change = false;
-			if (tempX < centerX){
-				tempX += 1;
+			if (coordinatesToPixels(x, y)[0] < centerX){
+				x += getWidthScale();
 				change = true;
 				}
-		    if (tempX > centerX){
-				tempX -= 1;
+		    if (coordinatesToPixels(x, y)[0] > centerX){
+				x -= getWidthScale();
 		        change = true;}
-			if ((tempY < centerY) && (! isPixelAdjacent(maxX,tempY,radius))  ){
-				tempY += 1;
+			if ((coordinatesToPixels(x, y)[1] < centerY) && (! isAdjacent(x,y,radius))){
+				y -= getHeightScale();
 			    change = true;}
-			if ((tempY > centerY) && (! isPixelAdjacent(maxX,tempY,radius)) ){
-				tempY -= 1;
+			if ((coordinatesToPixels(x, y)[1] > centerY) && (! isAdjacent(x,y,radius)) ){
+				y += getHeightScale();
 				change = true;}
 			if (change == false)
 				return null;
 			}
-		x = pixelsToCoordinates((int) tempX,(int) tempY)[0];
-		y = pixelsToCoordinates((int) tempX,(int) tempY)[1];
 		return new double[] {x,y};
 		
 	}
@@ -347,6 +342,7 @@ public class World {
 	 */
 		public boolean isAdjacent(double x,double y,double radius){
 			if (!isPassable(x,y,radius)){
+				System.out.println("Wrong");
 				return false;}
 			if (isOutOfBounds(x, y,1.1* radius)||isOutOfBounds(x, y,1.1* radius)){
 				return false;}
@@ -436,14 +432,26 @@ public class World {
 	public boolean isPassable(double x, double y, double radius){
 		if (isOutOfBounds(x, y, radius))
 			return false;
-		double newX = x + radius;
-		double newY = y;
-		int immPixelX = coordinatesToPixels(newX, newY)[0];
-		int pixelY = coordinatesToPixels(newX, newY)[1];
-		return this.isPixelPassable(immPixelX,pixelY,radius);
+		double change=0.0;
+		double maxDistance = radius;
+		double xchange=maxDistance;
+		while(true){
+			if (Math.abs(xchange)>maxDistance){
+				return true;}
+			if (passableMap[coordinatesToPixels(x+xchange, y)[1]][coordinatesToPixels(x+xchange, y)[0]]==false)
+				return false;
+			change+=maxDistance/(Math.round((radius/(getHeightScale()))));
+			while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<maxDistance )){
+				if (passableMap[coordinatesToPixels(x + xchange, y+change)[1]][coordinatesToPixels(x + xchange, y+ change)[0]]==false)
+					return false;
+				if (passableMap[coordinatesToPixels(x + xchange, y-change)[1]][coordinatesToPixels(x + xchange, y- change)[0]]==false)
+					return false;
+				change+=maxDistance/(Math.round((radius/(getHeightScale()))));
+			}
+			xchange-=maxDistance/(Math.round((radius/(getWidthScale()))));
+			change =0;
 		}
-
-
+	}
 
 	//TODO: specification
 	/**
@@ -459,7 +467,7 @@ public class World {
 		double randomX = randomGenerator.nextFloat()*getWidth();
 		double randomY = randomGenerator.nextFloat()*getHeight();
 		radius = Worm.getMinimalRadius();
-		if (!(randomX + radius>getWidth() || randomX-radius<0 || randomY+radius>getHeight() || randomY-radius<0)){
+		if (!(isOutOfBounds(randomX, randomY, radius))){
 			location = searchAdjacentFrom(randomX, randomY, radius);}
 		} while (location == null);
 		int number = worms.size() + 1;
@@ -763,9 +771,9 @@ public class World {
 	 * 		The world already contains ten teams
 	 * 		| teams.size() >= 10
 	 */
-	public void createTeam(String name) throws IllegalArgumentException{
+	public void createTeam(String name) throws IllegalNameException{
 		if (!Team.isValidName(name))
-			throw new IllegalArgumentException();
+			throw new IllegalNameException(name);
 		if (teams.size() >= 10)
 			throw new IllegalStateException();
 		Team team = new Team(name);
