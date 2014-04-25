@@ -230,7 +230,7 @@ public class Worm {
 	/**
 	 * Method to move the worm one step, in its current direction. 
 	 * If the worm overlaps with food after its step, the worm will eat that food.
-	 * @effect
+	 * @effect the worm shall have a newAp and new coordinates based on the calculated location.
 	 *       |setX(newX)
 	 *       |setY(newY)
 	 *       |setCurrentAP(newAP)
@@ -241,7 +241,7 @@ public class Worm {
 	public void move() throws IllegalAPException{
 		if (getCurrentAP() == 0)
 			throw new IllegalAPException(getCurrentAP(),this);
-		double distanceStep = getWorld().getWidthScale()/3;
+		double distanceStep = getWorld().getWidthScale()/2;
 		double currentDistance = getRadius();
 		double[] newLocation = null;
 		while (newLocation == null && currentDistance >= 0.1){

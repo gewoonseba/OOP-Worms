@@ -8,9 +8,14 @@ import java.util.Random;
 import be.kuleuven.cs.som.annotate.*;
 
 /**
+ * A class of a World. A world has a width, a height, a passableMap and a random generator.
+ * A world also has a collection of worm, teams and food. They can be empty.
+ * It also has methods to create a Worm and food on a random adjacent location.
  * 
- * @author Sebastian Stoelen, Matthias Maeyens
- * @ version 1.0
+ * 
+ * code repository:https://github.com/sebastianstoelen/OOP-Worms
+ * @author Sebastian Stoelen 2BbiCwsElt2, Matthias Maeyens 2BbiCwsElt2
+ * @version 1.0
  *
  */
 public class World {
