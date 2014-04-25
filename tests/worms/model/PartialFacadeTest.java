@@ -38,14 +38,12 @@ public class PartialFacadeTest {
 
 	@Test
 	public void testMaximumActionPoints() {
-		System.out.println("ander");
 		Worm worm = facade.createWorm(world, 1, 2, 0, 1, "Test");
 		assertEquals(4448, facade.getMaxActionPoints(worm));
 	}
 
 	@Test
 	public void testMoveHorizontal() {
-		System.out.println("ander");
 		Worm worm = facade.createWorm(world, 1, 2, 0, 1, "Test");
 		facade.move(worm);
 		assertEquals(2, facade.getX(worm), EPS);
@@ -54,7 +52,6 @@ public class PartialFacadeTest {
 
 	@Test
 	public void testMoveVertical() {
-		System.out.println("ander");
 		Worm worm = facade.createWorm(world, 1, 1.5, Math.PI / 2, 0.5, "Test");
 		facade.move(worm);
 		assertEquals(1, facade.getX(worm), EPS);
@@ -63,7 +60,6 @@ public class PartialFacadeTest {
 
 	@Test
 	public void testMoveVerticalAlongTerrain() {
-		System.out.println("ander");
 		// . . X
 		// . w X
 		World world = facade.createWorld(3.0, 2.0, new boolean[][] {
@@ -77,7 +73,6 @@ public class PartialFacadeTest {
 
 	@Test
 	public void testFall() {
-		System.out.println("enter");
 		// . X .
 		// . w .
 		// . . .
@@ -87,7 +82,6 @@ public class PartialFacadeTest {
 				{ true, true, true }, { false, false, false } }, random);
 		Worm worm = facade.createWorm(world, 1.5, 2.5, -Math.PI / 2, 0.5,
 				"Test");
-		System.out.println("nu");
 		assertFalse(facade.canFall(worm));
 		facade.move(worm);
 		assertTrue(facade.canFall(worm));

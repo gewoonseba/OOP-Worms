@@ -342,7 +342,6 @@ public class World {
 	 */
 		public boolean isAdjacent(double x,double y,double radius){
 			if (!isPassable(x,y,radius)){
-				System.out.println("Wrong");
 				return false;}
 			if (isOutOfBounds(x, y,1.1* radius)||isOutOfBounds(x, y,1.1* radius)){
 				return false;}
@@ -355,16 +354,16 @@ public class World {
 					return false;}
 				if (passableMap[coordinatesToPixels(x+xchange, y)[1]][coordinatesToPixels(x+xchange, y)[0]]==false)
 					return true;
-				do {change+=maxDistance/(Math.round((radius/(getHeightScale()/2))));
+				do {change+=maxDistance/(Math.ceil((radius/(getHeightScale()/2))));
 					}while((Math.sqrt((xchange)*(xchange)+(change)*(change))<minDistance-0.01));
 				while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<=maxDistance )){
 					if (passableMap[coordinatesToPixels(x + xchange, y+change)[1]][coordinatesToPixels(x + xchange, y+ change)[0]]==false)
 						return true;
 					if (passableMap[coordinatesToPixels(x + xchange, y-change)[1]][coordinatesToPixels(x + xchange, y- change)[0]]==false)
 						return true;
-					change+=maxDistance/(Math.round((radius/(getHeightScale()/2))));
+					change+=maxDistance/(Math.ceil((radius/(getHeightScale()/2))));
 				}
-				xchange-=maxDistance/(Math.round((radius/(getWidthScale()/2))));
+				xchange-=maxDistance/(Math.ceil((radius/(getWidthScale()/2))));
 				change =0;
 			}
 		}
@@ -440,16 +439,16 @@ public class World {
 				return true;}
 			if (passableMap[coordinatesToPixels(x+xchange, y)[1]][coordinatesToPixels(x+xchange, y)[0]]==false)
 				return false;
-			change+=maxDistance/(Math.round((radius/(getHeightScale()))));
+			change+=maxDistance/(Math.ceil((radius/(getHeightScale()))));
 			while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<=maxDistance )){
 				if (change!=maxDistance){
 					if (passableMap[coordinatesToPixels(x + xchange, y+change)[1]][coordinatesToPixels(x + xchange, y+ change)[0]]==false)
 						return false;}
 				if (passableMap[coordinatesToPixels(x + xchange, y-change)[1]][coordinatesToPixels(x + xchange, y- change)[0]]==false)
 					return false;
-				change+=maxDistance/(Math.round((radius/(getHeightScale()))));
+				change+=maxDistance/(Math.ceil((radius/(getHeightScale()))));
 			}
-			xchange+=maxDistance/(Math.round((radius/(getWidthScale()))));
+			xchange+=maxDistance/(Math.ceil((radius/(getWidthScale()))));
 			change =0;
 		}
 	}
@@ -765,7 +764,7 @@ public class World {
 	 * 		| team.setWorldTo(this)
 	 * @effect The new team is added to this world.
 	 * 		| addAsTeam(team)
-	 * @throws IllegalNameException
+	 * @throws IllegalArgumentException
 	 * 		The given name is not valid
 	 * 		| ! Team.isValidName(name)
 	 * @throws IllegalStateException

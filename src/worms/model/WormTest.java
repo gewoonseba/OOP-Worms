@@ -43,6 +43,7 @@ public class WormTest {
 	
 	private static World testWorld2;
 	
+	
 	private static boolean[][] passableMap;
 	
 	// X X X X
@@ -58,9 +59,9 @@ public class WormTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		testWormImmBasic = new Worm(0,0,0,0.25,"James o'Hara 1");
+		testWormImmBasic = new Worm(0.5,0.5,0,0.25,"James o'Hara 1");
 		testWormImmSmallDirection = new Worm(0,0,Math.PI/4,0.25,"William o'Hara 2");
-		testWormImmWithWorld = new Worm(0,0,0,0.25,"Henry o' Hara 3");
+		testWormImmWithWorld = new Worm(0.5,0.5,0,0.25,"Henry o' Hara 3");
 		testTeam = new Team("TestTeam");
 		passableMap = new boolean[][]{
 				{ true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true },
@@ -79,6 +80,7 @@ public class WormTest {
 		testWormImmBasic.setTeamTo(testTeam);
 	}
 	
+	private static World testWorld3;
 	/**
 	 * References a mutable Worm with 0 as its x-coordinate, y-coordinate and direction, 0.25 as its radius and a valid name. 
 	 */
@@ -98,11 +100,12 @@ public class WormTest {
 
 	@Before
 	public void setUp() throws Exception {
-		testWormMutBasic = new Worm(0,0,0,0.25,"Jimmy o'Hara 4");
+		testWormMutBasic = new Worm(0.5,0.5,0,0.25,"Jimmy o'Hara 4");
 		testWormMutSmallDirection = new Worm(0,0,Math.PI/4,0.25,"Ricky o'Hara 5");
-		testWormMutWithWorld = new Worm(0,0,0,0.25,"Thomas o'Hara 6");
+		testWormMutWithWorld = new Worm(0.5,0.5,0,0.25,"Thomas o'Hara 6");
 		testWormMutBasic.setTeamTo(testTeam);
 		testWormMutWithWorld.setWorldTo(testWorld);
+		testWorld3 = new World(4.0, 4.0, passableMap2, randomGenerator);
 		testWorld.addAsWorm(testWormMutWithWorld);
 	}
 	
@@ -416,6 +419,21 @@ public class WormTest {
 	}
 	
 	@Test
+	public void testMoveHorizontalAlongTerrain() {
+		// . X .
+		// . . .
+		// . w .
+		// X X X
+		World world = new World(3.0, 4.0, new boolean[][] {
+				{ true, false, true }, { true, true, true },
+				{ true, true, true }, { false, false, false } }, randomGenerator);
+		Worm worm = world.createWorm( 1.5, 1.5, 0, 1, "Test");
+		worm.move();
+		Util.fuzzyEquals(2.5, worm.getX());
+		Util.fuzzyEquals(2.5, worm.getY());
+	}
+	
+	@Test
 	public void testMoveVertical() {
 		Worm worm = testWorld2.createWorm( 1, 1.5, Math.PI / 2, 0.5, "Test");
 		worm.move();
@@ -482,16 +500,22 @@ public class WormTest {
 		assertFalse(testWormMutBasic.canJumpAP());
 	}
 	
-	//TODO: Needs passableMap
-/*	*//**
+
+	/**
 	 * Test to check whether Jump jumps to the correct x coordinate in a legal case.
-	 *//*
+	 */
 	@Test
 	public void jump_LegalCase(){
-		testWormMutSmallDirection.jump();
-		assert (Util.fuzzyEquals(5.615749611534734,testWormMutSmallDirection.getX()));
-		assertEquals(0,testWormMutSmallDirection.getCurrentAP());
-	}*/
+		World world = new World(3.0, 4.0, new boolean[][] {
+				{ true, false, true }, { true, true, true },
+				{ true, true, true }, { false, false, false } }, randomGenerator);
+		Worm worm = world.createWorm( 1.5, 1.5, Math.PI / 2, 0.5,
+				"Test");
+		worm.jump(0.0001);
+		assertEquals(556,worm.getCurrentAP());
+		assertEquals(2.5,worm.getY(),0.1*worm.getRadius());
+		assertEquals(1.5,worm.getX(),0.1*worm.getRadius());
+	}
 	
 	/**
 	 * Test to check whether jump returns an IllegalAPException if the given worm has 0 AP.
@@ -502,14 +526,17 @@ public class WormTest {
 		testWormMutSmallDirection.jump(0.0001);
 	}
 	
-	//TODO: Needs passableMap
-/*	*//**
-	 * Test to check if jumpTime returns the correct time in a legal case.
-	 *//*
+
 	@Test
 	public void jumpTime_LegalCase(){
-		assert (Util.fuzzyEquals(1.070184182924273,testWormMutSmallDirection.jumpTime(0.0001)));
-	}*/
+		World world = new World(3.0, 4.0, new boolean[][] {
+				{ true, false, true }, { true, true, true },
+				{ true, true, true }, { false, false, false } }, randomGenerator);
+		Worm worm = world.createWorm( 1.5, 1.5, Math.PI / 2, 0.5,
+				"Test");
+		worm.jumpTime(0.0001);
+		assertTrue(Util.fuzzyEquals(worm.jumpTime(0.0001),worm.jumpTime(0.0001)));
+	}
 	
 	/**
 	 * Test to check whether jumpTime returns an IllegalAPException if the given worm has 0 AP.
@@ -520,15 +547,12 @@ public class WormTest {
 		testWormMutSmallDirection.jumpTime(0.0001);
 	}
 	
-	//TODO: Needs passableMap
-/*	*//**
-	 * Test to check if jumpStep returns the correct position or a given time in a legal case.
-	 *//*
+	
 	@Test
 	public void jumpStep_LegalCase(){
 		double[] actuals = {0.5247460858737162, 0.47571283587371604};
 		assertArrayEquals(testWormMutSmallDirection.jumpStep(0.1), actuals, 0.00001);
-	}*/
+	}
 	
 	/**
 	 * Test to check whether jumpStep returns an IllegalAPException if the given worm has 0 AP.
@@ -668,14 +692,17 @@ public class WormTest {
 		assertFalse(testWormMutWithWorld.isAlive());
 	}
 	
-	//TODO: Needs passableMap
-/*	@Test
+
+    @Test
 	public void shoot_SingleCase(){
 		testWormMutWithWorld.shoot(10);
 		assert(testWormMutWithWorld.getProjectile() != null);
 		assertEquals(60,testWormMutWithWorld.getCurrentAP());
 		assert(testWorld.getActiveProjectile() != null);
-	}*/
+	}
+    
+  
+    
 	
 
 }

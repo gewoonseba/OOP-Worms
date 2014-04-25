@@ -196,7 +196,7 @@ public class Projectile {
 	public void jump(double timeStep) throws IllegalStateException {
 		if (! isAlive())
 			throw new IllegalStateException();
-		double time = (0.1*this.getRadius())/getInitialSpeed();
+		double time = (this.getRadius())/getInitialSpeed();
 		double[] tempCoordinates = jumpStep(time);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];

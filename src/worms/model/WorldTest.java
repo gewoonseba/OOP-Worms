@@ -18,21 +18,25 @@ public class WorldTest {
 	 */
 	private static World testWorldImm;
 	
-	/**
-	 * Variable representing a 'checkered' map.
-	 */
-	private static boolean[][] testCheckered;
 	
 	/**
 	 * Variable registering a Random with seed 1;
 	 */
 	private static Random randomGenerator1;
+	
+	// X X X X
+	// . . . .
+	// . . . .
+	// X X X X
+	private static boolean[][] passableMap1;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		testCheckered = new boolean[][] {{ true, false, true, false}, {false, true, false, true}, {true, false, true, false}};
+		passableMap1 = new boolean[][] {
+				{ false, false, false, false }, { true, true, true, true },
+				{ true, true, true, true }, { false, false, false, false } };
 		randomGenerator1 = new Random(1);
-		testWorldImm = new World(10,10, testCheckered, randomGenerator1);
+		testWorldImm = new World(10,10, passableMap1, randomGenerator1);
 	}
 	
 	/**
@@ -59,7 +63,7 @@ public class WorldTest {
 	@Before
 	public void setUp() throws Exception {
 		testFoodMut = new Food(5,5);
-		testWorldMut = new World(10,10, testCheckered, randomGenerator1);
+		testWorldMut = new World(10,10, passableMap1, randomGenerator1);
 		testWormMut = new Worm(5,5,0,0.25,"Johnny");
 		testTeamMut = new Team("Random");
 	}
@@ -125,7 +129,7 @@ public class WorldTest {
 	 */
 	@Test
 	public void getPixelHeight_SingleCase(){
-		assertEquals(3,testWorldImm.getPixelHeight());
+		assertEquals(4,testWorldImm.getPixelHeight());
 	}
 	
 	/**
@@ -611,5 +615,47 @@ public class WorldTest {
 		testWorldMut.startNextTurn();
 		testWorldMut.startNextTurn();
 		assertEquals(testWorldMut.getCurrentWorm().getName(),"Test1");
+	}
+	
+	@Test
+	public void isPassable_TrueCase(){
+		assertTrue(testWorldImm.isPassable(3.75, 3.75, 1.25));
+	}
+	
+	@Test
+	public void isPassable_FalseCase(){
+		assertFalse(testWorldImm.isPassable(3.75, 3.74, 1.25));
+	}
+	
+	@Test
+	public void isPassable_OutOfBoundsCase(){
+		assertFalse(testWorldImm.isPassable(1.24, 3.75, 1.25));
+	}
+	
+	@Test
+	public void isAdjacent_TrueCase(){
+		assertTrue(testWorldImm.isAdjacent(3.75, 3.75, 1.25));
+	}
+	
+	@Test
+	public void isAdjacent_FalseCase(){
+		assertFalse(testWorldImm.isAdjacent(5, 5, 1.25));
+	}
+	
+	@Test
+	public void isAdjacent_OutOfBoundsCase(){
+		assertFalse(testWorldImm.isAdjacent(1.25, 3.75, 1.25));
+	}
+	
+	@Test
+	public void addNewWorm_SingleCase(){
+		testWorldMut.addNewWorm();
+		assertTrue(testWorldMut.getWorms().size()==1);
+	}
+	
+	@Test
+	public void addNewFood_SingleCase(){
+		testWorldMut.addNewFood();
+		assertTrue(testWorldMut.getFood().size()==1);
 	}
 }

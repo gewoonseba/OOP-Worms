@@ -232,8 +232,11 @@ public class Worm {
 	 * If the worm overlaps with food after its step, the worm will eat that food.
 	 * @effect
 	 *       |setX(newX)
+	 *       |setY(newY)
+	 *       |setCurrentAP(newAP)
 	 * @effect The worm shall eat the food it overlaps wit after its step, if any.
 	 * 		| eatFood();
+	 * 
 	 */
 	public void move() throws IllegalAPException{
 		if (getCurrentAP() == 0)
@@ -366,9 +369,9 @@ public class Worm {
 	 *        | this.getCurrentAP() <= 0
 	 */
 	public void jump(double timeStep) throws IllegalAPException{
-		if (! this.canJumpAP())
-			throw new IllegalAPException(this.getCurrentAP(), this);
-		double time = (0.1*this.getRadius())/getInitialSpeed();
+		if (! this.canJumpAP()){
+			throw new IllegalAPException(this.getCurrentAP(), this);}
+		double time = (this.getRadius())/getInitialSpeed();
 		double[] tempCoordinates = jumpStep(time);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
@@ -407,7 +410,7 @@ public class Worm {
 	public double jumpTime(double timeStep) throws IllegalAPException{
 		if (! this.canJumpAP())
 			throw new IllegalAPException(getCurrentAP(),this);	
-		double jumpTime = (0.1*this.getRadius())/getInitialSpeed();
+		double jumpTime = (this.getRadius())/getInitialSpeed();
 		double[] tempCoordinates = jumpStep(jumpTime);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
