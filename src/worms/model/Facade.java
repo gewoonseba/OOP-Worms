@@ -98,6 +98,8 @@ public class Facade implements IFacade{
 	public void addEmptyTeam(World world, String newName) throws ModelException {
 		if (! Team.isValidName(newName))
 			throw new ModelException("Illegal name");
+		if (world.getTeam().size()>=10)
+			throw new ModelException("too many teams");
 		world.createTeam(newName);
 		
 	}

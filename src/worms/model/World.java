@@ -434,21 +434,22 @@ public class World {
 			return false;
 		double change=0.0;
 		double maxDistance = radius;
-		double xchange=maxDistance;
+		double xchange=-maxDistance;
 		while(true){
 			if (Math.abs(xchange)>maxDistance){
 				return true;}
 			if (passableMap[coordinatesToPixels(x+xchange, y)[1]][coordinatesToPixels(x+xchange, y)[0]]==false)
 				return false;
 			change+=maxDistance/(Math.round((radius/(getHeightScale()))));
-			while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<maxDistance )){
-				if (passableMap[coordinatesToPixels(x + xchange, y+change)[1]][coordinatesToPixels(x + xchange, y+ change)[0]]==false)
-					return false;
+			while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<=maxDistance )){
+				if (change!=maxDistance){
+					if (passableMap[coordinatesToPixels(x + xchange, y+change)[1]][coordinatesToPixels(x + xchange, y+ change)[0]]==false)
+						return false;}
 				if (passableMap[coordinatesToPixels(x + xchange, y-change)[1]][coordinatesToPixels(x + xchange, y- change)[0]]==false)
 					return false;
 				change+=maxDistance/(Math.round((radius/(getHeightScale()))));
 			}
-			xchange-=maxDistance/(Math.round((radius/(getWidthScale()))));
+			xchange+=maxDistance/(Math.round((radius/(getWidthScale()))));
 			change =0;
 		}
 	}
