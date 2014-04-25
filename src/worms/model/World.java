@@ -289,7 +289,7 @@ public class World {
 	 * @return returns a boolean that is true if and only if there is an impassable location
 	 *       between the radius and 1.1*radius.
 	 */
-		public boolean isPixelAdjacent(int x,int y, double radius){
+		private boolean isPixelAdjacent(int x,int y, double radius){
 			if (!isPixelPassable(x, y, radius))
 				return false;
 			int maxDistance=(int) Math.round((1.1*radius)/getWidthScale());
@@ -373,7 +373,7 @@ public class World {
 		 * @return returns a boolean that is true if and only if there is no impassable location
 		 *       in the given radius.
 		 */
-		public boolean isPixelPassable(int x, int y, double radius){
+		private boolean isPixelPassable(int x, int y, double radius){
 			
 			int maxDistance=(int) Math.round((radius)/getWidthScale());
 			int pixelX = x + maxDistance;

@@ -7,7 +7,7 @@ import be.kuleuven.cs.som.annotate.*;
 
 /**
  * A class of Worms. A Worm has a position (x,y), a direction (expressed as a radian value), 
- * a radius (in metres), a mass (calculated according to the radius) and a number of action points. 
+ * a radius (in meters), a mass (calculated according to the radius) and a number of action points. 
  * A Worm can turn, move, jump and change its name. A worm shall belong to one world and one world only. A worm can belong
  * to a Team, but it doesn't have to belong to a team. Furthermore a Worm shall possess weapons and is able to shoot these weapons.
  * 
@@ -27,32 +27,27 @@ public class Worm {
 	 * @param direction
 	 * @param radius
 	 * @param name
-	 * @effect the new x-coordinate is equal to x.
-	 * 		| new.getX() == x
-	 * @effect the new y-coordinate is equal to y.
-	 * 		| new.getY() == y
-	 * @effect the new direction is equal to direction.
-	 * 		| new.getDirection() == direction
-	 * @effect the new radius is equal to radius.
-	 * 		| new.getRadius() == radius
-	 * @effect the new name is equal to name.
-	 * 		| new.getName() == name
-	 * @effect the new currentAP is equal to the maxAP of the given worm.
-	 *      | new.getCurrentAP() == new.getMaxAP()
-	 * @effect the new hit points are equal to to maxHitpoints possible for the given worm.
-	 *      | new.getHitPoints()== new.getMaxHitPoints()
-	 * @post the worm has "Rifle" and "Bazooka" as its only weapons.
-	 * 		| new.weapons = {"Rifle","Bazooka"}
-	 * @throws IllegalRadiusException
-	 *         The given radius is not valid.
-	 *         | (! isValidRadius(radius))
-	 * @throws IllegalNameException
-	 *         The given name is not valid
-	 *         | (! isValidName(name))
+	 * @effect The x coordinate of the worm is set to the given x.
+	 * 		| setX(x)
+	 * @effect The coordinate of the worm is set to the given y.
+	 * 		| setY(y)
+	 * @effect The direction of the worm is set to the given direction..
+	 * 		| setDirection(direction)
+	 * @effect The radius of the worm is set to the given radius.
+	 * 		| setRadius(radius)
+	 * @effect The name of the worm is set to the given name.
+	 * 		| setName(name)
+	 * @effect The currentAP of the worm is set to the maxAP.
+	 *      | setCurrentAP(getMaxAP())
+	 * @effect The hitPoints of the worm is set to the maxHitPoints.
+	 *      | setHitPoints(getMaxHitpoints)
+	 * @effect Rifle is added as one of the worms' weapons.
+	 * 		| addAsWeapon("Rifle")
+	 * @effect Bazooka is added as one of the worms' weapons.
+	 * 		| addAsWeapon("Bazooka")
 	 */
 	@Raw
-	public Worm(double x, double y, double direction, double radius, String name) 
-			throws IllegalRadiusException, IllegalNameException{
+	public Worm(double x, double y, double direction, double radius, String name) {
 		this.setX(x);
 		this.setY(y);
 		this.setDirection(direction);
@@ -78,14 +73,19 @@ public class Worm {
 	 * @param x
 	 * @post the new x-coordinate is equal to x.
 	 * 		| new.getX() == x
+	 * @throws IllegalArgumentException
+	 * 		The given x coordinate is not valid.
+	 * 		| ! isValidCoordinate(x)
 	 */
 	@Raw
-	public void setX(double x){
+	public void setX(double x) throws IllegalArgumentException {
+		if (! isValidCoordinate(x))
+			throw new IllegalArgumentException();
 		this.x = x;
 	}
 	
 	/**
-	 * Variable registering the x-coordinate of the location of the given worm.
+	 * Variable registering the x coordinate of the location of the given worm.
 	 */
 	private double x = 0;
 	
@@ -102,31 +102,37 @@ public class Worm {
 	 * @param y
 	 * @post the new y-coordinate is equal to y.
 	 * 		| new.getY() == y
+	 * @throws IllegalArgumentException
+	 * 		The given y coordinate is not valid.
+	 * 		| ! isValidCoordinate(y)
 	 */
 	@Raw
 	public void setY(double y){
+		if (! isValidCoordinate(y))
+			throw new IllegalArgumentException();
 		this.y = y;
 	}
 	
 	/**
-	 * Variable registering the y-coordinate of the location of the given worm.
+	 * Variable registering the y coordinate of the location of the given worm.
 	 */
 	private double y = 0;
 	
 	/**
-	 * Method to check whether the given coordinate is not equal to NaN
+	 * Method to check whether the given coordinate is a valid coordinate.
 	 * @param coordinate
 	 * @return True if and only if coordinate does not equal NaN
-	 * 			| result == (coordinate != Double.Nan)
+	 * 			| result == (! Double.isNaN(coordinate))
 	 */
 	public static boolean isValidCoordinate(double coordinate){
 		return (! Double.isNaN(coordinate));
 	}
 	
-	//TODO: Formal specification
+	//XXX: Formal specification
 	/**
-	 * Check whether the worm can move one step.
-	 * @return True if and only if searchFitLocation can find a fit location in the worms current direction.
+	 * Check whether the worm can move one step in its current direction.
+	 * @return True if and only if searchFitLocation can find a fit location in the worms current direction, 
+	 * 		and the worm has enough AP to move to that location.
 	 * 		| 
 	 */
 	public boolean canMove(){
@@ -153,14 +159,16 @@ public class Worm {
 		return false;
 	}
 	
+	//XXX: Formal specification
 	/**
 	 * Method to search a location which is adjacent to impassable terrain on a quarter circle, a given distance from the
 	 * center of the Worm. The method shall search for fit locations, beginning in the current  direction of the Worm. When
 	 * none is found, the method shall alternately add or remove 0.0175 radians from the optimal angle.
 	 * @param distance
-	 * 		The at which the method will search for adjacent locations.
+	 * 		The distance at which the method will search for adjacent locations.
 	 * @return The coordinate which is adjacent to impassable terrain and closest to the optimal angle, if one is found. 
-	 * 		   If none is found, the method will return null.
+	 * 		If none is found, the method will return null.
+	 * 		|
 	 */
 	public double[] searchFitLocation(double distance) {
 		double thetaUp = this.getDirection();
@@ -183,6 +191,7 @@ public class Worm {
 		return null;
 	}
 	
+	//XXX: Formal specification
 	/**
 	 * Method to search a location which is on passable terrain on a quarter circle, a given distance from the
 	 * center of the Worm. The method shall search for fit locations, beginning in the current  direction of the Worm. When
@@ -190,7 +199,8 @@ public class Worm {
 	 * @param distance
 	 * 		The at which the method will search for adjacent locations.
 	 * @return The coordinate which is on passable terrain and closest to the optimal angle, if one is found. 
-	 * 		   If none is found, the method will return null.
+	 * 		If none is found, the method will return null.
+	 * 		|			
 	 */
 	public double[] searchFallLocation(double distance) {
 		double thetaUp = this.getDirection();
@@ -214,21 +224,27 @@ public class Worm {
 		return null;
 	}
 	
-	//TODO:implementation using slope + currentDistance - 0.01?
+	//XXX:Formal specification
 	/**
-	 * Method to move the worm one step, in its current direction.
+	 * Method to move the worm one step, in its current direction. 
+	 * If the worm overlaps with food after its step, the worm will eat that food.
+	 * @effect
+	 * 
+	 * @effect The worm shall eat the food it overlaps wit after its step, if any.
+	 * 		| eatFood();
 	 */
 	public void move() throws IllegalAPException{
+		double distanceStep = getWorld().getWidthScale()/3;
 		double currentDistance = getRadius();
 		double[] newLocation = null;
-		while (newLocation == null && currentDistance>=0.1){
+		while (newLocation == null && currentDistance >= 0.1){
 			newLocation = searchFitLocation(currentDistance);
-			currentDistance -= 0.01;
+			currentDistance -= distanceStep;
 		}
 		currentDistance = getRadius();
 		while (newLocation == null && currentDistance>=0.1){
 			newLocation = searchFallLocation(currentDistance);
-			currentDistance -= 0.01;
+			currentDistance -= distanceStep;
 		}
 		if (!(newLocation == null)){
 			double newX = newLocation[0];
@@ -243,37 +259,34 @@ public class Worm {
 			else
 				throw new IllegalAPException(getCurrentAP(),this);
 		}
-		
-		
-		//if (! getWorld().isAdjacent(getX(),getY(),getRadius()))
-		//		fall();
 		eatFood();
 	}
 	
-	//TODO: specification 'if'
+
 	/**
-	 * Method to make the given worm fall until he hits impassable terrain, or is no longer within the boundries of its world.
+	 * Method to make the given worm fall until he hits impassable terrain, or is no longer within the boundaries of its world.
 	 * The worm shall lose hitpoints, according to the distance he has fallen.
 	 * @effect If there is impassable terrain under the worm, the worm shall move to that location, without changing its x coordinate
 	 * 		and only by lowering its y coordinate.
-	 * 		| isAdjacent(new.getY(),new.getX(),new.getRadius())
-	 * 		| new.getY() < this.getY()
+	 * 		| while(! isAdjacent(new.getY(),new.getX(),new.getRadius()))
+	 * 		| 	fallStep()
 	 * @effect If there is impassable terrain under the worm, the worm shall lose hitPoints. The worm shall lose three times the
 	 * 		amount of meters it has fallen (rounded down) worth of hitPoints.
-	 * 		| new.getHitPoints() == this.getHitPoints() - 3*distance
+	 * 		| setHitPoints(this.getHitPoints() - 3*distance)
 	 * @effect If the new hitPoints are less than zero, the hitpoints will be set to zero. The worm will thus leave
 	 * 		the world he belonged to.
 	 * 		| if(this.getHitPoints() - 3*distance < 0)
-	 * 		|	new.getHitPoints() == 0
+	 * 		|	setHitPoints(0)
 	 * @effect If there is no impassable terrain under the worm, its hitPoints will be set to zero. The worm will thus leave the world
 	 * 		he belonged to.
-	 * 		| setHitPoints(0)
+	 * 		|if(getWorld().isOutOfBoundaries(new.getX(),new.getY())
+	 * 		|	setHitPoints(0)
 	 */
 	public void fall(){
 		double oldY = getY();
 		while (! (getWorld().isAdjacent(getX(),getY(),getRadius()))
 				&& ! (getWorld().isOutOfBounds(getX(), getY(),getRadius())))
-			fallPixel();
+			fallStep();
 		if (! getWorld().isOutOfBounds(getX(), getY(),getRadius())){
 			int distance = (int) (oldY - getY());
 			int newHitPoints = getHitPoints() - 3*distance;
@@ -286,13 +299,15 @@ public class Worm {
 	}
 	
 	/**
-	 * Method to make the given worm fall down the distance of one pixel.
-	 * @effect The new y coordinate will be its old y coordinate, minus the distance of one pixel.
-	 * 		| new.getY() = this.getY() - getWorld.getHeightScale();
+	 * Method to make the given worm fall down the distance of half a pixel.
+	 * @effect The y coordinate will be lowered by the distance of half a pixel.
+	 * 		| setY(this.getY() - getWorld().getHeightScale()/2;
 	 */
-	private void fallPixel(){
-		double distance = getWorld().getHeightScale();
-		setY(getY() - (distance/2));
+
+	private void fallStep(){
+		double distance = getWorld().getHeightScale()/2;
+		setY(getY() - distance);
+
 		
 	}
 	
@@ -317,30 +332,22 @@ public class Worm {
 		return (this.getCurrentAP()>0);
 	}
 	
-	/**
-	 * Check whether the direction of the given worm is valid to jump.
-	 * @return True if and only if the current direction is equal to or in between zero and PI.
-	 *    		| return == ((this.getDirection() >= 0) && (this.getDirection() <= Math.PI))
-	 */
-	public boolean canJumpDirection(){
-		return  ((this.getDirection() >= 0) && (this.getDirection() <= Math.PI));
-	}
-	
-	//TODO: Formal specification second @effect
+
 	/**
 	 * Method to make the given worm jump.
 	 * @param timeStep
 	 * 		  An elementary time interval.
-	 * @effect If the distance between the current position of the worm and the new position is less than its radius, 
+	 * @post If the distance between the current position of the worm and the new position is less than its radius, 
 	 * 		   the worm shall not move.
-	 * 		   | if (getWorld().getDistance(getX(),getY(),tempX,tempY) > getRadius())
+	 * 		   | if (getWorld().getDistance(getX(),getY(),tempX,tempY) < getRadius())
 	 * 		   |	new.getX() == this.getX()
 	 * 		   |	new.getY() == this.getY()
-	 * @effect If the direction is between zero and PI, then the given worm will jump to the first location, adjacent to
-	 * 		   impassable terrain, it encounters on its trajectory, which is calculated according to its direction and current AP.
-	 *         |new.getX() == distance + this.getX()
+	 * @effect hen the given worm will jump to the first location, adjacent to impassable terrain, it encounters on its trajectory, 
+	 * 			which is calculated according to its direction and current AP.
+	 *         | setX(jumpStep(jumpTime()))[0])
+	 *         | setY(jumpStep(jumpTime()))[1])
 	 * @effect The new AP of the worm will be 0
-	 *         |new.getCurrentAP() == 0
+	 *         |setCurrentAP(0)
 	 * @throws IllegalAPException
 	 *        The worm has no AP left.
 	 *        | this.getCurrentAP() <= 0
@@ -361,7 +368,7 @@ public class Worm {
 		if (getWorld().isOutOfBounds(tempX, tempY,getRadius()))
 			setHitPoints(0);
 		else {
-			if (getWorld().getDistance(getX(),getY(),tempX,tempY) > getRadius()){
+			if (World.getDistance(getX(),getY(),tempX,tempY) > getRadius()){
 				setX(tempX);
 				setY(tempY);
 				eatFood();
@@ -371,13 +378,15 @@ public class Worm {
 		
 	}
 	
-	//TODO:Formal specification
 	/**
 	 * Method to calculate the time it takes to jump for the given worm with the remaining action points.
 	 * @param timeStep
 	 * 		  An elementary time interval.
 	 * @return Returns the time it takes to jump.
-	 *        | return == (distance/(initialSpeed*Math.cos(this.getDirection())))
+	 *  	| while ((! this.getWorld().isAdjacent(tempX,tempY,getRadius())) && (! getWorld().isOutOfBounds(tempX,tempY,getRadius()) 
+	 *  	|	&& this.getWorld().isPassable(tempX, tempY, getRadius())))
+	 *		| 	jumpTime += timeStep;
+	 *		| return == jumpTime
 	 * @throws IllegalAPException
 	 *        The worm has no AP left.
 	 *        | this.getCurrentAP() <= 0
@@ -395,7 +404,7 @@ public class Worm {
 			tempX = tempCoordinates[0];
 			tempY = tempCoordinates[1];
 		}
-		if (getWorld().getDistance(getX(),getY(),tempX,tempY) < getRadius()){
+		if (World.getDistance(getX(),getY(),tempX,tempY) < getRadius()){
 			jumpTime = 0;
 			}
 		return jumpTime;
@@ -406,13 +415,13 @@ public class Worm {
 	 * @param t
 	 * 		  the time after which the position is calculated
 	 * @return Returns the position of the given worm t seconds after the jump.
-	 * 			| return == {newX,newY}
+	 * 			| return == {this.getX() + (initialSpeedX * t),this.getY() + (initialSpeedY * t -0.5*g*Math.pow(t,2))}
 	 * @throws IllegalAPException
-	 *        The worm has no AP left.
-	 *        | this.getCurrentAP() <= 0
+	 *        The worm has not enough AP to jump
+	 *        | ! canJumpAP()
 	 * @throws IllegalTimeException
 	 *        The time given is not valid for the given worm.
-	 *        | (! this.canHaveAsTime(t))
+	 *        | ! this.canHaveAsTime(t)
 	 */
 	public double[] jumpStep(double t) throws IllegalAPException, IllegalTimeException{
 		if (! this.canJumpAP())
@@ -426,7 +435,6 @@ public class Worm {
 		double newX = this.getX() + (initialSpeedX * t);
 		double newY = this.getY() + (initialSpeedY * t -0.5*g*Math.pow(t,2));
 		double[] stepArray = {newX,newY};
-		//this.eatFood();
 		return stepArray;
 	}
 	
@@ -473,7 +481,7 @@ public class Worm {
 	 *        The angle that has to be checked
 	 * @return True if and only if the absolute value of the given angle is 
 	 *         less than 2 times PI and the new action points of the given worm are higher than or equal to zero.
-	 *         | return == abs(angle) < 2*Math.PI)) && 
+	 *         | return == Math.abs(angle) < 2*Math.PI)) && 
 	 *		   | (Math.round(this.getCurrentAP() - abs(angle)/(2*Math.PI) * 60) >= 0)
 	 *         
 	 */
@@ -484,19 +492,24 @@ public class Worm {
 	}
 	
 	/**
-	 * @pre angle must be a valid angle
+	 * Method to turn the worm over the given angle.
+	 * @Pre angle must be a valid angle
 	 *      |isValidAngle(angle) == true
 	 * @param angle
-	 * @post If the sum of the current direction and the angle is smaller than 2*PI, then the new direction
-	 *       is equal to this sum.
-	 *       | new.getDirection() == this.getDirection() + angle
-	 * @post If the sum of the current direction and the angle is greater than 2*PI, then the new direction
-	 *       is equal to this sum minus 2*Pi .
-	 *       | new.getDirection() == this.getDirection() + angle - 2*Math.PI
-	 * @post If the sum of the current direction and the angle is less than 2*PI, then the new direction
-	 *       is equal to this sum plus 2*PI
-	 * @post the current action point of the given worm must be higher than or equal to zero
-	 *       |new.getCurrentAP() >= 0 
+	 * @effect If the sum of the current direction and the angle is smaller than 2*PI and greater than zero,
+	 * 		 then the direction is set to this sum.
+	 * 		 | if(getDirection() + angle < 2*Math.Pi) && (getDirection() + angle > 0)
+	 *       | 		setDirection(this.getDirection() + angle)
+	 * @effect If the sum of the current direction and the angle is greater than 2*PI, then the direction
+	 *       is set to this sum minus 2*Pi .
+	 *       | if(getDirection() + angle > 2*Math.Pi)
+	 *       | 		setDirection(this.getDirection() + angle - 2*Math.PI)
+	 * @effect If the sum of the current direction and the angle is less than zero, then the direction
+	 *       is set to this sum plus 2*PI
+	 *       | if(getDirection() + angle < 0)
+	 *       | 		setDirection(this.getDirection() + angle + 2*Math.PI)
+	 * @effect The new AP is lowered by the amount of AP it takes to turn over the given angle.
+	 *       |setCurrentAP((int) Math.round(this.getCurrentAP() - Math.abs(angle)/(2.0*Math.PI) * 60.0))
 	 */
 	public void turn(double angle){
 		assert this.canTurn(angle);
@@ -512,7 +525,7 @@ public class Worm {
 	
 	/**
 	 * Set the direction of the given worm to the given value of direction.
-	 * @pre 	direction must be a valid direction.
+	 * @Pre 	direction must be a valid direction.
 	 * 			| isValidDirection(direction)
 	 * @param direction
 	 *        The new direction of the given worm.
@@ -554,7 +567,7 @@ public class Worm {
 	 * Check whether the given radius is valid.
 	 * @param radius
 	 * @return 	True if and only if the radius is greater than 0.25
-	 * 			| radius >= 0.25
+	 * 			| return == radius >= 0.25
 	 */
 	@Raw
 	public static boolean isValidRadius(double radius){
@@ -567,25 +580,24 @@ public class Worm {
 	 *        The new radius of the given worm.
 	 * @post the new radius is equal to radius.
 	 * 		| new.getRadius() == radius
-	 * @post the hit points and current AP of the given worm do not exceed their respective maximum.
+	 * @effect the hit points and current AP of the given worm do not exceed their respective maximum.
 	 *      |if (this.getHitPoints()>this.getMaxHitPoints())
 	 *		| this.setHitPoints(this.getMaxHitPoints());
 	 *      |if (this.getCurrentAP()>this.getMaxAP())
 	 *		|this.setCurrentAP(this.getMaxAP());
 	 * @throws IllegalRadiusException
-	 * 		   The radius is smaller than the minimal radius
-	 * 		   | radius < getMinimalRadius()
+	 * 		   The given radius is not valid
+	 * 		   | ! isValidRadius(radius)
 	 */
 	@Raw
 	public void setRadius(double radius) throws IllegalRadiusException {
-		if (radius < getMinimalRadius())
+		if (! isValidRadius(radius))
 			throw new IllegalRadiusException(radius);
 		this.radius = radius;
 		if (this.getCurrentAP()>this.getMaxAP())
 			this.setCurrentAP(this.getMaxAP());
 		if (this.getHitPoints()>this.getMaxHitPoints())
 			this.setHitPoints(this.getMaxHitPoints());
-		
 	}
 	
 	/**
@@ -604,7 +616,16 @@ public class Worm {
 	/**
 	 * Check whether the given name is valid.
 	 * @param name
-	 * @return 	True if and only if the name contains only valid characters
+	 * @return 	If the first letter is no capital letter, the method will return false.
+	 * 		| if (!(Character.isUpperCase(name.charAt(0))))
+	 *		|	 return == false
+	 * @return If the name is shorter than 2 characters, the method will return false.
+	 * 		| if (! (name.length() >= 2))
+	 * 		|	 return == false
+	 * @return If one of the characters is not a letter, digit, whitespace, ' or ", the method will return false
+	 * 		| for (char c : chars){
+	 *		|	 if (!(Character.isLetterOrDigit(c) || Character.isWhitespace(c) || c =='\'' || c=='"' ))
+	 *		|		return == false
 	 */
 	@Raw
 	public static boolean isValidName(String name){
@@ -624,8 +645,8 @@ public class Worm {
 	 * Set the name of the given worm to the given name.
 	 * @param name
 	 *        The new name of the given worm.
-	 * @post the new name is equal to name.
-	 * 		| new.getName() == name
+	 * @effect the new name is set to name.
+	 * 		| setName(name)
 	 * @throws IllegalNameException
 	 * 		  The given name is not is not a valid name
 	 * 		  | (! isValidName(name))
@@ -642,6 +663,9 @@ public class Worm {
 	 */
 	private String name;
 	
+	/**
+	 * The density of any worm.
+	 */
 	public static final double density = 1062;
 	
 	/**
@@ -656,8 +680,12 @@ public class Worm {
 	
 	/**
 	 * Method to return the maximum Action Points of the given worm.
-	 * @return Returns the maximum Action Points of the given worm.
-	 * 			| return == (int) Math.round(this.getMass())
+	 * @return If the maxAP would be bigger than or equal to Integer.MAX_VALUE, the method returns Integer.MAX_VALUE
+	 * 		| if (Math.round(this.getMass()) >= Integer.MAX_VALUE)
+	 * 		|	return == Integer.MAX_VALUE
+	 * @return If the maxAP is smaller than Integer.MAX_VALUE the method returns the rounded mass of the worm.
+	 * 		| if (Math.round(this.getMass()) >= Integer.MAX_VALUE)
+	 * 		| 	return == Math.round(this.getMass())
 	 */
 	public int getMaxAP(){
 		int maxAP;
@@ -688,12 +716,12 @@ public class Worm {
 	
 	/**
 	 * Method to calculate the new AP after shooting the current Weapon.
-	 * @return If the current weapon is a rifle, the new AP is the current AP minus 10
+	 * @effect If the current weapon is a rifle, the new AP is the current AP minus 10
 	 * 		|if (this.weapons.get(getCurrentWeaponIndex()) ==  "Rifle")
-	 *		|	return == this.getCurrentAP() - 10
-	 * @return If the current weapon is a bazooka, the new AP is the current AP minus 50
+	 *		|	setCurrentAP(this.getCurrentAP() - 10)
+	 * @effect If the current weapon is a bazooka, the new AP is the current AP minus 50
 	 * 		| if (this.weapons.get(getCurrentWeaponIndex()) == "Bazooka")
-	 * 		|	return == this.getCurrentAP() - 5
+	 * 		|	setCurrentAP(this.getCurrentAP() - 5)
 	 */
 	public int getShootAP(){
 		int newAP = getCurrentAP();
@@ -777,6 +805,10 @@ public class Worm {
 	
 	/**
 	 * Method to remove the world of this worm and remove this worm from the world it belonged to.
+	 * @post This worm no longer has a world.
+	 * 		| new.hasWorld() == false
+	 * @post The world the worm belonged to no longer has this worm.
+	 * 		| oldWorld.hasAsWorm(new) == false
 	 * @throws NullPointerException
 	 * 		This worm has no world.
 	 * 		| ! hasWorld()
@@ -826,12 +858,17 @@ public class Worm {
 	
 	/**
 	 * Return the name of the team this worm belongs to returns null if this worms has no team.
-	 * @return Return the name of the team of the given worm or null.
+	 * @return If the worm has no team, the method shall return null.
+	 * 		| if (! hasTeam())
+	 * 		| 	return == null
+	 * @return If the worm has a team, the method shall return the name of that team.
+	 * 		| if (hasTeam())
+	 * 		|	return == getTeam().getName()
 	 */
 	public String getTeamName(){
 		if (!hasTeam())
 			return null;
-		return this.getTeam().getName();
+		return getTeam().getName();
 	}
 	
 	/**
@@ -856,6 +893,10 @@ public class Worm {
 	
 	/**
 	 * Method to remove the team of this worm and remove this worm from the team it belonged to.
+	 * @post This worm will no longer have a team.
+	 * 		| new.hasTeam() == false
+	 * @post The old team of the worm no longer contains this worm
+	 * 		| oldTeam.hasAsWorm(new) == false
 	 * @throws NullPointerException
 	 * 		This worm has no team.
 	 * 		| ! hasTeam()
@@ -875,8 +916,14 @@ public class Worm {
 	
 	/**
 	 * Method to return the maximum Hit Points of the given worm.
-	 * @return Returns the maximum Hit Points of the given worm.
-	 * 			| return == (int) Math.round(this.getMass())
+	 * @return If the maxHitPoints would be greater than or equal to Integer.MAX_VALUE,
+	 * 			the method returns Integer.MAX_VALUE
+	 * 			| if (Math.round(this.getMass()) >= Integer.MAX_VALUE)
+	 * 			| 	return == Integer.MAX_VALUE
+	 * @return If the maxHitPoints would be smaller than Integer.MAX_VALUE, 
+	 * 			the method returns the rounded mass of this worm.
+	 * 			| if (Math.round(this.getMass()) < Integer.MAX_VALUE)
+	 * 			| 	return == (int) Math.round(this.getMass())
 	 */
 	public int getMaxHitPoints(){
 		int maxHitPoints;
@@ -886,8 +933,8 @@ public class Worm {
 		else
 			maxHitPoints = (int) possibleMaxHitPoints;
 		return maxHitPoints;
-		
 	}
+	
 	/**
 	 * Method that returns the hitpoints of a given worm.
 	 * @return returns the hit points of the given worm
@@ -914,12 +961,12 @@ public class Worm {
 	 * @param hitPoints
 	 * @post the new hit points are equal to hitPoints.
 	 *      |new.getHitPoints() == hitPoints
-	 * @effect if hitPoints = zero, the method shall check if there is a winnar and the worm shall leave the world it belonged to
+	 * @effect if hitPoints = zero, the method shall check if there is a winner and the worm shall leave the world it belonged to
 	 * 		and its current world will be set to null. 
-	 * 		| ! new.getWorld().hasAsWorm(this)
-	 * 		| new.getWorld() == null
+	 * 		| if (hitPoints == 0)
+	 * 		| 	removeWorld()
+	 *		| 	oldWorld.getWinner()
 	 */
-	@Basic
 	public void setHitPoints(int hitPoints){
 		if (! isValidHitPoints(hitPoints))
 			throw new IllegalArgumentException();
@@ -949,7 +996,7 @@ public class Worm {
 	 * Method to check whether the given propulsion yield is valid.
 	 * @param p
 	 * 		The propulsion yield to be checked.
-	 * @return True if and only if p belongs to the interval [0,100]
+	 * @return True if and only if p is greater than or equal to zero, and smaller than or equal to 100.
 	 * 		| return == ((p >= 0) && (p <= 100))
 	 */
 	public static boolean isValidPropulsionYield(int yield){
@@ -969,7 +1016,14 @@ public class Worm {
 	 * @param p
 	 * 		The given propulsion yield.
 	 * @effect The current AP of the worm shall be reduced with the appropriate amount.
-	 * 		| new.getCurrentAP() == this.getShootAP()
+	 * 		| setCurrentAP(this.getShootAP())
+	 * @effect The location of the projectile is set to the result of getProjectileLocation
+	 * 		| new.getProjectile().setX(getProjectileLocation[0])
+	 * 		| new.getProjectile().setY(getProjectileLocation[1])
+	 * @post The projectile of this worm is the newly created projectile
+	 * 		| new.getProjectile() = new Projectile(location[0],location[1],direction,mass,yield);
+	 * @post The mass of the newly created projectile is set to the result of getProjectileMass
+	 * 		| new.getProjectile().getMass() == getProjectileMass()
 	 * @throws IllegalArgumentException
 	 * 		The given propulsion yield is not valid.
 	 * 		| ! isValidPropulsionYield(yield)
@@ -1038,6 +1092,8 @@ public class Worm {
 	 * Method to add a given weapon to the weapons of this worm.
 	 * @param weapon
 	 * 		The weapon to be added.
+	 * @post The worm will have the given weapon as one of its weapons
+	 * 		| new.weapons.contains(weapon)
 	 * @throws IllegalArgumentException
 	 * 		The given weapon is not a valid weapon.
 	 * 		| ! isValidWeapon(weapon)
@@ -1082,13 +1138,10 @@ public class Worm {
 	
 	/**
 	 * Method to return the name of the current weapon of the worm.
-	 * @return "Rifle" if the current weapon index is 0, "Bazooka" if the current weapon index is 1
+	 * @return "Rifle" if the current weapon index is 0, "Bazooka" if the current weapon index is not 0
 	 * 		|if (getCurrentWeaponIndex() == 0)
 	 *		| 	return == "Rifle";
-	 *		|	return == "Bazooka";
-	 * @return If the current weapon index is not zero nor 1, the method shall return null.
-	 * 		|if (getCurrentWeaponIndex() != 0) && (getCurrentWeaponIndex() != 1)
-	 * 		| 	return == null
+	 *		|return == "Bazooka";
 	 */
 	public String getCurrentWeapon(){
 		if (getCurrentWeaponIndex() == 0)
@@ -1111,18 +1164,25 @@ public class Worm {
 	
 	/**
 	 * Method for a worm to see if he's in range of food and to potentially eat it.
-	 * 
+	 * @effect If the worm is in range of food, the worm shall grow by 10% for every food he overlaps with.
+	 * 		| for (Food food:getWorld().getFood()
+	 * 		|	if (World.getDistance(foodX, foodY, wormX, wormY) < (this.getRadius()+Food.getRadius()))
+	 * 		|		setRadius(1.1*(this.getRadius()))
+	 * @effect If the worm is in range of food, every food he overlaps with shall be removed from the world and terminated.
+	 * 		| for (Food food:getWorld().getFood()
+	 * 		|	if (World.getDistance(foodX, foodY, wormX, wormY) < (this.getRadius()+Food.getRadius()))
+	 * 		|		getWorld().removeAsFood(food)
+	 * 		|		food.terminate()
 	 */
 	public void eatFood(){
 		List<Food> removeFoods= new ArrayList<Food>();
 		if (!(this.getWorld().getFood().size()==0)){
-				
 			for (Food food:this.getWorld().getFood()){
 				double foodX = food.getX();
 				double foodY = food.getY();
 				double wormX = this.getX();
 				double wormY = this.getY();
-				if (Math.sqrt(Math.pow((foodX - wormX), 2) + Math.pow((foodY -wormY), 2))<(this.getRadius()+Food.getRadius())){
+				if (World.getDistance(foodX, foodY, wormX, wormY) < (this.getRadius()+Food.getRadius())){
 					removeFoods.add(food);
 				}
 			}
