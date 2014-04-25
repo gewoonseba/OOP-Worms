@@ -41,7 +41,15 @@ public class WormTest {
 	 */
 	private static World testWorld;
 	
+	private static World testWorld2;
+	
 	private static boolean[][] passableMap;
+	
+	// X X X X
+	// . . . .
+	// . . . .
+	// X X X X
+	private static boolean[][] passableMap2;
 	
 	/**
 	 * References a random generator with seed 1
@@ -60,8 +68,12 @@ public class WormTest {
 				{ true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true },
 				{ true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true },
 				{ true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true }};
+		passableMap2 = new boolean[][] {
+				{ false, false, false, false }, { true, true, true, true },
+				{ true, true, true, true }, { false, false, false, false } };
 		randomGenerator = new Random(1);
 		testWorld = new World(10,10,passableMap,randomGenerator);
+		testWorld2 = new World(4.0, 4.0, passableMap, randomGenerator);
 		testWormImmWithWorld.setWorldTo(testWorld);
 		testWorld.addAsWorm(testWormImmWithWorld);
 		testWormImmBasic.setTeamTo(testTeam);
@@ -322,16 +334,6 @@ public class WormTest {
 		assertFalse(testWormImmSmallDirection.canHaveAsTime(-0.1));
 	}
 	
-	//TODO: needs passableMap
-//	/**
-//	 * Test check whether canHaveAsTime returns false in the case where the given time exceeds
-//	 * the time the worm will actually jump.
-//	 */
-//	@Test
-//	public void canHaveAsTime_TimeExceedingLimit(){
-//		assertFalse(testWormImmSmallDirection.canHaveAsTime(1.08));
-//	}
-	
 	/**
 	 * Test to check whether canTurn returns true in the legal case.
 	 */
@@ -393,46 +395,82 @@ public class WormTest {
 		assertEquals(22,testWormMutBasic.getCurrentAP());
 	}
 	
-	//TODO: Needs passableMap
-//	/**
-//	 * Test to check whether canMove returns true in the legal case.
-//	 */
-//	@Test
-//	public void canMove_TrueCase(){
-//		assertTrue(testWormImmBasic.canMove());
-//	}
+
+	/**
+	 * Test to check whether canMove returns true in the legal case.
+	 */
+	@Test
+	public void canMove_TrueCase(){
+		Worm worm = testWorld2.createWorm( 1, 2, 0, 1, "Test");
+		assertTrue(worm.canMove());
+	}
 	
-	//TODO: Needs passableMap
-//	/**
-//	 * Test to check whether canMove returns false in the case where the worm has insufficient AP.
-//	 */
-//	@Test
-//	public void canMove_FalseCase(){
-//		assertFalse(testWormImmBasic.canMove());
-//	}
+	/**
+	 * Test to check whether canMove returns false in the case where the worm has insufficient AP.
+	 */
+	@Test
+	public void canMove_FalseCase(){
+		testWormMutWithWorld.setCurrentAP(0);
+		assertFalse(testWormMutWithWorld.canMove());
+	}
 	
-	//TODO: Needs passableMap
-//	/**
-//	 * Test to check whether, after moving, the new coordinates of the worm are correct and whether
-//	 * the AP is decreased with the right amount.
-//	 */
-//	@Test
-//	public void move_LegalCase(){
-//		testWormMutSmallDirection.move();
-//		assert (Util.fuzzyEquals(((Math.sqrt(2)/2))*1.25,testWormMutSmallDirection.getX()));
-//		assert (Util.fuzzyEquals(((Math.sqrt(2)/2))*1.25,testWormMutSmallDirection.getY()));
-//		assertEquals(52,testWormMutSmallDirection.getCurrentAP());
-//	}
+	@Test
+	public void testMoveHorizontal() {
+		Worm worm = testWorld2.createWorm( 1, 2, 0, 1, "Test");
+		worm.move();
+		Util.fuzzyEquals(2, worm.getX());
+		Util.fuzzyEquals(2, worm.getY());
+	}
 	
-	//TODO: Needs passableMap
-/*	*//**
-	 * Test to check whether the right exception is thrown when the worm has insufficient AP
-	 * to move the given number of steps.
-	 *//*
+	@Test
+	public void testMoveVertical() {
+		Worm worm = testWorld2.createWorm( 1, 1.5, Math.PI / 2, 0.5, "Test");
+		worm.move();
+		Util.fuzzyEquals(1, worm.getX());
+		Util.fuzzyEquals(2.0, worm.getY());
+	}
+	
+	@Test
+	public void testMoveVerticalAlongTerrain() {
+		// . . X
+		// . w X
+		World world = new World(3.0, 2.0, new boolean[][] {
+				{ true, true, false }, { true, true, false } }, randomGenerator);
+		Worm worm = world.createWorm( 1.5, 0.5,
+				Math.PI / 2 - 10 * 0.0175, 0.5, "Test");
+		worm.move();
+		Util.fuzzyEquals(1.5, worm.getX());
+		Util.fuzzyEquals(1.0, worm.getY());
+	}
+
+	@Test
+	public void testFall() {
+		// . X .
+		// . w .
+		// . . .
+		// X X X
+		World world = new World(3.0, 4.0, new boolean[][] {
+				{ true, false, true }, { true, true, true },
+				{ true, true, true }, { false, false, false } }, randomGenerator);
+		Worm worm = world.createWorm( 1.5, 2.5, -Math.PI / 2, 0.5,
+				"Test");
+		assertFalse(worm.canFall());
+		worm.move();
+		assertTrue(worm.canFall());
+		worm.fall();
+		Util.fuzzyEquals(1.5, worm.getX());
+		Util.fuzzyEquals(1.5, worm.getY());
+	}
+
+
+	/**
+	 * Test to check whether the right exception is thrown when the worm has insufficient AP to move.
+	 */
 	@Test (expected = IllegalAPException.class)
 	public void move_IllegalAPException(){
-		testWormMutBasic.move();
-	}*/
+		testWormMutWithWorld.setCurrentAP(0);
+		testWormMutWithWorld.move();
+	}
 	
 	/**
 	 * Test to check whether canJumpAP returns true in the legal case.

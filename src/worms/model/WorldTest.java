@@ -176,7 +176,7 @@ public class WorldTest {
 	 */
 	@Test
 	public void isOutOfBounds_FalseCase(){
-		assertFalse(testWorldImm.isOutOfBounds(9, 9, 1));
+		assertFalse(testWorldImm.isOutOfBounds(9, 9, 0.25));
 	}
 	
 	/**
@@ -509,7 +509,7 @@ public class WorldTest {
 	 */
 	@Test (expected = IllegalArgumentException.class)
 	public void createWorm_XCoordinate_IllegalArgumentException(){
-		testWorldMut.createWorm(-1, 5, 0, 0.25, "Mike");
+		testWorldMut.createWorm(-1.5, 5, 0, 0.25, "Mike");
 	}
 	
 	/**
@@ -558,7 +558,7 @@ public class WorldTest {
 	 */
 	@Test (expected = IllegalArgumentException.class)
 	public void createFood_XCoordinate_IllegalArgumentException(){
-		testWorldMut.createFood(-1, 5);
+		testWorldMut.createFood(-1.5, 5);
 	}
 	
 	/**

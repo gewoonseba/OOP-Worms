@@ -734,16 +734,16 @@ public class World {
 	 * 		| team.setWorldTo(this)
 	 * @effect The new team is added to this world.
 	 * 		| addAsTeam(team)
-	 * @throws IllegalArgumentException
+	 * @throws IllegalNameException
 	 * 		The given name is not valid
 	 * 		| ! Team.isValidName(name)
 	 * @throws IllegalStateException
 	 * 		The world already contains ten teams
 	 * 		| teams.size() >= 10
 	 */
-	public void createTeam(String name) throws IllegalArgumentException{
+	public void createTeam(String name) throws IllegalNameException{
 		if (!Team.isValidName(name))
-			throw new IllegalArgumentException();
+			throw new IllegalNameException(name);
 		if (teams.size() >= 10)
 			throw new IllegalStateException();
 		Team team = new Team(name);
