@@ -162,7 +162,7 @@ public class WorldTest {
 	}
 	
 	/**
-	 * Test to check whether isOutOfBounds returns true in the case wher the worm is
+	 * Test to check whether isOutOfBounds returns true in the case where the worm is
 	 * near the end of the map and has a radius greater than zero.
 	 */
 	@Test
@@ -499,11 +499,116 @@ public class WorldTest {
 	 * Test to check whether createWorm creates a worm correctly.
 	 */
 	@Test
-	public void createWorm_SingleCase(){
+	public void createWorm_TrueCase(){
 		testWorldMut.createWorm(5, 5, 0, 0.25, "Mike");
 		assertTrue(testWorldMut.getWorms().size()==1);
 	}
+	
 	/**
-	 * Test to check whether createWorm throws IllegalArgumentException if given a wrong coordinate.
+	 * Test to check whether createWorm throws IllegalArgumentException if given a wrong x coordinate.
 	 */
+	@Test (expected = IllegalArgumentException.class)
+	public void createWorm_XCoordinate_IllegalArgumentException(){
+		testWorldMut.createWorm(-1, 5, 0, 0.25, "Mike");
+	}
+	
+	/**
+	 * Test to check whether createWorm throws IllegalArgumentException if given a wrong y coordinate.
+	 */
+	@Test (expected = IllegalArgumentException.class)
+	public void createWorm_YCoordinate_IllegalArgumentException(){
+		testWorldMut.createWorm(5, -1, 0, 0.25, "Mike");
+	}
+	
+	/**
+	 * Test to check whether createWorm throws IllegalArgumentException if given a radius that is out of bounds.
+	 */
+	@Test (expected = IllegalArgumentException.class)
+	public void createWorm_Radius_IllegalArgumentException(){
+		testWorldMut.createWorm(0.5, 0.5, 0, 0.6, "Mike");
+	}
+	
+	/**
+	 * Test to check whether createWorm throws IllegalRadiusException if given a radius that's too small.
+	 */
+	@Test (expected = IllegalRadiusException.class)
+	public void createWorm_IllegalRadiusException(){
+		testWorldMut.createWorm(5, 5, 0, 0.22, "Mike");
+	}
+	
+	/**
+	 * Test to check whether createWorm throws IllegalNameException if given an illegal name.
+	 */
+	@Test (expected = IllegalNameException.class)
+	public void createWorm_IllegalNameException(){
+		testWorldMut.createWorm(5, 5, 0, 0.25, "Mike@gmail.com");
+	}
+	
+	/**
+	 * Test to check whether createFood creates a food and puts it in the world in a legal case.
+	 */
+	@Test
+	public void createFood_TrueCase(){
+		testWorldMut.createFood(5, 5);
+		assertTrue(testWorldMut.getFood().size()==1);
+	}
+	
+	/**
+	 * Test to check whether createFood throws IllegalArgumentException if given a wrong x coordinate.
+	 */
+	@Test (expected = IllegalArgumentException.class)
+	public void createFood_XCoordinate_IllegalArgumentException(){
+		testWorldMut.createFood(-1, 5);
+	}
+	
+	/**
+	 * Test to check whether createFood throws IllegalArgumentException if given a wrong y coordinate.
+	 */
+	@Test (expected = IllegalArgumentException.class)
+	public void createFood_YCoordinate_IllegalArgumentException(){
+		testWorldMut.createFood(5, -1);
+	}
+	
+	/**
+	 * Test to check whether createTeam creates a team and puts it in the world correctly in a legal case.
+	 */
+	@Test
+	public void createTeam_TrueCase(){
+		testWorldMut.createTeam("Helden");
+		assertTrue(testWorldMut.getTeam().size()==1);
+	}
+	
+	/**
+	 * Test to check whether createTeam throws IllegalNameException if given an illegal name.
+	 */
+	@Test (expected = IllegalNameException.class)
+	public void createTeam_IllegalNameException(){
+		testWorldMut.createTeam("helden");
+	}
+	
+	/**
+	 * Test to check whether startNextTurn correctly starts the next turn.
+	 */
+	@Test
+	public void startNextTurn_NormalCase(){
+		testWorldMut.createWorm(5,5,0,0.25,"Test1");
+		testWorldMut.createWorm(5,5,0,0.25,"Test2");
+		testWorldMut.startGame();
+		testWorldMut.startNextTurn();
+		assertEquals(testWorldMut.getCurrentWorm().getName(),"Test2");
+	}
+	
+	/**
+	 * Test to check whether startNextTurn correctly starts the next turn 
+	 * if the previous worm was the last worm in the list.
+	 */
+	@Test
+	public void startNextTurn_LastWormCase(){
+		testWorldMut.createWorm(5,5,0,0.25,"Test1");
+		testWorldMut.createWorm(5,5,0,0.25,"Test2");
+		testWorldMut.startGame();
+		testWorldMut.startNextTurn();
+		testWorldMut.startNextTurn();
+		assertEquals(testWorldMut.getCurrentWorm().getName(),"Test1");
+	}
 }

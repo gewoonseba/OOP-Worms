@@ -290,7 +290,7 @@ public class Worm {
 	 * @effect The new y coordinate will be its old y coordinate, minus the distance of one pixel.
 	 * 		| new.getY() = this.getY() - getWorld.getHeightScale();
 	 */
-	public void fallPixel(){
+	private void fallPixel(){
 		double distance = getWorld().getHeightScale();
 		setY(getY() - (distance/2));
 		

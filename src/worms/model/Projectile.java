@@ -210,9 +210,10 @@ public class Projectile {
 		if (! getWorld().isOutOfBounds(tempX, tempY,getRadius())){
 			setX(tempX);
 			setY(tempY);
+			terminate();
 			hit(getOverlappingWorms());
 		}
-		terminate();
+		else terminate();
 	}
 	
 	

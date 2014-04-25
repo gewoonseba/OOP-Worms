@@ -206,8 +206,9 @@ public class World {
 	 * 		result == ( (x < 0) || (x > getWidth()) || (y < 0) || (y > getHeight()) )
 	 */
 	public boolean isOutOfBounds(double x, double y,double radius){
-		return ( (x-radius < 0) || (x+radius > getWidth()) || (y-radius < 0) 
-				|| (y+radius > getHeight()) || Double.isNaN(x) || Double.isNaN(y) );
+		return ( (x-radius < (-getWidthScale()/2)) || (x+radius > getWidth()-(getWidthScale()/2)) 
+				|| (y-radius < (getHeightScale()/2)) 
+				|| (y+radius > getHeight()+(getHeightScale()/2)) || Double.isNaN(x) || Double.isNaN(y) );
 	}
 	
 	/**
@@ -249,7 +250,7 @@ public class World {
 	 * @param tempY
 	 * @return A double array, containing the position that is adjacent, if one is found, and null if none is found.
 	 */
-	public double[] searchAdjacentFrom(double x, double y,double radius){
+	private double[] searchAdjacentFrom(double x, double y,double radius){
 		boolean change = false;
 		int tempX = coordinatesToPixels(x,y)[0];
 		int tempY = coordinatesToPixels(x,y)[1];
@@ -336,6 +337,8 @@ public class World {
 		public boolean isAdjacent(double x,double y,double radius){
 			if (!isPassable(x,y,radius))
 				return false;
+			if (isOutOfBounds(x, y,1.1* radius)||isOutOfBounds(x, y,1.1* radius))
+				return false;
 			double change=0.0;
 			double maxDistance = 1.1 * radius;
 			double minDistance = radius;
@@ -348,8 +351,6 @@ public class World {
 				do {change+=(getWidthScale()/2);
 					}while((Math.sqrt((xchange)*(xchange)+(change)*(change))<minDistance-0.01));
 				while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<=maxDistance )){
-					if (isOutOfBounds(x+xchange, y-change,1.1* radius)||isOutOfBounds(x+xchange, y+change,1.1* radius))
-						break;
 					if (passableMap[coordinatesToPixels(x + xchange, y+change)[1]][coordinatesToPixels(x + xchange, y+ change)[0]]==false)
 						return true;
 					if (passableMap[coordinatesToPixels(x + xchange, y-change)[1]][coordinatesToPixels(x + xchange, y- change)[0]]==false)
@@ -644,6 +645,8 @@ public class World {
 	 * 		| this.food.contains(food)	
 	 */
 	public Food createFood(double x,double y){
+		if (isOutOfBounds(x, y, Food.getRadius()))
+			throw new IllegalArgumentException("These coordinates won't work");
 		Food food = new Food(x,y);
 		food.setWorldTo(this);
 		addAsFood(food);
