@@ -10,7 +10,7 @@ import be.kuleuven.cs.som.annotate.*;
  * a radius (in meters), a mass (calculated according to the radius) and a number of action points. 
  * A Worm can turn, move, jump and change its name. A worm shall belong to one world and one world only. A worm can belong
  * to a Team, but it doesn't have to belong to a team. Furthermore a Worm shall possess weapons and is able to shoot these weapons.
- * 
+ * code repository:https://github.com/sebastianstoelen/OOP-Worms
  * @author Sebastian Stoelen 2BbiCwsElt2, Matthias Maeyens 2BbiCwsElt2
  * @version 2.0
  * 
