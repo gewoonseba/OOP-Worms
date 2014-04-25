@@ -138,6 +138,8 @@ public class Worm {
 	public boolean canMove(){
 		double currentDistance = getRadius();
 		double[] newLocation = null;
+		if (getCurrentAP() == 0)
+			return false;
 		while (newLocation == null && currentDistance>=0.1){
 			newLocation = searchFitLocation(currentDistance);
 			currentDistance -= 0.01;
@@ -234,6 +236,8 @@ public class Worm {
 	 * 		| eatFood();
 	 */
 	public void move() throws IllegalAPException{
+		if (getCurrentAP() == 0)
+			throw new IllegalAPException(getCurrentAP(),this);
 		double distanceStep = getWorld().getWidthScale()/3;
 		double currentDistance = getRadius();
 		double[] newLocation = null;
@@ -296,6 +300,15 @@ public class Worm {
 		}
 		else
 			setHitPoints(0);
+	}
+	
+	/**
+	 * Method to check whether a given worm can fall.
+	 * @return True if and only if the worm is not located on an adjacent position.
+	 * 		| return == !(getWorld().isAdjacent(getX(),getY(),getRadius()));
+	 */
+	public boolean canFall(){
+		return !(getWorld().isAdjacent(getX(),getY(),getRadius()));
 	}
 	
 	/**

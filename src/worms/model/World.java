@@ -765,7 +765,7 @@ public class World {
 	 * 		| team.setWorldTo(this)
 	 * @effect The new team is added to this world.
 	 * 		| addAsTeam(team)
-	 * @throws IllegalArgumentException
+	 * @throws IllegalNameException
 	 * 		The given name is not valid
 	 * 		| ! Team.isValidName(name)
 	 * @throws IllegalStateException

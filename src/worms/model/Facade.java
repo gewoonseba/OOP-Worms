@@ -116,7 +116,7 @@ public class Facade implements IFacade{
 
 	@Override
 	public boolean canFall(Worm worm) {
-		return !(worm.getWorld().isAdjacent(worm.getX(),worm.getY(), worm.getRadius()));
+		return worm.canFall();
 	}
 
 	@Override
