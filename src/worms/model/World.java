@@ -552,16 +552,14 @@ public class World {
 	}
 	
 	/**
-	 * 
-	 * 
-	 * 
-	 * 
-	 * @return
+	 * Method to return the worm that is currently able to perform actions.
+	 * @return The worm is worms with the same index as currentTurn
+	 * 		| getWorms().get(currentTurn)
 	 */
 	public Worm getCurrentWorm() throws IndexOutOfBoundsException{
 		if (getCurrentTurn()>=getWorms().size())
 			throw new IndexOutOfBoundsException("currentTurn is too high.");
-		return this.getWorms().get(currentTurn);
+		return getWorms().get(currentTurn);
 	}
 	
 	/**
@@ -576,7 +574,7 @@ public class World {
 	 * 		| if counter == worms.size() - 1
 	 * 		| 	return == worms.ge(0).getTeamName()
 	 * @return in the case where there is no victor or victorious team, the method returns null.
-	 * 		| if (( ! worms.size() = 1) && ( counter != worms.size() -1
+	 * 		| if (( ! worms.size() = 1) && ( counter != worms.size() -1)
 	 * 		|	return == null
 	 */
 	public String getWinner(){
@@ -593,11 +591,10 @@ public class World {
 	/**
 	 * Method to check whether the game is finished.
 	 * @return returns true if and only if getWinner != null
+	 * 		| return == (!(getWinner() == null))
 	 */
 	public boolean isGameFinished(){
-		if (getWinner()!=null)
-			return true;
-		return false;
+		return (!(getWinner() == null));
 	}
 	
 	/**
@@ -613,11 +610,10 @@ public class World {
 	 */
 	private final List<Worm> worms = new ArrayList<Worm>();
 	
-	//TODO: postconditions
 	/**
 	 * Method to add a new food at a random location in this world.
 	 * @effect The new food is initialized with a random x and y.
-	 * 		| food = new Food(randomX,randomY)
+	 * 		|  createFood(randomX,randomY)
 	 */
 	public void addNewFood() {
 		double[] location = null;
@@ -626,28 +622,28 @@ public class World {
 		double randomX = randomGenerator.nextFloat()*getWidth();
 		double randomY = randomGenerator.nextFloat()*getHeight();
 		radius = Food.getRadius();
-		if (!(randomX + radius>getWidth() || randomX-radius<0 || randomY+radius>getHeight() || randomY-radius<0)){
+		if (!(isOutOfBounds(randomX,randomY,radius))){
 			location = searchAdjacentFrom(randomX, randomY, radius);}
 		} while (location == null);
 		createFood(location[0], location[1]);
 	}
-	//TODO: Postconditions
+	
 	/**
 	 * Method to create a new food and add it to this world.
 	 * @param x
 	 * 		The x coordinate from which an adjacent position should be found.
 	 * @param y
 	 * 		The y coordinate from which an adjacent position should be found.
-	 * @effect The new food is intialized with the given x and y
+	 * @effect The new food is initialized with the given x and y
 	 * 		| food = new Food(x,y)
 	 * @post The world of the food is this world
 	 * 		| food.getWorld() == this
 	 * @post This world contains the given food
-	 * 		| this.food.contains(food)	
+	 * 		| new.food.contains(food)	
 	 */
 	public Food createFood(double x,double y){
 		if (isOutOfBounds(x, y, Food.getRadius()))
-			throw new IllegalArgumentException("These coordinates won't work");
+			throw new IllegalArgumentException();
 		Food food = new Food(x,y);
 		food.setWorldTo(this);
 		addAsFood(food);
@@ -678,10 +674,8 @@ public class World {
 	 * Method to add the given food to this world.
 	 * @param food
 	 * 		The food to be added
-	 * @post If the food is valid, this world has the given food as one of its food.
-	 * 		| this.food.contains(food)
-	 * @post If the food is not valid, no food will be added.
-	 * 		| new.food == this.food
+	 * @post This world has the given food as one of its food.
+	 * 		| new.food.contains(food)
 	 * @throws IllegalFoodException
 	 * 		This world cannot have the given food as one of its food.
 	 * 		| ! canHaveAsFood(food)
@@ -701,6 +695,8 @@ public class World {
 	 * Method to remove a given food from this world.
 	 * @param food
 	 * 		The food to be removed.
+	 * @post The new world will not have the given worm as one of its worms.
+	 * 		| new.food.contains(food) == false
 	 * @throws IllegalFoodException
 	 * 		The given food is null, or this world does not contain the given worm.
 	 * 		| (food == null) || (! hasAsFood(food))
@@ -722,57 +718,65 @@ public class World {
 	public List<Food> getFood(){
 		return this.food;
 	}
+	
 	/**
 	 * Variable registering all the food currently in this world.
 	 */
 	private final List<Food> food = new ArrayList<Food>();
 
-	//TODO: IllegalArgumentEception, Postconditions
-		/**
-		 * Method to create a new team and add it to this world.
-		 * @param x
-		 * 		The x coordinate from which an adjacent position should be found.
-		 * @param y
-		 * 		The y coordinate from which an adjacent position should be found.
-		 * @throws IllegalArgumentException
-		 * 		No adjacent position can be found starting from (x,y)
-		 * 		| searchAdjacentFrom(x,y) == null
-		 */
-		public void createTeam(String name) throws IllegalArgumentException{
-			if (name == null || team.size()==10)
-				throw new IllegalArgumentException();
-			Team team = new Team(name);
-			team.setWorldTo(this);
-			addAsTeam(team);
-		}
-		/**
-		 * Method to check whether this world can have the given team as one of its team.
-		 * @param team
-		 * @return True if and only if team is not null.
-		 * 		| return == !(team == null)
-		 */
-		public boolean canHaveAsTeam(Team team){
-			return (!(team == null));
-		}
+	/**
+	 * Method to create a new team and add it to this world.
+	 * @param name
+	 * 		The name of the new team
+	 * @effect The new team is created with the given name
+	 * 		| new Team(name)
+	 * @effect The teams world is set to this.
+	 * 		| team.setWorldTo(this)
+	 * @effect The new team is added to this world.
+	 * 		| addAsTeam(team)
+	 * @throws IllegalArgumentException
+	 * 		The given name is not valid
+	 * 		| ! Team.isValidName(name)
+	 * @throws IllegalStateException
+	 * 		The world already contains ten teams
+	 * 		| teams.size() >= 10
+	 */
+	public void createTeam(String name) throws IllegalArgumentException{
+		if (!Team.isValidName(name))
+			throw new IllegalArgumentException();
+		if (teams.size() >= 10)
+			throw new IllegalStateException();
+		Team team = new Team(name);
+		team.setWorldTo(this);
+		addAsTeam(team);
+	}
+		
+	/**
+	 * Method to check whether this world can have the given team as one of its team.
+	 * @param team
+	 * @return True if and only if team is not null.
+	 * 		| return == !(team == null)
+	 */
+	public boolean canHaveAsTeam(Team team){
+		return (!(team == null));
+	}
 		
 	/**
 	 * Method to check whether this world already contains the given team.
 	 * @param team
 	 * @return True if and only the given team is in team.
-	 * 		| this.team.contains(team)
+	 * 		| return == this.teams.contains(team)
 	 */
 	public boolean hasAsTeam(Team team){
-		return this.team.contains(team);
+		return this.teams.contains(team);
 	}
 	
 	/**
 	 * Method to add the given team to this world.
 	 * @param team
 	 * 		The team to be added
-	 * @post If the team is valid, this world has the given team as one of its team.
-	 * 		| this.team.contains(team)
-	 * @post If the team is not valid, no team will be added.
-	 * 		| new.team == this.team
+	 * @post This world has the given team as one of its team.
+	 * 		| new.teams.contains(team)
 	 * @throws IllegalTeamException
 	 * 		This world cannot have the given team as one of its team.
 	 * 		| ! canHaveAsTeam(team)
@@ -785,13 +789,15 @@ public class World {
 			throw new IllegalTeamException(team);
 		if ((team.getWorld() != this) || (hasAsTeam(team)))
 			throw new IllegalStateException();
-		this.team.add(team);
+		this.teams.add(team);
 	}
 	
 	/**
 	 * Method to remove a given team from this world.
 	 * @param team
 	 * 		The team to be removed.
+	 * @post The new world will no longer have the given team as one of its teams.
+	 * 		| new.teams.contains(team) == false
 	 * @throws IllegalTeamException
 	 * 		The given team is null, or this world does not contain the given worm.
 	 * 		| (team == null) || (! hasAsTeam(team))
@@ -804,27 +810,39 @@ public class World {
 			throw new IllegalTeamException(team);
 		if (team.hasWorld())
 			throw new IllegalStateException();
-		this.team.remove(team);
+		this.teams.remove(team);
 	}
 	
 	/**
 	 * Method to return a list of all the team in this world.
 	 */
 	public List<Team> getTeam(){
-		return this.team;
+		return this.teams;
 	}
 	/**
 	 * Variable registering all the team currently in this world.
 	 */
-	private final List<Team> team = new ArrayList<Team>();
+	private final List<Team> teams = new ArrayList<Team>();
 	
-/**
+	/**
 	 * Method to start the next turn.
+	 * @post currentTurn will be increased by one.
+	 * 		| new.currentTurn == this.currentTurn + 1
+	 * @post If currentTurn is greater than or equal to the size of worms, currentTurn will be set to zero.
+	 * 		| if (currentTurn >= worms.size()){
+	 *		|	new.currentTurn == 0;
+	 * @effect The hitPoints of the current worm will be increased by 10
+	 * 		| new.worms.get(new.currentTurn).setHitPoints(new.worms.get(new.currentTurn).getHitPoints() + 10)
+	 * @effect If the sum of the current hitPoints and 10 is greater than the maxHitPoints, 
+	 * 		the hitPoints of the current worm will be set to the maxHitPoints
+	 * 		| if (new.worms.get(new.currentTurn).getHitPoints() + 10 > new.worms.get(new.currentTurn).getMaxHitPoints())
+	 * 		| 	new.worms.get(new.currentTuren).setHitPointss(new.worms.get(new.currentTurn).getMaxHitPoints())
+	 * 
 	 */
 	public void startNextTurn(){
-		currentTurn+=1;
-		if (currentTurn>=worms.size()){
-			currentTurn=0;
+		currentTurn += 1;
+		if (currentTurn >= worms.size()){
+			currentTurn = 0;
 		}
 		Worm currentWorm = worms.get(currentTurn);
 		if (currentWorm.getHitPoints()+10>currentWorm.getMaxHitPoints()){
@@ -837,7 +855,9 @@ public class World {
 	}
 	
 	/**
-	 * method to start the game
+	 * Method to start the game
+	 * @post currentTurn is set to zero
+	 * 		| new.currentTurn == 0
 	 */
 	public void startGame(){
 		currentTurn = 0;
@@ -845,8 +865,8 @@ public class World {
 	
 	/**
 	 * Method that returns the current turn.
-	 * @return this.currentTurn
 	 */
+	@Basic
 	public int getCurrentTurn(){
 		return this.currentTurn;
 	}
@@ -857,21 +877,24 @@ public class World {
 	private int currentTurn;
 	
 	/**
-	 * 
-	 * @return
+	 * Method to return the active projectile.
 	 */
+	@Basic
 	public Projectile getActiveProjectile(){
 		return this.activeProjectile;
 	}
 	/**
-	 * 
+	 * Method to set the activeProjectile to the given projectile.
 	 * @param projectile
+	 * @post the new active projectile is the given projectile.
+	 * 		| new.getActiveProjectile() == projectile
 	 */
 	public void setActiveProjectile(Projectile projectile){
 		this.activeProjectile=projectile;	
 	}
+	
 	/**
-	 * 
+	 * Variable registering the activeProjectile of this world.
 	 */
 	private Projectile activeProjectile;
 }
