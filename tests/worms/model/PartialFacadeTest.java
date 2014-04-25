@@ -73,6 +73,7 @@ public class PartialFacadeTest {
 
 	@Test
 	public void testFall() {
+		
 		// . X .
 		// . w .
 		// . . .

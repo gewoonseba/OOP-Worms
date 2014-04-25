@@ -229,7 +229,7 @@ public class Worm {
 	 * Method to move the worm one step, in its current direction. 
 	 * If the worm overlaps with food after its step, the worm will eat that food.
 	 * @effect
-	 * 
+	 *       |setX(newX)
 	 * @effect The worm shall eat the food it overlaps wit after its step, if any.
 	 * 		| eatFood();
 	 */
@@ -451,7 +451,7 @@ public class Worm {
 	/**
 	 * The gravitational constant.
 	 */
-	public static final double g = 9.80665;
+	private static final double g = 9.80665;
 	
 	
 	/**
@@ -472,7 +472,7 @@ public class Worm {
 	 */
 	@Raw
 	public static boolean isValidDirection(double direction){
-		return ((direction >= 0) && (direction < 2*Math.PI));
+		return (direction < 2*Math.PI);
 	}
 	
 	/**
@@ -1174,7 +1174,7 @@ public class Worm {
 	 * 		|		getWorld().removeAsFood(food)
 	 * 		|		food.terminate()
 	 */
-	public void eatFood(){
+	private void eatFood(){
 		List<Food> removeFoods= new ArrayList<Food>();
 		if (!(this.getWorld().getFood().size()==0)){
 			for (Food food:this.getWorld().getFood()){
