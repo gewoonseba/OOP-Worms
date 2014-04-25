@@ -168,13 +168,6 @@ public class WormTest {
 		assertFalse(Worm.isValidDirection(2*Math.PI));
 	}
 	
-	/**
-	 * Test to check whether isValidDirection returns false in the case where the direction is negative.
-	 */
-	@Test
-	public void isValidDirection_NegativeDirection(){
-		assertFalse(Worm.isValidDirection(-1));
-	}
 	
 	/**
 	 * Test to check whether isValidRadius returns true in the legal case.

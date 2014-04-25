@@ -203,12 +203,14 @@ public class World {
 	 * @param y
 	 * 		The y coordinate to be checked.
 	 * @return False if x or y is less than zero, or if x is greater than the width or y greater than the height.
-	 * 		result == ( (x < 0) || (x > getWidth()) || (y < 0) || (y > getHeight()) )
-	 */
-	public boolean isOutOfBounds(double x, double y,double radius){
-		return ( (x-radius < (-getWidthScale()/2)) || (x+radius > getWidth()-(getWidthScale()/2)) 
+	 * 		result == ( (x-radius < (-getWidthScale()/2)) || (x+radius > getWidth()-(getWidthScale()/2)) 
 				|| (y-radius < (getHeightScale()/2)) 
 				|| (y+radius > getHeight()+(getHeightScale()/2)) || Double.isNaN(x) || Double.isNaN(y) );
+	 */
+	public boolean isOutOfBounds(double x, double y,double radius){
+		return ( (x-radius < 0) || (x+radius >= getWidth()) 
+				|| (y-radius < 0) 
+				|| (y+radius >= getHeight()) || Double.isNaN(x) || Double.isNaN(y) );
 	}
 	
 	/**
@@ -222,8 +224,8 @@ public class World {
 	 * 			| return == {x*getWidthScale(),(getPixelHeight() - y)*getHeightScale()}
 	 */
 	private double[] pixelsToCoordinates(int x,int y){
-		double newX = x*getWidthScale();
-		double newY = (getPixelHeight()-y)*getHeightScale();
+		double newX = x*getWidthScale()+getWidthScale()/2;
+		double newY = (getPixelHeight()-y)*getHeightScale()+getHeightScale()/2;
 		return new double[] {newX,newY};
 	}
 	
@@ -238,42 +240,38 @@ public class World {
 	 * 			| return == {Math.round(x/getWidthScale()),getPixelHeight() - Math.round(y/getHeightScale())}
 	 */
 	private int[] coordinatesToPixels(double x,double y){
-		int newX = (int) Math.round(x/getWidthScale());
-		int newY = (int) Math.round(y/getHeightScale());
-		newY = getPixelHeight() - newY;
+		int newX = (int) Math.floor(x/getWidthScale());
+		int newY = (int) Math.floor(y/getHeightScale());
+		newY = (getPixelHeight()-1) - newY;
 		return new int[] {newX,newY};
 	}
 	
 	/**
 	 * Method to search for a position adjacent to impassable terrain, beginning from a given position.
-	 * @param tempX
-	 * @param tempY
+	 * @param x
+	 * @param y
 	 * @return A double array, containing the position that is adjacent, if one is found, and null if none is found.
 	 */
 	private double[] searchAdjacentFrom(double x, double y,double radius){
-		boolean change = false;
-		int tempX = coordinatesToPixels(x,y)[0];
-		int tempY = coordinatesToPixels(x,y)[1];
-		while ((! isPixelAdjacent(tempX,tempY,radius)) ){
+		boolean change = false;;
+		while ((! isAdjacent(x,y,radius)) ){
 			change = false;
-			if (tempX < centerX){
-				tempX += 1;
+			if (coordinatesToPixels(x, y)[0] < centerX){
+				x += getWidthScale();
 				change = true;
 				}
-		    if (tempX > centerX){
-				tempX -= 1;
+		    if (coordinatesToPixels(x, y)[0] > centerX){
+				x -= getWidthScale();
 		        change = true;}
-			if ((tempY < centerY) && (! isPixelAdjacent(tempX,tempY,radius))  ){
-				tempY += 1;
+			if ((coordinatesToPixels(x, y)[1] < centerY) && (! isAdjacent(x,y,radius))){
+				y -= getHeightScale();
 			    change = true;}
-			if ((tempY > centerY) && (! isPixelAdjacent(tempX,tempY,radius)) ){
-				tempY -= 1;
+			if ((coordinatesToPixels(x, y)[1] > centerY) && (! isAdjacent(x,y,radius)) ){
+				y += getHeightScale();
 				change = true;}
 			if (change == false)
 				return null;
 			}
-		x = pixelsToCoordinates((int) tempX,(int) tempY)[0];
-		y = pixelsToCoordinates((int) tempX,(int) tempY)[1];
 		return new double[] {x,y};
 		
 	}
@@ -288,6 +286,11 @@ public class World {
 	 *       |the radius of the object.
 	 * @return returns a boolean that is true if and only if there is an impassable location
 	 *       between the radius and 1.1*radius.
+	 *       |if{
+	 *       |for each(newX,newY) for which holds that (getDistance(x,y,newX,newY) < maxDistance
+	 *       | and getDistance(x,y,newX,newY) < minDistance)
+	 *       | => passableMap[newY][newX]==true:return false}
+	 *       |else: return true
 	 */
 		private boolean isPixelAdjacent(int x,int y, double radius){
 			if (!isPixelPassable(x, y, radius))
@@ -299,7 +302,7 @@ public class World {
 			double immPixelX = x;
 			int change = 0;
 			while(true){
-				if (Math.abs(pixelX-immPixelX)>maxDistance+0.1){
+				if (Math.abs(pixelX-immPixelX)>maxDistance+0.01){
 					return false;
 				}
 				if (passableMap[pixelY][pixelX]==false){
@@ -308,7 +311,7 @@ public class World {
 				do {
 					change+=1;
 				} while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<minDistance);
-				while(Math.sqrt((immPixelX-pixelX)*(immPixelX-pixelX)+(change)*(change))<=maxDistance+0.1){
+				while(Math.sqrt((immPixelX-pixelX)*(immPixelX-pixelX)+(change)*(change))<=maxDistance+0.01){
 					if (passableMap[pixelY - change][pixelX]==false){
 						return true;
 					}
@@ -322,23 +325,27 @@ public class World {
 			}	
 		}
 
-		/**
-		 * method to see if an object with a given radius is adjacent to impassable terrain.
-		 * @param x
-		 *       |the x coordinate of the center of the object.
-		 * @param y
-		 *       |the y coordinate of the center of the object.
-		 * @param radius
-		 *       |the radius of the object.
-		 * @return returns a boolean that is true if and only if there is an impassable location
-		 *       between the radius and 1.1*radius.
-	     */
-		
+	/**
+	 * method to see if an object with a given radius is adjacent to impassable terrain.
+	 * @param x
+	 *       |the x coordinate of the center of the object.
+	 * @param y
+	 *       |the y coordinate of the center of the object.
+	 * @param radius
+     *       |the radius of the object.
+	 * @return |if{
+     *       |for each(newX,newY) for which holds (getDistance(x,y,newX,newY) < 1.1*radius
+     *       | and getDistance(x,y,newX,newY) > radius)
+     *       | => passableMap[coordinatesToPixels(newX, newY)[1]][coordinatesToPixels(newX, newY)[0]]
+     *       |==true:return false}
+	 *       |else: return true
+	 */
 		public boolean isAdjacent(double x,double y,double radius){
-			if (!isPassable(x,y,radius))
-				return false;
-			if (isOutOfBounds(x, y,1.1* radius)||isOutOfBounds(x, y,1.1* radius))
-				return false;
+			if (!isPassable(x,y,radius)){
+				System.out.println("Wrong");
+				return false;}
+			if (isOutOfBounds(x, y,1.1* radius)||isOutOfBounds(x, y,1.1* radius)){
+				return false;}
 			double change=0.0;
 			double maxDistance = 1.1 * radius;
 			double minDistance = radius;
@@ -348,45 +355,46 @@ public class World {
 					return false;}
 				if (passableMap[coordinatesToPixels(x+xchange, y)[1]][coordinatesToPixels(x+xchange, y)[0]]==false)
 					return true;
-				do {change+=(getWidthScale()/2);
+				do {change+=maxDistance/(Math.round((radius/(getHeightScale()/2))));
 					}while((Math.sqrt((xchange)*(xchange)+(change)*(change))<minDistance-0.01));
 				while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<=maxDistance )){
 					if (passableMap[coordinatesToPixels(x + xchange, y+change)[1]][coordinatesToPixels(x + xchange, y+ change)[0]]==false)
 						return true;
 					if (passableMap[coordinatesToPixels(x + xchange, y-change)[1]][coordinatesToPixels(x + xchange, y- change)[0]]==false)
 						return true;
-					change+=(getWidthScale()/2);
+					change+=maxDistance/(Math.round((radius/(getHeightScale()/2))));
 				}
-				xchange-=(getWidthScale()/2);
+				xchange-=maxDistance/(Math.round((radius/(getWidthScale()/2))));
 				change =0;
 			}
 		}
 		
-		/**
-		 * method to see if an object with a given radius is passable.
-		 * @param x
-		 *       |the x coordinate of the center of the object.
-		 * @param y
-		 *       |the y coordinate of the center of the object.
-		 * @param radius
-		 *       |the radius of the object.
-		 * @return returns a boolean that is true if and only if there is no impassable location
-		 *       in the given radius.
-		 */
+	/**
+	 * method to see if an object with a given radius is passable.
+	 * @param x
+	 *       |the x coordinate of the center of the object.
+	 * @param y
+	 *       |the y coordinate of the center of the object.
+	 * @param radius
+	 *       |the radius of the object.
+	 * @return returns a boolean that is true if and only if there is no impassable location
+	 *       in the given radius.
+	 *       |if{
+	 *       |for each(newX,newY) where getDistance(x,y,newX,newY) < maxDistance
+	 *       | => passableMap[newY][newX]==true:return true}
+	 *       |else: return false
+	 */
 		private boolean isPixelPassable(int x, int y, double radius){
+            double maxDistance=radius/getWidthScale();
 			
-			int maxDistance=(int) Math.round((radius)/getWidthScale());
-			int pixelX = x + maxDistance;
+			int pixelX = x;
 			int pixelY = y;
-			//if ((x + maxDistance>(getPixelWidth()-1) || x - maxDistance< 0 || pixelY + maxDistance>(getPixelHeight()-1) || pixelY-maxDistance<0))
-			//	return false;
-			double immPixelX = x;
+			double immPixelX = x-maxDistance;
 			int change = 0;
 			while(true){
 				if (Math.abs(pixelX-immPixelX)>maxDistance+0.01){
 					return true;
 				}
-				
 				if (passableMap[pixelY][pixelX]==false){
 					return false;
 				}
@@ -415,19 +423,35 @@ public class World {
 	 *       |the radius of the object.
 	 * @return returns a boolean that is true if and only if there is no impassable location
 	 *       in the given radius.
+	 *       |if{
+     *       |for each(newX,newY) for which holds getDistance(x,y,newX,newY) < radius
+     *       | => passableMap[coordinatesToPixels(newX, newY)[1]][coordinatesToPixels(newX, newY)[0]]
+     *       |==true:return true}
+	 *       |else: return false
 	 */
 	public boolean isPassable(double x, double y, double radius){
 		if (isOutOfBounds(x, y, radius))
 			return false;
-		double newX = x + radius;
-		double newY = y;
-		int pixelX = coordinatesToPixels(newX, newY)[0];
-		int immPixelX = coordinatesToPixels(x, newY)[0];
-		int pixelY = coordinatesToPixels(newX, newY)[1];
-		return this.isPixelPassable(immPixelX,pixelY,radius);
+		double change=0.0;
+		double maxDistance = radius;
+		double xchange=maxDistance;
+		while(true){
+			if (Math.abs(xchange)>maxDistance){
+				return true;}
+			if (passableMap[coordinatesToPixels(x+xchange, y)[1]][coordinatesToPixels(x+xchange, y)[0]]==false)
+				return false;
+			change+=maxDistance/(Math.round((radius/(getHeightScale()))));
+			while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<maxDistance )){
+				if (passableMap[coordinatesToPixels(x + xchange, y+change)[1]][coordinatesToPixels(x + xchange, y+ change)[0]]==false)
+					return false;
+				if (passableMap[coordinatesToPixels(x + xchange, y-change)[1]][coordinatesToPixels(x + xchange, y- change)[0]]==false)
+					return false;
+				change+=maxDistance/(Math.round((radius/(getHeightScale()))));
+			}
+			xchange-=maxDistance/(Math.round((radius/(getWidthScale()))));
+			change =0;
 		}
-
-
+	}
 
 	//TODO: specification
 	/**
@@ -443,7 +467,7 @@ public class World {
 		double randomX = randomGenerator.nextFloat()*getWidth();
 		double randomY = randomGenerator.nextFloat()*getHeight();
 		radius = Worm.getMinimalRadius();
-		if (!(randomX + radius>getWidth() || randomX-radius<0 || randomY+radius>getHeight() || randomY-radius<0)){
+		if (!(isOutOfBounds(randomX, randomY, radius))){
 			location = searchAdjacentFrom(randomX, randomY, radius);}
 		} while (location == null);
 		int number = worms.size() + 1;
@@ -552,9 +576,15 @@ public class World {
 	}
 	
 	/**
+<<<<<<< HEAD
+	 * 
+	 * 
+	 * @return
+=======
 	 * Method to return the worm that is currently able to perform actions.
 	 * @return The worm is worms with the same index as currentTurn
 	 * 		| getWorms().get(currentTurn)
+>>>>>>> 24f064eccb2126c5eb1090712d2edb1755ee93b5
 	 */
 	public Worm getCurrentWorm() throws IndexOutOfBoundsException{
 		if (getCurrentTurn()>=getWorms().size())

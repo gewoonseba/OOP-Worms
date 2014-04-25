@@ -177,6 +177,7 @@ public class WorldTest {
 	@Test
 	public void isOutOfBounds_FalseCase(){
 		assertFalse(testWorldImm.isOutOfBounds(9, 9, 0.25));
+
 	}
 	
 	/**
