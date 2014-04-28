@@ -3,9 +3,9 @@ package worms.gui.game.commands;
 import worms.gui.game.PlayGameScreen;
 import worms.model.IFacade;
 
-public class SelectNextWorm extends InstantaneousCommand {
+public class AddNewFood extends InstantaneousCommand {
 
-	public SelectNextWorm(IFacade facade, PlayGameScreen screen) {
+	public AddNewFood(IFacade facade, PlayGameScreen screen) {
 		super(facade, screen);
 	}
 
@@ -16,7 +16,7 @@ public class SelectNextWorm extends InstantaneousCommand {
 
 	@Override
 	protected void doStartExecution() {
-		getFacade().startNextTurn(getWorld());
+		getFacade().addNewFood(getWorld());
 	}
 
 }
