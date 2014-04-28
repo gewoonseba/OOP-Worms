@@ -8,9 +8,14 @@ import java.util.Random;
 import be.kuleuven.cs.som.annotate.*;
 
 /**
+ * A class of a World. A world has a width, a height, a passableMap and a random generator.
+ * A world also has a collection of worm, teams and food. They can be empty.
+ * It also has methods to create a Worm and food on a random adjacent location.
  * 
- * @author Sebastian Stoelen, Matthias Maeyens
- * @ version 1.0
+ * 
+ * code repository:https://github.com/sebastianstoelen/OOP-Worms
+ * @author Sebastian Stoelen 2BbiCwsElt2, Matthias Maeyens 2BbiCwsElt2
+ * @version 1.0
  *
  */
 public class World {
@@ -342,7 +347,6 @@ public class World {
 	 */
 		public boolean isAdjacent(double x,double y,double radius){
 			if (!isPassable(x,y,radius)){
-				System.out.println("Wrong");
 				return false;}
 			if (isOutOfBounds(x, y,1.1* radius)||isOutOfBounds(x, y,1.1* radius)){
 				return false;}
@@ -355,16 +359,16 @@ public class World {
 					return false;}
 				if (passableMap[coordinatesToPixels(x+xchange, y)[1]][coordinatesToPixels(x+xchange, y)[0]]==false)
 					return true;
-				do {change+=maxDistance/(Math.round((radius/(getHeightScale()/2))));
+				do {change+=maxDistance/(Math.ceil((radius/(getHeightScale()/2))));
 					}while((Math.sqrt((xchange)*(xchange)+(change)*(change))<minDistance-0.01));
 				while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<=maxDistance )){
 					if (passableMap[coordinatesToPixels(x + xchange, y+change)[1]][coordinatesToPixels(x + xchange, y+ change)[0]]==false)
 						return true;
 					if (passableMap[coordinatesToPixels(x + xchange, y-change)[1]][coordinatesToPixels(x + xchange, y- change)[0]]==false)
 						return true;
-					change+=maxDistance/(Math.round((radius/(getHeightScale()/2))));
+					change+=maxDistance/(Math.ceil((radius/(getHeightScale()/2))));
 				}
-				xchange-=maxDistance/(Math.round((radius/(getWidthScale()/2))));
+				xchange-=maxDistance/(Math.ceil((radius/(getWidthScale()/2))));
 				change =0;
 			}
 		}
@@ -434,21 +438,22 @@ public class World {
 			return false;
 		double change=0.0;
 		double maxDistance = radius;
-		double xchange=maxDistance;
+		double xchange=-maxDistance;
 		while(true){
 			if (Math.abs(xchange)>maxDistance){
 				return true;}
 			if (passableMap[coordinatesToPixels(x+xchange, y)[1]][coordinatesToPixels(x+xchange, y)[0]]==false)
 				return false;
-			change+=maxDistance/(Math.round((radius/(getHeightScale()))));
-			while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<maxDistance )){
-				if (passableMap[coordinatesToPixels(x + xchange, y+change)[1]][coordinatesToPixels(x + xchange, y+ change)[0]]==false)
-					return false;
+			change+=maxDistance/(Math.ceil((radius/(getHeightScale()))));
+			while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<=maxDistance )){
+				if (change!=maxDistance){
+					if (passableMap[coordinatesToPixels(x + xchange, y+change)[1]][coordinatesToPixels(x + xchange, y+ change)[0]]==false)
+						return false;}
 				if (passableMap[coordinatesToPixels(x + xchange, y-change)[1]][coordinatesToPixels(x + xchange, y- change)[0]]==false)
 					return false;
-				change+=maxDistance/(Math.round((radius/(getHeightScale()))));
+				change+=maxDistance/(Math.ceil((radius/(getHeightScale()))));
 			}
-			xchange-=maxDistance/(Math.round((radius/(getWidthScale()))));
+			xchange+=maxDistance/(Math.ceil((radius/(getWidthScale()))));
 			change =0;
 		}
 	}
@@ -764,7 +769,7 @@ public class World {
 	 * 		| team.setWorldTo(this)
 	 * @effect The new team is added to this world.
 	 * 		| addAsTeam(team)
-	 * @throws IllegalNameException
+	 * @throws IllegalArgumentException
 	 * 		The given name is not valid
 	 * 		| ! Team.isValidName(name)
 	 * @throws IllegalStateException

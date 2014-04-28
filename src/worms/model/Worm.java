@@ -10,7 +10,7 @@ import be.kuleuven.cs.som.annotate.*;
  * a radius (in meters), a mass (calculated according to the radius) and a number of action points. 
  * A Worm can turn, move, jump and change its name. A worm shall belong to one world and one world only. A worm can belong
  * to a Team, but it doesn't have to belong to a team. Furthermore a Worm shall possess weapons and is able to shoot these weapons.
- * 
+ * code repository:https://github.com/sebastianstoelen/OOP-Worms
  * @author Sebastian Stoelen 2BbiCwsElt2, Matthias Maeyens 2BbiCwsElt2
  * @version 2.0
  * 
@@ -230,15 +230,18 @@ public class Worm {
 	/**
 	 * Method to move the worm one step, in its current direction. 
 	 * If the worm overlaps with food after its step, the worm will eat that food.
-	 * @effect
+	 * @effect the worm shall have a newAp and new coordinates based on the calculated location.
 	 *       |setX(newX)
+	 *       |setY(newY)
+	 *       |setCurrentAP(newAP)
 	 * @effect The worm shall eat the food it overlaps wit after its step, if any.
 	 * 		| eatFood();
+	 * 
 	 */
 	public void move() throws IllegalAPException{
 		if (getCurrentAP() == 0)
 			throw new IllegalAPException(getCurrentAP(),this);
-		double distanceStep = getWorld().getWidthScale()/3;
+		double distanceStep = getWorld().getWidthScale()/2;
 		double currentDistance = getRadius();
 		double[] newLocation = null;
 		while (newLocation == null && currentDistance >= 0.1){
@@ -366,9 +369,9 @@ public class Worm {
 	 *        | this.getCurrentAP() <= 0
 	 */
 	public void jump(double timeStep) throws IllegalAPException{
-		if (! this.canJumpAP())
-			throw new IllegalAPException(this.getCurrentAP(), this);
-		double time = (0.1*this.getRadius())/getInitialSpeed();
+		if (! this.canJumpAP()){
+			throw new IllegalAPException(this.getCurrentAP(), this);}
+		double time = (this.getRadius())/getInitialSpeed();
 		double[] tempCoordinates = jumpStep(time);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
@@ -407,7 +410,7 @@ public class Worm {
 	public double jumpTime(double timeStep) throws IllegalAPException{
 		if (! this.canJumpAP())
 			throw new IllegalAPException(getCurrentAP(),this);	
-		double jumpTime = (0.1*this.getRadius())/getInitialSpeed();
+		double jumpTime = (this.getRadius())/getInitialSpeed();
 		double[] tempCoordinates = jumpStep(jumpTime);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
