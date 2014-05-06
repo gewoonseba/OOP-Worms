@@ -465,7 +465,7 @@ public class World {
 	 * 		and a name with a number, which is a representation of how many worms are already in this world.
 	 * 		| new Worm worm = createWorm(randomX,randomY,0,Worm.getMinimalRadius(),"player x")
 	 */
-	public void addNewWorm() {
+	public void addNewWorm(Program program) {
 		double[] location = null;
 		double radius = Worm.getMinimalRadius();
 		do {
