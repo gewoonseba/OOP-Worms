@@ -38,7 +38,7 @@ public class BooleanNegation extends BooleanUnaryExpression {
 	 */
 	@Override
 	public String getOperatorSymbol() {
-		return "-";
+		return "!";
 	}
 
 }

@@ -8,19 +8,6 @@ public abstract class BooleanExpressions extends Expression {
 			return true;
 		return false;
 	}
-
-
-	@Override
-	public boolean equals(Object other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	public abstract boolean getBooleanValue();
 

@@ -15,8 +15,6 @@ public class DoubleNegation extends DoubleUnaryExpression {
 		super(operand);
 	}
 
-	
-	
 	/**
 	 * Return the value of this negation.
 	 *

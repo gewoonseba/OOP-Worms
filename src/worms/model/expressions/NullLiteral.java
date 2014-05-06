@@ -23,7 +23,7 @@ public class NullLiteral extends DoubleBasicExpression {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return null;
+		return "null";
 	}
 
 }
