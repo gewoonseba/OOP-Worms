@@ -3,6 +3,9 @@ package worms.model;
 import java.util.Collection;
 import java.util.Random;
 
+import worms.gui.game.IActionHandler;
+import worms.model.programs.ParseOutcome;
+
 public class Facade implements IFacade{
 	
 	public Facade(){
@@ -110,8 +113,8 @@ public class Facade implements IFacade{
 	}
 
 	@Override
-	public void addNewWorm(World world) {
-		world.addNewWorm();
+	public void addNewWorm(World world, Program program) {
+		world.addNewWorm(program);
 	}
 
 	@Override
@@ -142,7 +145,7 @@ public class Facade implements IFacade{
 
 	@Override
 	public Worm createWorm(World world, double x, double y, double direction,
-			double radius, String name) throws ModelException{
+			double radius, String name,Program program) throws ModelException{
 		if (world==null || !Worm.isValidCoordinate(x) || !Worm.isValidCoordinate(y) || !Worm.isValidDirection(direction)
 				|| !Worm.isValidName(name) || !Worm.isValidRadius(radius))
 			throw new ModelException("Cannot create this worm.");
@@ -329,6 +332,31 @@ public class Facade implements IFacade{
 	@Override
 	public void startNextTurn(World world) {
 		world.startNextTurn();
+	}
+
+
+
+	@Override
+	public ParseOutcome<?> parseProgram(String programText,
+			IActionHandler handler) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public boolean hasProgram(Worm worm) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean isWellFormed(Program program) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 
