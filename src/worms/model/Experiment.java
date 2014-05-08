@@ -1,12 +1,16 @@
 package worms.model;
 
-import java.util.*;
 
 public class Experiment {
 
 	public static void main(String[] args) {
-		System.out.println(Worm.isValidCoordinate(Double.NaN));
+		int test = 7;
+		System.out.println(testFunction(test) instanceof Integer);
 		
+	}
+	
+	public static Object testFunction(Object integer) {
+		return integer;
 	}
 
 }
