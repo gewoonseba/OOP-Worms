@@ -21,6 +21,8 @@ public class DoubleLiteral extends DoubleBasicExpression {
 	 *       | new.getValue() == value
 	 */
 	public DoubleLiteral(double value) {
+		if (value > Double.MAX_VALUE)
+			value = Double.MAX_VALUE;
 		this.value = value;
 	}
 
@@ -54,8 +56,6 @@ public class DoubleLiteral extends DoubleBasicExpression {
 	public double getValue() {
 		return value;
 	}
-	
-	
 
 	/**
 	 * Variable registering the value of this double literal.
@@ -100,6 +100,15 @@ public class DoubleLiteral extends DoubleBasicExpression {
 	@Override
 	public String toString() {
 		return Double.toString(getValue());
+	}
+	
+	public int toInt(){
+		int newInt;
+		if (getValue() > Integer.MAX_VALUE)
+			newInt = Integer.MAX_VALUE;
+		else
+			newInt = (int) getValue();
+		return newInt;
 	}
 
 }
