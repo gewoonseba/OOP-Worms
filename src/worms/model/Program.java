@@ -3,10 +3,13 @@ package worms.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import worms.gui.game.IActionHandler;
+
 public class Program {
 	
-	public Program() {
-		
+	public Program(String programText, IActionHandler handler) {
+		this.handler = handler;
+		this.programText = programText;
 	}
 	
 	public void addAsWorm(Worm worm) {
@@ -34,5 +37,13 @@ public class Program {
 	}
 	
 	private final List<Worm> worms = new ArrayList<Worm>();
+	
+	private final String programText;
+	
+	public IActionHandler getHandler(){
+		return this.handler;
+	}
+	
+	private final IActionHandler handler;
 
 }
