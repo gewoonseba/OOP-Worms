@@ -3,7 +3,7 @@ package worms.model.expressions;
 public class GreaterThan extends BooleanCompareExpression {
 	
 	public GreaterThan(DoubleExpressions left,DoubleExpressions right){
-		value= left.getValue()>right.getValue();
+		value = left.getValue()>right.getValue();
 	}
 	
 	private boolean value;

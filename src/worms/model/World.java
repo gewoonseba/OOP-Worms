@@ -477,7 +477,7 @@ public class World {
 		} while (location == null);
 		int number = worms.size() + 1;
 		String playerNumber = "Player ".concat(Integer.toString(number));
-		createWorm(location[0], location[1], 0, radius, playerNumber);
+		createWorm(location[0], location[1], 0, radius, playerNumber,program);
 	}
 	
 	//TODO: Postconditions
@@ -500,7 +500,7 @@ public class World {
 	 * @post The new worm belongs to this world.
 	 * 		| this.worms.contains(worm)
 	 */
-	public Worm createWorm(double x,double y,double direction,double radius,String name) throws IllegalArgumentException
+	public Worm createWorm(double x,double y,double direction,double radius,String name, Program program) throws IllegalArgumentException
 	,IllegalRadiusException,IllegalNameException{
 		if (!Worm.isValidRadius(radius))
 			throw new IllegalRadiusException(radius);
@@ -508,7 +508,7 @@ public class World {
 			throw new IllegalArgumentException("These coordinates won't work");
 		if (!Worm.isValidName(name))
 			throw new IllegalNameException(name);
-		Worm worm = new Worm(x,y,direction,radius,name);
+		Worm worm = new Worm(x,y,direction,radius,name,program);
 		worm.setWorldTo(this);
 		addAsWorm(worm);
 		if (this.getTeam().size()>0)

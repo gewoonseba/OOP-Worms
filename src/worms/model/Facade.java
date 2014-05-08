@@ -149,7 +149,7 @@ public class Facade implements IFacade{
 		if (world==null || !Worm.isValidCoordinate(x) || !Worm.isValidCoordinate(y) || !Worm.isValidDirection(direction)
 				|| !Worm.isValidName(name) || !Worm.isValidRadius(radius))
 			throw new ModelException("Cannot create this worm.");
-		return world.createWorm(x, y, direction, radius, name);
+		return world.createWorm(x, y, direction, radius, name, program);
 	}
 
 	@Override

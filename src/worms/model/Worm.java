@@ -47,7 +47,7 @@ public class Worm {
 	 * 		| addAsWeapon("Bazooka")
 	 */
 	@Raw
-	public Worm(double x, double y, double direction, double radius, String name) {
+	public Worm(double x, double y, double direction, double radius, String name, Program program) {
 		this.setX(x);
 		this.setY(y);
 		this.setDirection(direction);
@@ -57,6 +57,8 @@ public class Worm {
 		this.setHitPoints(this.getMaxHitPoints());
 		this.addAsWeapon("Rifle");
 		this.addAsWeapon("Bazooka");
+		this.program = program;
+		program.addAsWorm(this);
 	}
 	
 
@@ -1207,6 +1209,17 @@ public class Worm {
 			}
 		}
 	}
+	
+	public Program getProgram() {
+		return program;
+	}
+	
+	public boolean hasProgram() {
+		return !(program == null);
+	}
+	
+	
+	private final Program program;
 }
 
 
