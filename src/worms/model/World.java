@@ -581,15 +581,9 @@ public class World {
 	}
 	
 	/**
-<<<<<<< HEAD
-	 * 
-	 * 
-	 * @return
-=======
 	 * Method to return the worm that is currently able to perform actions.
-	 * @return The worm is worms with the same index as currentTurn
+	 * @return The worm with the same index as currentTurn
 	 * 		| getWorms().get(currentTurn)
->>>>>>> 24f064eccb2126c5eb1090712d2edb1755ee93b5
 	 */
 	public Worm getCurrentWorm() throws IndexOutOfBoundsException{
 		if (getCurrentTurn()>=getWorms().size())
