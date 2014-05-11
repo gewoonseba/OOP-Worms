@@ -2,10 +2,11 @@ package worms.model.statements;
 
 import worms.model.Worm;
 import worms.model.expressions.*;
+import worms.model.types.Entity;
 
-public class Assignment extends Statement {
+public class Assignment<E> extends Statement {
 	
-	public Assignment(String variableName, Expression rhs){
+	public Assignment(String variableName, Expression<E> rhs){
 		this.variableName = variableName;
 		this.rhs = rhs;
 	}
@@ -20,15 +21,15 @@ public class Assignment extends Statement {
 		if (rhs instanceof DoubleExpressions)
 			value = ((DoubleExpressions) rhs).getValue();
 		else if (rhs instanceof BooleanExpressions)
-			value = ((BooleanExpressions) rhs).getBooleanValue();
-		else if (rhs instanceof Entity)
-			value = ((Entity) rhs).getEntity();
+			value = ((BooleanExpressions) rhs).getValue();
+		else if (rhs instanceof EntityExpression)
+			value = ((EntityExpression) rhs).getValue();
 		Worm self = SelfWormExpression.getWorm();
 		self.getProgram().getGlobals().put(variableName,value);
 	}
 	
 	private final String variableName;
 	
-	private final Expression rhs;
+	private final Expression<E> rhs;
 
 }
