@@ -2,14 +2,16 @@ package worms.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import worms.gui.game.IActionHandler;
 
-public class Program {
+public class Program<T> {
 	
-	public Program(String programText, IActionHandler handler) {
+	public Program(String programText, IActionHandler handler, Map<String, T> globals) {
 		this.handler = handler;
 		this.programText = programText;
+		this.globals = globals;
 	}
 	
 	public void addAsWorm(Worm worm) {
@@ -45,5 +47,11 @@ public class Program {
 	}
 	
 	private final IActionHandler handler;
+	
+	public Map<String, T> getGlobals() {
+		return globals;
+	}
+	
+	private final Map<String, T> globals;
 
 }
