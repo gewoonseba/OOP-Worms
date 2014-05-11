@@ -1,14 +1,14 @@
 package worms.model.expressions;
 
-public abstract class BooleanExpressions extends Expression {
+public abstract class BooleanExpressions extends Expression<Boolean> {
 
 	@Override
-	public boolean hasAsSubExpression(Expression expression) {
+	public boolean hasAsSubExpression(Expression<Boolean> expression) {
 		if (expression==this)
 			return true;
 		return false;
 	}
 	
-	public abstract boolean getBooleanValue();
+	public abstract Boolean getValue();
 
 }

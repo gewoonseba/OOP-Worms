@@ -14,7 +14,7 @@ public class GreaterThan extends BooleanCompareExpression {
 	}
 
 	@Override
-	public boolean getBooleanValue() {
+	public Boolean getValue() {
 		return value;
 	}
 

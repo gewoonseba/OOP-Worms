@@ -53,7 +53,7 @@ public class DoubleLiteral extends DoubleBasicExpression {
 	 */
 	@Override
 	@Basic @Immutable
-	public double getValue() {
+	public Double getValue() {
 		return value;
 	}
 
@@ -107,7 +107,7 @@ public class DoubleLiteral extends DoubleBasicExpression {
 		if (getValue() > Integer.MAX_VALUE)
 			newInt = Integer.MAX_VALUE;
 		else
-			newInt = (int) getValue();
+			newInt = (int) Math.floor(getValue());
 		return newInt;
 	}
 

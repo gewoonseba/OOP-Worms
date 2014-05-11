@@ -44,32 +44,7 @@ public abstract class DoubleComposedExpression extends DoubleExpressions {
 		return true;
 	}
 
-	/**
-	 * Check whether this composed expression is identical to 
-	 * the given expression.
-	 *
-	 * @return If the other object is a composed expression, true if and only if both
-	 *         composed expressions have the same number of operands, and if
-	 *         all corresponding operands of both composed expressions are identical
-	 *         to each other.
-	 *       | if (other instanceof ComposedExpression)
-	 *       |   then result ==
-	 *       |     (getNbOperands() == ((ComposedExpression)other).getNbOperands()) &&
-	 *       |     ( for each I in 1..getNbOperands():
-	 *       |         getOperandAt(I).isIdenticalTo(((ComposedExpression)other.getOperandAt(I)) )
-	 */
-	@Override
-	public boolean isIdenticalTo(Expression other) {
-		if ((other == null) || (getClass() != other.getClass()))
-			return false;
-		DoubleComposedExpression otherExpr = (DoubleComposedExpression) other;
-		if (getNbOperands() != otherExpr.getNbOperands())
-			return false;
-		for (int pos = 1; pos <= getNbOperands(); pos++)
-			if (!getOperandAt(pos).isIdenticalTo(otherExpr.getOperandAt(pos)))
-				return false;
-		return true;
-	}
+
 
 	/**
 	 * Check whether the state of this composed expression can be
@@ -145,7 +120,7 @@ public abstract class DoubleComposedExpression extends DoubleExpressions {
 	 *       | (index < 1) || (index > getNbOperands())
 	 */
 	@Basic
-	public abstract Expression getOperandAt(int index)
+	public abstract Expression<Double> getOperandAt(int index)
 			throws IndexOutOfBoundsException;
 
 	/**
@@ -199,7 +174,7 @@ public abstract class DoubleComposedExpression extends DoubleExpressions {
 	 *       |         getOperandAt(I).hasAsSubExpression(expression) )
 	 */
 	@Override
-	public boolean hasAsSubExpression(Expression expression) {
+	public boolean hasAsSubExpression(Expression<Double> expression) {
 		if (expression == this)
 			return true;
 		for (int pos = 1; pos <= getNbOperands(); pos++)

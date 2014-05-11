@@ -26,8 +26,8 @@ public class BooleanNegation extends BooleanUnaryExpression {
 	 *       | result == - getOperand().getValue()
 	 */
 	@Override
-	public boolean getBooleanValue() {
-		return !(getOperand().getBooleanValue());
+	public Boolean getValue() {
+		return !(getOperand().getValue());
 	}
 
 	/**

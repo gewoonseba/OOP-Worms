@@ -10,7 +10,7 @@ public class Division extends DoubleBinaryExpression {
 
 
 	@Override
-	public double getValue() {
+	public Double getValue() {
 		return getLeftOperand().getValue() / getRightOperand().getValue();
 	}
 

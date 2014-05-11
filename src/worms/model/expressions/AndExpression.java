@@ -1,13 +1,23 @@
 package worms.model.expressions;
-import worms.model.types.*;
-import worms.model.Worm;
 
-public abstract class WormExpression extends Expression<Entity<Worm>> {
+public class AndExpression extends BooleanCompareExpression {
+	
+	private final Boolean expr1;
+	private final Boolean expr2;
+	
+	public AndExpression(Expression<Boolean> expr1,Expression<Boolean> expr2){
+		this.expr1=expr1.getValue();
+		this.expr2=expr2.getValue();
+	}
+	@Override
+	public String getOperatorSymbol() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
-	public boolean hasAsSubExpression(Expression<Entity<Worm>> expression) {
-		// TODO Auto-generated method stub
-		return false;
+	public Boolean getValue() {
+		return (expr1&&expr2);
 	}
 
 	@Override
@@ -27,7 +37,5 @@ public abstract class WormExpression extends Expression<Entity<Worm>> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
 
 }

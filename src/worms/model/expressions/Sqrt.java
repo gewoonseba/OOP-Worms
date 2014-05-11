@@ -12,7 +12,7 @@ public class Sqrt extends DoubleUnaryExpression {
 	}
 
 	@Override
-	public double getValue() {
+	public Double getValue() {
 		return Math.sqrt((getOperand().getValue()));
 	}
 

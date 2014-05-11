@@ -1,8 +1,8 @@
 package worms.model.expressions;
 
-public class Equality extends BooleanCompareExpression {
+public class Equality<E> extends BooleanCompareExpression {
 
-	public Equality(DoubleExpressions left,DoubleExpressions right){
+	public Equality(Expression<E> left,Expression<E> right){
 		value= left.getValue()==right.getValue();
 	}
 	
@@ -14,7 +14,7 @@ public class Equality extends BooleanCompareExpression {
 	}
 
 	@Override
-	public boolean getBooleanValue() {
+	public Boolean getValue() {
 		return value;
 	}
 

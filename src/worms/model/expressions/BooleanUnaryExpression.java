@@ -119,7 +119,7 @@ public abstract class BooleanUnaryExpression extends BooleanComposedExpression {
 	 */
 	@Override
 	public String toString() {
-		if (getOperand() instanceof BooleanBasicExpression)
+		if (getOperand() instanceof BooleanBasicExpressions)
 			return getOperatorSymbol() + getOperand().toString();
 		if (getOperand() instanceof BooleanComposedExpression)
 			return getOperatorSymbol() + "(" + getOperand().toString() + ")";

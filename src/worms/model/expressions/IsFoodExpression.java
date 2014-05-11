@@ -1,13 +1,19 @@
 package worms.model.expressions;
 import worms.model.types.*;
+import worms.model.Food;
 import worms.model.Worm;
 
-public abstract class WormExpression extends Expression<Entity<Worm>> {
+public class IsFoodExpression<E> extends BooleanExpressions {
+	
+	private final E entity;
+	
+	public IsFoodExpression(Entity<E> entity) {
+		this.entity = entity.getValue();
+	}
 
 	@Override
-	public boolean hasAsSubExpression(Expression<Entity<Worm>> expression) {
-		// TODO Auto-generated method stub
-		return false;
+	public Boolean getValue() {
+		return (entity instanceof Food);	
 	}
 
 	@Override
@@ -27,7 +33,5 @@ public abstract class WormExpression extends Expression<Entity<Worm>> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
 
 }

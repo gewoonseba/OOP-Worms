@@ -4,27 +4,17 @@ package worms.model.types;
 import worms.model.Food;
 import worms.model.Worm;
 
-public class Entity {
-	
-	private Worm worm;
-	private Food food;
-	
-	public Entity(Worm worm){
-		this.worm=worm;
-	}
-	
-	public Entity(Food food){
-		this.food=food;
-	}
-	
+public class Entity<E> {
 	public Entity(){
 	}
 	
-	public Worm getWorm(){
-		return this.worm;
+	public void setValue(E value){
+		this.value= value;
 	}
 	
-	public Food getFood(){
-		return this.food;
+	private E value;
+	
+	public E getValue(){
+		return this.value;
 	}
 }

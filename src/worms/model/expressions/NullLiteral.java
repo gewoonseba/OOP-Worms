@@ -1,11 +1,12 @@
 package worms.model.expressions;
 
-public class NullLiteral extends DoubleBasicExpression {
+
+public class NullLiteral extends Expression<Double> {
 
 	private Double double1;
 
 	@Override
-	public double getValue() {
+	public Double getValue() {
 		return double1;
 	}
 	
@@ -24,6 +25,13 @@ public class NullLiteral extends DoubleBasicExpression {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return "null";
+	}
+
+
+	@Override
+	public boolean hasAsSubExpression(Expression<Double> expression) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

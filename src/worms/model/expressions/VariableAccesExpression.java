@@ -1,18 +1,14 @@
 package worms.model.expressions;
 
-public class VariableAccesExpression extends Expression {
+public class VariableAccesExpression<E> extends Expression<E> {
 	
-	private String name;
+	private final String name;
 	
 	public VariableAccesExpression(String name){
 		this.name = name;
 	}
 
-	@Override
-	public boolean hasAsSubExpression(Expression expression) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 
 	@Override
 	public boolean isMutable() {
@@ -32,8 +28,20 @@ public class VariableAccesExpression extends Expression {
 		return null;
 	}
 	
-	public double getVariable(){
+	public String getVariable(){
 		return this.name;
+	}
+
+	@Override
+	public boolean hasAsSubExpression(Expression<E> expression) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public E getValue() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

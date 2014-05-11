@@ -12,7 +12,7 @@ public class LessThan extends BooleanCompareExpression {
     private boolean value;
 	
 	@Override
-	public boolean getBooleanValue() {
+	public Boolean getValue() {
 		return value;
 	}
 

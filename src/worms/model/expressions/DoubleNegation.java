@@ -22,7 +22,7 @@ public class DoubleNegation extends DoubleUnaryExpression {
 	 *       | result == - getOperand().getValue()
 	 */
 	@Override
-	public double getValue() {
+	public Double getValue() {
 		return -(getOperand().getValue());
 	}
 

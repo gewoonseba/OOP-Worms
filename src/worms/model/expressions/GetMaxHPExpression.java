@@ -1,13 +1,20 @@
 package worms.model.expressions;
-import worms.model.Worm;
-import worms.model.types.*;
 
-public class GetYExpression extends Expression<Double> {
+import worms.model.Worm;
+import worms.model.types.Entity;
+
+public class GetMaxHPExpression extends Expression<Double> {
+
+    private final Worm worm;
 	
-	private final Worm worm;
+	public GetMaxHPExpression(EntityExpression<Worm> worm) {
+		this.worm = worm.getValue().getValue();
+	}
 	
-	public GetYExpression(Entity<Worm> worm){
-		this.worm = worm.getValue();
+	@Override
+	public boolean hasAsSubExpression(Expression<Double> expression) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
@@ -28,16 +35,9 @@ public class GetYExpression extends Expression<Double> {
 		return null;
 	}
 
-
 	@Override
 	public Double getValue() {
-		return worm.getY();
-	}
-
-	@Override
-	public boolean hasAsSubExpression(Expression<Double> expression) {
-		// TODO Auto-generated method stub
-		return false;
+		return (double) worm.getMaxHitPoints();
 	}
 
 }

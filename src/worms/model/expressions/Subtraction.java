@@ -36,7 +36,7 @@ public class Subtraction extends DoubleBinaryExpression {
 	 *       |   getRightOperand().getValue()
 	 */
 	@Override
-	public double getValue() {
+	public Double getValue() {
 		return getLeftOperand().getValue() - getRightOperand().getValue();
 	}
 

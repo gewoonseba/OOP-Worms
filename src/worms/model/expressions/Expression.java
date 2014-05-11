@@ -1,6 +1,6 @@
 package worms.model.expressions;
 
-public abstract class Expression implements Cloneable {
+public abstract class Expression<E> implements Cloneable {
 
 	/**
 	 * Check whether this expression has the given expression as one
@@ -19,7 +19,7 @@ public abstract class Expression implements Cloneable {
 	 *         level, the effect of the method is only defined in 2 cases. All
 	 *         other cases must be worked out at the lower levels of the hierarchy.
 	 */
-	public abstract boolean hasAsSubExpression(Expression expression);
+	public abstract boolean hasAsSubExpression(Expression<E> expression);
 
 	
 
@@ -80,7 +80,7 @@ public abstract class Expression implements Cloneable {
 	 *       | if (this.equals(other))
 	 *       |   then result == true
 	 */
-	public boolean isIdenticalTo(Expression other) {
+	public boolean isIdenticalTo(Expression<E> other) {
 		if (other == null)
 			 return false;
 		if (this.getClass() != other.getClass())
@@ -100,10 +100,10 @@ public abstract class Expression implements Cloneable {
 	 *       | (result == this) == (! this.isMutable())
 	 */
 	@Override
-	public Expression clone() {
+	public Expression<E> clone() {
 		try {
 			if (isMutable())
-				return (Expression) super.clone();
+				return (Expression<E>) super.clone();
 			else
 				return this;
 		} catch (CloneNotSupportedException exc) {
@@ -121,6 +121,8 @@ public abstract class Expression implements Cloneable {
 	 */
 	@Override
 	public abstract String toString();
+	
+	public abstract E getValue();
 
 
 }

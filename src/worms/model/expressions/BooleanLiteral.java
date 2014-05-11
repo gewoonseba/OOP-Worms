@@ -1,6 +1,6 @@
 package worms.model.expressions;
 
-public class BooleanLiteral extends BooleanBasicExpression {
+public class BooleanLiteral extends BooleanBasicExpressions {
 	
 	/**
 	 * Initialize this new double literal with given value.
@@ -25,15 +25,12 @@ public class BooleanLiteral extends BooleanBasicExpression {
 	private final boolean value;
 
 	@Override
-	public boolean getBooleanValue() {
+	public Boolean getValue() {
 		return this.value;
 	}
 	//TODO:How to implement getValue and getBooleanValue.
 	
-	public double getValue(){
-		return 0;
-	}
-
+	
 	@Override
 	public boolean isMutable() {
 		return false;
@@ -47,7 +44,7 @@ public class BooleanLiteral extends BooleanBasicExpression {
 
 	@Override
 	public String toString() {
-		return Boolean.toString(getBooleanValue());
+		return Boolean.toString(getValue());
 	}
 
 }

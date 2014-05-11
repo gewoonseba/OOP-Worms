@@ -75,7 +75,7 @@ public abstract class BooleanComposedExpression extends BooleanExpressions {
 	 *       |         getOperandAt(I).isIdenticalTo(((ComposedExpression)other.getOperandAt(I)) )
 	 */
 	@Override
-	public boolean isIdenticalTo(Expression other) {
+	public boolean isIdenticalTo(Expression<Boolean> other) {
 		if ((other == null) || (getClass() != other.getClass()))
 			return false;
 		BooleanComposedExpression otherExpr = (BooleanComposedExpression) other;
@@ -161,7 +161,7 @@ public abstract class BooleanComposedExpression extends BooleanExpressions {
 	 *       | (index < 1) || (index > getNbOperands())
 	 */
 	@Basic
-	public abstract Expression getOperandAt(int index)
+	public abstract Expression<Boolean> getOperandAt(int index)
 			throws IndexOutOfBoundsException;
 
 	/**
@@ -215,7 +215,7 @@ public abstract class BooleanComposedExpression extends BooleanExpressions {
 	 *       |         getOperandAt(I).hasAsSubExpression(expression) )
 	 */
 	@Override
-	public boolean hasAsSubExpression(Expression expression) {
+	public boolean hasAsSubExpression(Expression<Boolean> expression) {
 		if (expression == this)
 			return true;
 		for (int pos = 1; pos <= getNbOperands(); pos++)
