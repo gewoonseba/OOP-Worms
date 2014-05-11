@@ -4,10 +4,10 @@ import worms.model.types.*;
 
 public class GetYExpression extends Expression<Double> {
 	
-	private final Worm worm;
+	private final EntityExpression<Worm> worm;
 	
-	public GetYExpression(Entity<Worm> worm){
-		this.worm = worm.getValue();
+	public GetYExpression(EntityExpression<Worm> worm){
+		this.worm = worm;
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class GetYExpression extends Expression<Double> {
 
 	@Override
 	public Double getValue() {
-		return worm.getY();
+		return worm.getValue().getValue().getY();
 	}
 
 	@Override

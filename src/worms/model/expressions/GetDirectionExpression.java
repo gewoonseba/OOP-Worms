@@ -5,10 +5,10 @@ import worms.model.types.Entity;
 
 public class GetDirectionExpression extends Expression<Double> {
 
-    private final Worm worm;
+	private final EntityExpression<Worm> worm;
 	
 	public GetDirectionExpression(EntityExpression<Worm> worm) {
-		this.worm = worm.getValue().getValue();
+		this.worm = worm;
 	}
 	
 	@Override
@@ -37,7 +37,7 @@ public class GetDirectionExpression extends Expression<Double> {
 
 	@Override
 	public Double getValue() {
-		return worm.getDirection();
+		return worm.getValue().getValue().getDirection();
 	}
 
 }

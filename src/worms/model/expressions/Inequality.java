@@ -3,10 +3,12 @@ package worms.model.expressions;
 public class Inequality<E> extends BooleanCompareExpression {
 
 	public Inequality(Expression<E> left,Expression<E> right){
-		value= left.getValue()!=right.getValue();
+		leftValue = left;
+		rightValue = right;
 	}
 	
-	private boolean value;
+	private Expression<E> leftValue;
+	private Expression<E> rightValue;
 
 	@Override
 	public String getOperatorSymbol() {
@@ -15,7 +17,7 @@ public class Inequality<E> extends BooleanCompareExpression {
 
 	@Override
 	public Boolean getValue() {
-		return value;
+		return leftValue.getValue()!=rightValue.getValue();
 	}
 
 	@Override

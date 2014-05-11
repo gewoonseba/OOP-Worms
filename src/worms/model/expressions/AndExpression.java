@@ -2,12 +2,12 @@ package worms.model.expressions;
 
 public class AndExpression extends BooleanCompareExpression {
 	
-	private final Boolean expr1;
-	private final Boolean expr2;
+	private final Expression<Boolean> expr1;
+	private final Expression<Boolean> expr2;
 	
 	public AndExpression(Expression<Boolean> expr1,Expression<Boolean> expr2){
-		this.expr1=expr1.getValue();
-		this.expr2=expr2.getValue();
+		this.expr1=expr1;
+		this.expr2=expr2;
 	}
 	@Override
 	public String getOperatorSymbol() {
@@ -17,7 +17,7 @@ public class AndExpression extends BooleanCompareExpression {
 
 	@Override
 	public Boolean getValue() {
-		return (expr1&&expr2);
+		return (expr1.getValue()&&expr2.getValue());
 	}
 
 	@Override

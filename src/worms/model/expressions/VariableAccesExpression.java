@@ -32,16 +32,19 @@ public class VariableAccesExpression<E> extends Expression<E> {
 		return this.name;
 	}
 
+
+	@Override
+	public E getValue() {
+		// TODO Object?
+		return  (E) SelfWormExpression.getWorm().getProgram().getGlobals().get(name);
+	}
+
+
+
 	@Override
 	public boolean hasAsSubExpression(Expression<E> expression) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public E getValue() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

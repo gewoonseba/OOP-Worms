@@ -1,13 +1,15 @@
 package worms.model.expressions;
 
 public class Equality<E> extends BooleanCompareExpression {
+	
+	private Expression<E> leftValue;
+	private Expression<E> rightValue;
 
 	public Equality(Expression<E> left,Expression<E> right){
-		value= left.getValue()==right.getValue();
+		leftValue= left;
+		rightValue=right;
 	}
 	
-	private boolean value;
-
 	@Override
 	public String getOperatorSymbol() {
 		return "==";
@@ -15,7 +17,7 @@ public class Equality<E> extends BooleanCompareExpression {
 
 	@Override
 	public Boolean getValue() {
-		return value;
+		return leftValue.getValue()==rightValue.getValue();
 	}
 
 	@Override
