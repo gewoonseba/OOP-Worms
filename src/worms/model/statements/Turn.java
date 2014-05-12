@@ -2,6 +2,7 @@ package worms.model.statements;
 
 import worms.gui.game.IActionHandler;
 import worms.model.Worm;
+import worms.model.expressions.SelfWormExpression;
 
 public class Turn extends ActionStatement {
 	

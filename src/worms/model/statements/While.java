@@ -1,13 +1,13 @@
 package worms.model.statements;
 
-import worms.model.expressions.BooleanExpressions;
+import worms.model.expressions.BooleanExpression;
 
 public class While extends Statement {
 	 
-	private BooleanExpressions condition;
+	private BooleanExpression condition;
 	private Statement body;
 	
-	public While(BooleanExpressions e,Statement s) {
+	public While(BooleanExpression e,Statement s) {
 		e = condition;
 		s = body;
 	}

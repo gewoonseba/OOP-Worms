@@ -1,14 +1,15 @@
 package worms.model.statements;
 
-import worms.model.expressions.BooleanExpressions;
+import worms.model.expressions.BooleanExpression;
+
 
 public class If extends Statement {
 	
 	private Statement ifCondition;
 	private Statement elseCondition;
-	private BooleanExpressions condition;
+	private BooleanExpression condition;
 	
-	public If(BooleanExpressions e,Statement a,Statement b) {
+	public If(BooleanExpression e,Statement a,Statement b) {
 		ifCondition = a;
 		elseCondition = b;
 		condition= e;
