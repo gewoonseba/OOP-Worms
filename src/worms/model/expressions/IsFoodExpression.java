@@ -3,7 +3,7 @@ import worms.model.types.*;
 import worms.model.Food;
 import worms.model.Worm;
 
-public class IsFoodExpression<E> extends BooleanExpressions {
+public class IsFoodExpression<E> extends BooleanExpression {
 	
 	private final E entity;
 	

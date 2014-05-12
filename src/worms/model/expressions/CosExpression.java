@@ -2,7 +2,7 @@ package worms.model.expressions;
 
 public class CosExpression extends DoubleUnaryExpression {
 
-	protected CosExpression(DoubleExpressions operand)
+	protected CosExpression(DoubleExpression operand)
 			throws IllegalOperandException {
 		super(operand);
 	}

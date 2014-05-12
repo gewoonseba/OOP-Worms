@@ -2,7 +2,7 @@ package worms.model.expressions;
 
 public class SinExpression extends DoubleUnaryExpression {
 
-	protected SinExpression(DoubleExpressions operand)
+	protected SinExpression(DoubleExpression operand)
 			throws IllegalOperandException {
 		super(operand);
 		

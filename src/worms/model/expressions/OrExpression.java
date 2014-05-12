@@ -1,18 +1,14 @@
 package worms.model.expressions;
 
-public class OrExpression<E> extends BooleanCompareExpression<E> {
-	
-	private final Expression<Boolean> expr1;
-	private final Expression<Boolean> expr2;
+public class OrExpression<E> extends BooleanExpression {
 	
 	public OrExpression(Expression<Boolean> expr1,Expression<Boolean> expr2){
 		this.expr1=expr1;
 		this.expr2=expr2;
 	}
-	@Override
+	
 	public String getOperatorSymbol() {
-		// TODO Auto-generated method stub
-		return null;
+		return "||";
 	}
 
 	@Override
@@ -34,18 +30,9 @@ public class OrExpression<E> extends BooleanCompareExpression<E> {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public Expression<E> getLeftOperand() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public Expression<E> getRightOperand() {
-		// TODO Auto-generated method stub
-		return null;
+		return expr1.toString() + getOperatorSymbol() + expr2.toString();
 	}
 
+	private final Expression<Boolean> expr1;
+	private final Expression<Boolean> expr2;
 }

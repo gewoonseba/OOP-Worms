@@ -21,7 +21,7 @@ public class Subtraction extends DoubleBinaryExpression {
 	 *         with the given operands.
 	 *       | super(left,right)
 	 */
-	public Subtraction(DoubleExpressions left, DoubleExpressions right)
+	public Subtraction(DoubleExpression left, DoubleExpression right)
 			throws IllegalOperandException {
 		super(left, right);
 	}

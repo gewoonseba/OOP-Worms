@@ -13,7 +13,7 @@ public class BooleanNegation extends BooleanUnaryExpression {
 	 *         with the given operand as its operand.
 	 *       | super(operand)
 	 */
-	public BooleanNegation(BooleanExpressions operand) throws IllegalOperandException {
+	public BooleanNegation(BooleanExpression operand) throws IllegalOperandException {
 		super(operand);
 	}
 

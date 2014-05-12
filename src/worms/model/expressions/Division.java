@@ -3,7 +3,7 @@ package worms.model.expressions;
 public class Division extends DoubleBinaryExpression {
 
 	
-	public Division(DoubleExpressions left, DoubleExpressions right)
+	public Division(DoubleExpression left, DoubleExpression right)
 			throws IllegalOperandException {
 		super(left, right);
 	}

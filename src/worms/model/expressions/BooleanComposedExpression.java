@@ -19,7 +19,7 @@ import be.kuleuven.cs.som.annotate.*;
  * @version  2.0
  * @author   Eric Steegmans
  */
-public abstract class BooleanComposedExpression extends BooleanExpressions {
+public abstract class BooleanComposedExpression extends BooleanExpression {
 
 	/**
 	 * Check whether this composed expression is equal to 
@@ -177,7 +177,7 @@ public abstract class BooleanComposedExpression extends BooleanExpressions {
 	 *       |   ( (expression != null)
 	 *       |  && (! expression.hasAsSubExpression(this)) )
 	 */
-	public boolean canHaveAsOperand(BooleanExpressions expression) {
+	public boolean canHaveAsOperand(BooleanExpression expression) {
 		return (expression != null) && (!expression.hasAsSubExpression(this));
 	}
 
@@ -199,7 +199,7 @@ public abstract class BooleanComposedExpression extends BooleanExpressions {
 	 *         expression is the same as the given operand.
 	 *       | new.getOperandAt(index) == operand
 	 */
-	protected abstract void setOperandAt(int index, BooleanExpressions operand);
+	protected abstract void setOperandAt(int index, BooleanExpression operand);
 
 	/**
 	 * Check whether this composed expression has the given expression

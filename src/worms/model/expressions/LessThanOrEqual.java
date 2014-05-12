@@ -5,7 +5,7 @@ import be.kuleuven.cs.som.annotate.Model;
 public class LessThanOrEqual<E> extends BooleanCompareExpression<E> {
 
 	@Model
-	public LessThanOrEqual(DoubleExpressions left, DoubleExpressions right) {
+	public LessThanOrEqual(DoubleExpression left, DoubleExpression right) {
 		this.leftOperand = left;
 		this.rightOperand = right;
 	}
@@ -47,7 +47,7 @@ public class LessThanOrEqual<E> extends BooleanCompareExpression<E> {
 		return (Expression<E>) rightOperand;
 	}
 	
-	private final DoubleExpressions leftOperand;
-	private final DoubleExpressions rightOperand;
+	private final DoubleExpression leftOperand;
+	private final DoubleExpression rightOperand;
 }
 

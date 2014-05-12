@@ -11,7 +11,7 @@ public class DoubleNegation extends DoubleUnaryExpression {
 	 *         with the given operand as its operand.
 	 *       | super(operand)
 	 */
-	public DoubleNegation(DoubleExpressions operand) throws IllegalOperandException {
+	public DoubleNegation(DoubleExpression operand) throws IllegalOperandException {
 		super(operand);
 	}
 

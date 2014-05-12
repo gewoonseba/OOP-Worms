@@ -2,7 +2,7 @@ package worms.model.expressions;
 import worms.model.types.*;
 import worms.model.Worm;
 
-public class IsWormExpression<E> extends BooleanExpressions {
+public class IsWormExpression<E> extends BooleanExpression {
 	
 	private final E entity;
 	

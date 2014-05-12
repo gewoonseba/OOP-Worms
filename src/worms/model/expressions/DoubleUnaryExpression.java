@@ -20,7 +20,7 @@ public abstract class DoubleUnaryExpression extends DoubleComposedExpression {
 	 *       | ! canHaveAsOperand(operand)
 	 */
 	@Model
-	protected DoubleUnaryExpression(DoubleExpressions operand)
+	protected DoubleUnaryExpression(DoubleExpression operand)
 			throws IllegalOperandException {
 		if (!canHaveAsOperand(operand))
 			throw new IllegalOperandException(this, operand);
@@ -59,7 +59,7 @@ public abstract class DoubleUnaryExpression extends DoubleComposedExpression {
 	 *       | result == getOperand()
 	 */
 	@Override
-	public final DoubleExpressions getOperandAt(int index)
+	public final DoubleExpression getOperandAt(int index)
 			throws IndexOutOfBoundsException {
 		if (index != 1)
 			throw new IndexOutOfBoundsException();
@@ -70,7 +70,7 @@ public abstract class DoubleUnaryExpression extends DoubleComposedExpression {
 	 * Return the operand of this unary expression.
 	 */
 	@Basic
-	public DoubleExpressions getOperand() {
+	public DoubleExpression getOperand() {
 		return operand;
 	}
 
@@ -79,7 +79,7 @@ public abstract class DoubleUnaryExpression extends DoubleComposedExpression {
 	 * index to the given operand.
 	 */
 	@Override
-	protected void setOperandAt(int index, DoubleExpressions operand) {
+	protected void setOperandAt(int index, DoubleExpression operand) {
 		this.operand = operand;
 	}
 
@@ -89,7 +89,7 @@ public abstract class DoubleUnaryExpression extends DoubleComposedExpression {
 	 * @note    This variable is not qualified final, such that operands
 	 *          can be changed in cloning unary expressions.
 	 */
-	private DoubleExpressions operand;
+	private DoubleExpression operand;
 
 	/**
 	 * Return a textual representation of this unary expression.

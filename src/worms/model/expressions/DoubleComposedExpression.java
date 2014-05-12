@@ -3,7 +3,7 @@ package worms.model.expressions;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 
-public abstract class DoubleComposedExpression extends DoubleExpressions {
+public abstract class DoubleComposedExpression extends DoubleExpression {
 
 	/**
 	 * Check whether this composed expression is equal to 
@@ -136,7 +136,7 @@ public abstract class DoubleComposedExpression extends DoubleExpressions {
 	 *       |   ( (expression != null)
 	 *       |  && (! expression.hasAsSubExpression(this)) )
 	 */
-	public boolean canHaveAsOperand(DoubleExpressions expression) {
+	public boolean canHaveAsOperand(DoubleExpression expression) {
 		return (expression != null) && (!expression.hasAsSubExpression(this));
 	}
 
@@ -158,7 +158,7 @@ public abstract class DoubleComposedExpression extends DoubleExpressions {
 	 *         expression is the same as the given operand.
 	 *       | new.getOperandAt(index) == operand
 	 */
-	protected abstract void setOperandAt(int index, DoubleExpressions operand);
+	protected abstract void setOperandAt(int index, DoubleExpression operand);
 
 	/**
 	 * Check whether this composed expression has the given expression

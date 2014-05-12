@@ -1,6 +1,6 @@
 package worms.model.expressions;
 
-public abstract class BooleanCompareExpression<E> extends BooleanExpressions {
+public abstract class BooleanCompareExpression<E> extends BooleanExpression {
 
 
 	@Override

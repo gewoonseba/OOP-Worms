@@ -1,6 +1,6 @@
 package worms.model.expressions;
 
-public abstract class DoubleExpressions extends Expression<Double> {
+public abstract class DoubleExpression extends Expression<Double> {
 
 	@Override
 	public boolean hasAsSubExpression(Expression<Double> expression) {

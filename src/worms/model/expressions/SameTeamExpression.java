@@ -2,7 +2,7 @@ package worms.model.expressions;
 import worms.model.Worm;
 import worms.model.Team;
 
-public class SameTeamExpression extends BooleanExpressions {
+public class SameTeamExpression extends BooleanExpression {
 	
 	private final Team team;
 	

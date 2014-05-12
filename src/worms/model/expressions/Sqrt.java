@@ -2,7 +2,7 @@ package worms.model.expressions;
 
 public class Sqrt extends DoubleUnaryExpression {
 
-	protected Sqrt(DoubleExpressions operand) throws IllegalOperandException {
+	protected Sqrt(DoubleExpression operand) throws IllegalOperandException {
 		super(operand);
 	}
 

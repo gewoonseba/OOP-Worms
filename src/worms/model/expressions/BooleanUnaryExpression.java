@@ -28,7 +28,7 @@ public abstract class BooleanUnaryExpression extends BooleanComposedExpression {
 	 *       | ! canHaveAsOperand(operand)
 	 */
 	@Model
-	protected BooleanUnaryExpression(BooleanExpressions operand)
+	protected BooleanUnaryExpression(BooleanExpression operand)
 			throws IllegalOperandException {
 		if (!canHaveAsOperand(operand))
 			throw new IllegalOperandException(this, operand);
@@ -67,7 +67,7 @@ public abstract class BooleanUnaryExpression extends BooleanComposedExpression {
 	 *       | result == getOperand()
 	 */
 	@Override
-	public final BooleanExpressions getOperandAt(int index)
+	public final BooleanExpression getOperandAt(int index)
 			throws IndexOutOfBoundsException {
 		if (index != 1)
 			throw new IndexOutOfBoundsException();
@@ -78,7 +78,7 @@ public abstract class BooleanUnaryExpression extends BooleanComposedExpression {
 	 * Return the operand of this unary expression.
 	 */
 	@Basic
-	public BooleanExpressions getOperand() {
+	public BooleanExpression getOperand() {
 		return operand;
 	}
 
@@ -87,7 +87,7 @@ public abstract class BooleanUnaryExpression extends BooleanComposedExpression {
 	 * index to the given operand.
 	 */
 	@Override
-	protected void setOperandAt(int index, BooleanExpressions operand) {
+	protected void setOperandAt(int index, BooleanExpression operand) {
 		this.operand = operand;
 	}
 
@@ -97,7 +97,7 @@ public abstract class BooleanUnaryExpression extends BooleanComposedExpression {
 	 * @note    This variable is not qualified final, such that operands
 	 *          can be changed in cloning unary expressions.
 	 */
-	private BooleanExpressions operand;
+	private BooleanExpression operand;
 
 	/**
 	 * Return a textual representation of this unary expression.
