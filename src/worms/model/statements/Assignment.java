@@ -17,7 +17,7 @@ public class Assignment<E> extends Statement {
 	}
 	
 	public void executeStatement() {
-		Object value;
+		Object value = null;
 		if (rhs instanceof DoubleExpression)
 			value = ((DoubleExpression) rhs).getValue();
 		else if (rhs instanceof BooleanExpression)
