@@ -1,6 +1,7 @@
 package worms.model.statements;
 import worms.model.*;
 import worms.model.expressions.SelfWormExpression;
+import worms.model.types.*;
 
 public class ForEach extends Statement {
 	
@@ -25,11 +26,36 @@ public class ForEach extends Statement {
 
 	@Override
 	public void executeStatement() {
+		
 		switch (type) {
 		case WORM:
+			Entity<Worm> e=new Entity<Worm>();
 			for (Worm w:SelfWormExpression.getWorm().getWorld().getWorms()){
-				
+				e.setValue(w);
+				SelfWormExpression.getWorm().getProgram().getGlobals().put(name,e );
+				body.executeStatement();
 			}
+		case FOOD:
+			Entity<Food> f=new Entity<Food>();
+			for (Food w:SelfWormExpression.getWorm().getWorld().getFood()){
+				f.setValue(w);
+				SelfWormExpression.getWorm().getProgram().getGlobals().put(name, f);
+				body.executeStatement();
+			}
+		case ANY:
+			Entity<Food> v=new Entity<Food>();
+			for (Food w:SelfWormExpression.getWorm().getWorld().getFood()){
+				v.setValue(w);
+				SelfWormExpression.getWorm().getProgram().getGlobals().put(name, v);
+				body.executeStatement();
+			}
+			Entity<Worm> a=new Entity<Worm>();
+			for (Worm w:SelfWormExpression.getWorm().getWorld().getWorms()){
+				a.setValue(w);
+				SelfWormExpression.getWorm().getProgram().getGlobals().put(name,a );
+				body.executeStatement();
+			}
+			
 			
 		}
 		
