@@ -49,6 +49,5 @@ public class LessThanOrEqual<E> extends BooleanCompareExpression<E> {
 	
 	private final DoubleExpressions leftOperand;
 	private final DoubleExpressions rightOperand;
-	}
-
 }
+

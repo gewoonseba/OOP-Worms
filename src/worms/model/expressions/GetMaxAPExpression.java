@@ -5,10 +5,10 @@ import worms.model.types.Entity;
 
 public class GetMaxAPExpression extends Expression<Double> {
 
-    private final Worm worm;
+	private final EntityExpression<Worm> worm;
 	
 	public GetMaxAPExpression(EntityExpression<Worm> worm) {
-		this.worm = worm.getValue().getValue();
+		this.worm = worm;
 	}
 	
 	@Override
@@ -37,7 +37,7 @@ public class GetMaxAPExpression extends Expression<Double> {
 
 	@Override
 	public Double getValue() {
-		return (double) worm.getMaxAP();
+		return (double) worm.getValue().getValue().getMaxAP();
 	}
 
 }

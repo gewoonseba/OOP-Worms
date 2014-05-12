@@ -1,5 +1,6 @@
 package worms.model.expressions;
 
+
 public class Equality<E> extends BooleanCompareExpression<E> {
 
 	public Equality(Expression<E> left,Expression<E> right){

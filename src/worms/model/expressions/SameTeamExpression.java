@@ -1,19 +1,18 @@
 package worms.model.expressions;
-import worms.model.types.*;
-import worms.model.Food;
 import worms.model.Worm;
+import worms.model.Team;
 
-public class IsFoodExpression<E> extends BooleanExpressions {
+public class SameTeamExpression extends BooleanExpressions {
 	
-	private final E entity;
+	private final Team team;
 	
-	public IsFoodExpression(EntityExpression<E> entity) {
-		this.entity = entity.getValue().getValue();
+	public SameTeamExpression(EntityExpression<Worm> entity){
+		team= entity.getValue().getValue().getTeam();
 	}
 
 	@Override
 	public Boolean getValue() {
-		return (entity instanceof Food);	
+		return team == SelfWormExpression.getWorm().getTeam();
 	}
 
 	@Override

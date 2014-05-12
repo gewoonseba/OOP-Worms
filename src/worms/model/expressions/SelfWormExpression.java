@@ -5,21 +5,27 @@ import worms.model.Worm;
 public class SelfWormExpression extends WormExpression {
 	
 	SelfWormExpression(Worm worm){
-		this.worm=worm;
+		setWorm(worm);
 	}
    
-	public Worm getWorm() {
-		return this.worm;
+	public static Worm getWorm() {
+		return worm;
 	}
 	
-	private final Worm worm;
+	private static Worm worm;
 
 	@Override
 	public Entity<Worm> getValue() {
 		Entity<Worm> wormpie =new Entity<Worm>();
-	    wormpie.setValue(worm);
+	    wormpie.setValue(getWorm());
 		return wormpie;
 	}
+
+	public static void setWorm(Worm worm) {
+		SelfWormExpression.worm = worm;
+	}
+	
+
 
 
 }
