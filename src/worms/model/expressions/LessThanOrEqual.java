@@ -2,18 +2,17 @@ package worms.model.expressions;
 
 import be.kuleuven.cs.som.annotate.Model;
 
-public class LessThanOrEqual extends BooleanCompareExpression {
+public class LessThanOrEqual<E> extends BooleanCompareExpression<E> {
 
 	@Model
 	public LessThanOrEqual(DoubleExpressions left, DoubleExpressions right) {
-		value= left.getValue()<=right.getValue();
-		}
+		this.leftOperand = left;
+		this.rightOperand = right;
+	}
 		
-    private boolean value;
-	
 	@Override
 	public Boolean getValue() {
-		return value;
+		return (Double) getLeftOperand().getValue() <= (Double) getRightOperand().getValue();
 	}
 
 	@Override
@@ -36,6 +35,20 @@ public class LessThanOrEqual extends BooleanCompareExpression {
 	public String getOperatorSymbol() {
 		// TODO Auto-generated method stub
 		return "<=";
+	}
+
+	@Override
+	public Expression<E> getLeftOperand() {
+		return (Expression<E>) leftOperand;
+	}
+
+	@Override
+	public Expression<E> getRightOperand() {
+		return (Expression<E>) rightOperand;
+	}
+	
+	private final DoubleExpressions leftOperand;
+	private final DoubleExpressions rightOperand;
 	}
 
 }

@@ -1,21 +1,20 @@
 package worms.model.expressions;
 
-public class GreaterThanOrEqual extends BooleanCompareExpression {
+public class GreaterThanOrEqual<E> extends BooleanCompareExpression<E> {
 
 	public GreaterThanOrEqual(DoubleExpressions left,DoubleExpressions right){
-		value= left.getValue()>=right.getValue();
+		this.leftOperand = left;
+		this.rightOperand = right;
 	}
 	
-	private boolean value;
-
 	@Override
 	public String getOperatorSymbol() {
 		return ">=";
 	}
-
+	
 	@Override
 	public Boolean getValue() {
-		return value;
+		return (Double) getLeftOperand().getValue() >= (Double) getRightOperand().getValue();
 	}
 
 	@Override
@@ -34,4 +33,17 @@ public class GreaterThanOrEqual extends BooleanCompareExpression {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Expression<E> getLeftOperand() {
+		return (Expression<E>) leftOperand;
+	}
+
+	@Override
+	public Expression<E> getRightOperand() {
+		return (Expression<E>) rightOperand;
+	}
+	
+	private final DoubleExpressions leftOperand;
+	private final DoubleExpressions rightOperand;
 }

@@ -1,6 +1,6 @@
 package worms.model.expressions;
 
-public class OrExpression extends BooleanCompareExpression {
+public class OrExpression<E> extends BooleanCompareExpression<E> {
 	
 	private final Boolean expr1;
 	private final Boolean expr2;
@@ -34,6 +34,16 @@ public class OrExpression extends BooleanCompareExpression {
 
 	@Override
 	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Expression<E> getLeftOperand() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Expression<E> getRightOperand() {
 		// TODO Auto-generated method stub
 		return null;
 	}
