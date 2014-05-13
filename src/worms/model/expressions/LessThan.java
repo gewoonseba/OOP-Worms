@@ -5,14 +5,14 @@ import be.kuleuven.cs.som.annotate.Model;
 public class LessThan<E> extends BooleanCompareExpression<E> {
 
 	@Model
-	public LessThan(DoubleExpression left, DoubleExpression right) {
+	public LessThan(Expression<?> left, Expression<?> right) {
 		this.leftOperand = left;
 		this.rightOperand = right;
 	}
 		
 	public Boolean getValue() {
-		return (Double) getLeftOperand().getValue() < (Double) getRightOperand().getValue();
-	}
+		return (Double)getLeftOperand().getValue() < (Double)getRightOperand().getValue();	
+		}
 
 	@Override
 	public boolean isMutable() {
@@ -46,7 +46,7 @@ public class LessThan<E> extends BooleanCompareExpression<E> {
 		return (Expression<E>) rightOperand;
 	}
 	
-	private final DoubleExpression leftOperand;
-	private final DoubleExpression rightOperand;
+	private final Expression<?> leftOperand;
+	private final Expression<?> rightOperand;
 }
 

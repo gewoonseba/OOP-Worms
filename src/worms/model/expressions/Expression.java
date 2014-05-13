@@ -19,7 +19,7 @@ public abstract class Expression<E> implements Cloneable {
 	 *         level, the effect of the method is only defined in 2 cases. All
 	 *         other cases must be worked out at the lower levels of the hierarchy.
 	 */
-	public abstract boolean hasAsSubExpression(Expression<E> expression);
+	public abstract boolean hasAsSubExpression(Expression<?> expression);
 
 	
 

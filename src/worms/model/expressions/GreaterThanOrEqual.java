@@ -2,7 +2,7 @@ package worms.model.expressions;
 
 public class GreaterThanOrEqual<E> extends BooleanCompareExpression<E> {
 
-	public GreaterThanOrEqual(DoubleExpression left,DoubleExpression right){
+	public GreaterThanOrEqual(Expression<?> left,Expression<?> right){
 		this.leftOperand = left;
 		this.rightOperand = right;
 	}
@@ -44,6 +44,6 @@ public class GreaterThanOrEqual<E> extends BooleanCompareExpression<E> {
 		return (Expression<E>) rightOperand;
 	}
 	
-	private final DoubleExpression leftOperand;
-	private final DoubleExpression rightOperand;
+	private final Expression<?> leftOperand;
+	private final Expression<?> rightOperand;
 }

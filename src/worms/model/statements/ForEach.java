@@ -1,13 +1,11 @@
 package worms.model.statements;
 import worms.model.*;
 import worms.model.expressions.SelfWormExpression;
+import worms.model.programs.ProgramFactory.ForeachType;
 import worms.model.types.*;
 
 public class ForEach extends Statement {
-	
-	public enum ForeachType {
-		WORM, FOOD, ANY
-	}
+
 	
 	public ForeachType type;
 	public String name;

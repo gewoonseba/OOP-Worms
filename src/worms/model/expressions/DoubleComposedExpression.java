@@ -136,8 +136,8 @@ public abstract class DoubleComposedExpression extends DoubleExpression {
 	 *       |   ( (expression != null)
 	 *       |  && (! expression.hasAsSubExpression(this)) )
 	 */
-	public boolean canHaveAsOperand(DoubleExpression expression) {
-		return (expression != null) && (!expression.hasAsSubExpression(this));
+	public boolean canHaveAsOperand(Expression<?> expression) {
+		return (expression != null) && (!expression.hasAsSubExpression((Expression<?>) this));
 	}
 
 	/**
@@ -146,7 +146,7 @@ public abstract class DoubleComposedExpression extends DoubleExpression {
 	 * 
 	 * @param  index
 	 *         The index at which the operand must be registered.
-	 * @param  operand
+	 * @param  left
 	 *         The operand to be registered.
 	 * @pre    The given index is positive and does not exceed the
 	 *         number of operands for this composed expression.
@@ -158,30 +158,8 @@ public abstract class DoubleComposedExpression extends DoubleExpression {
 	 *         expression is the same as the given operand.
 	 *       | new.getOperandAt(index) == operand
 	 */
-	protected abstract void setOperandAt(int index, DoubleExpression operand);
+	protected abstract void setOperandAt(int index, Expression<?> left);
 
-	/**
-	 * Check whether this composed expression has the given expression
-	 * as one of its subexpressions.
-	 *
-	 * @return True if and only if the given expression is the same
-	 *         expression as this composed expression, or if the given
-	 *         expression is a subexpression of one of the operands
-	 *         of this composed expression.
-	 *       | result ==
-	 *       |     (expression == this)
-	 *       |  || ( for some I in 1..getNbOperands():
-	 *       |         getOperandAt(I).hasAsSubExpression(expression) )
-	 */
-	@Override
-	public boolean hasAsSubExpression(Expression<Double> expression) {
-		if (expression == this)
-			return true;
-		for (int pos = 1; pos <= getNbOperands(); pos++)
-			if (getOperandAt(pos).hasAsSubExpression(expression))
-				return true;
-		return false;
-	}
 
 	/**
 	 * Return the symbol representing the operator of this composed
@@ -191,7 +169,6 @@ public abstract class DoubleComposedExpression extends DoubleExpression {
 	 *       | result.length() > 0
 	 */
 	public abstract String getOperatorSymbol();
-
-
+	
 }
 

@@ -2,6 +2,7 @@ package worms.model;
 
 import java.util.*;
 
+import programs.Program;
 import be.kuleuven.cs.som.annotate.*;
 
 
