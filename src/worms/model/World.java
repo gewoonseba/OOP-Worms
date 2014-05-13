@@ -883,7 +883,7 @@ public class World {
 		}
 		currentWorm.setCurrentAP(currentWorm.getMaxAP());
 		if (currentWorm.getProgram() != null)
-			currentWorm.getProgram().runProgram();
+			currentWorm.getProgram().executeProgram(); 
 	}
 	
 	/**

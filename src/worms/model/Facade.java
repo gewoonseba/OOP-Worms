@@ -3,9 +3,12 @@ package worms.model;
 import java.util.Collection;
 import java.util.Random;
 
-import programs.Program;
+import programs.*;
 import worms.gui.game.IActionHandler;
-import worms.model.programs.ParseOutcome;
+import worms.model.expressions.Expression;
+import worms.model.programs.*;
+import worms.model.statements.Statement;
+import worms.model.types.Type;
 
 public class Facade implements IFacade{
 	
@@ -340,16 +343,20 @@ public class Facade implements IFacade{
 	@Override
 	public ParseOutcome<?> parseProgram(String programText,
 			IActionHandler handler) {
-		// TODO Auto-generated method stub
-		return null;
+		ProgramParser<Expression,Statement,Type> parser= new ProgramParser<Expression,Statement,Type>(new ProgramFactoryImpl());
+		parser.parse(programText);
+		if (!parser.getErrors().isEmpty())
+			return ParseOutcome.failure(parser.getErrors());
+		Program program = new Program(programText,handler,parser.getGlobals(),parser.getStatement());
+		
+		return ParseOutcome.success(program);
 	}
 
 
 
 	@Override
 	public boolean hasProgram(Worm worm) {
-		// TODO Auto-generated method stub
-		return false;
+		return worm.hasProgram();
 	}
 
 
