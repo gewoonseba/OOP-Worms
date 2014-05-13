@@ -5,13 +5,16 @@ import java.util.List;
 import java.util.Map;
 
 import worms.gui.game.IActionHandler;
+import worms.model.statements.Statement;
+import worms.model.types.Type;
 
-public class Program<T> {
+public class Program {
 	
-	public Program(String programText, IActionHandler handler, Map<String, T> globals) {
+	public Program(String programText, IActionHandler handler, Map<String, Type> globals,Statement statement) {
 		this.handler = handler;
 		this.programText = programText;
 		this.globals = globals;
+		this.statement=statement;
 	}
 	
 	public void addAsWorm(Worm worm) {
@@ -48,10 +51,16 @@ public class Program<T> {
 	
 	private final IActionHandler handler;
 	
-	public Map<String, T> getGlobals() {
+	public Map<String, Type> getGlobals() {
 		return globals;
 	}
 	
-	private final Map<String, T> globals;
+	private final Map<String, Type> globals;
+	
+	private final Statement statement;
+	
+	public void executeProgram(){
+		statement.executeStatement();
+	}
 
 }

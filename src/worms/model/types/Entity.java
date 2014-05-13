@@ -4,7 +4,7 @@ package worms.model.types;
 import worms.model.Food;
 import worms.model.Worm;
 
-public class Entity<E> {
+public class Entity<E> extends Type{
 	public Entity(){
 	}
 	

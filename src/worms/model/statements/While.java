@@ -1,6 +1,7 @@
 package worms.model.statements;
 
 import worms.model.expressions.BooleanExpression;
+import worms.model.expressions.BooleanExpressions;
 
 public class While extends Statement {
 	 
