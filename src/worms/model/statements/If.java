@@ -1,18 +1,21 @@
 package worms.model.statements;
 
-import worms.model.expressions.BooleanExpression;
+
+import worms.model.expressions.*;
 
 
 public class If extends Statement {
 	
-	private Statement ifCondition;
-	private Statement elseCondition;
-	private BooleanExpression condition;
+	private Statement then;
+	private Statement otherwise;
+	private Expression<?> condition;
 	
-	public If(BooleanExpression e,Statement a,Statement b) {
-		ifCondition = a;
-		elseCondition = b;
-		condition= e;
+	public If(Expression<?> condition,Statement then,Statement otherwise) {
+		if (! (condition instanceof BooleanExpression))
+			throw new IllegalArgumentException();
+		this.then = then;
+		this.otherwise = otherwise;
+		this.condition= condition;
 	}
 
 	@Override
@@ -23,11 +26,14 @@ public class If extends Statement {
 
 	@Override
 	public void executeStatement(){
-		if (condition.getValue())
-			ifCondition.executeStatement();
+		if (getActualCondition())
+			then.executeStatement();
 		else
-			elseCondition.executeStatement();
-
+			otherwise.executeStatement();
+	}
+	
+	private boolean getActualCondition() {
+		return (Boolean) condition.getValue();
 	}
 
 }

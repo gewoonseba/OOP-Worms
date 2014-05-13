@@ -1,10 +1,12 @@
-package worms.model;
+package programs;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import worms.gui.game.IActionHandler;
+import worms.model.IllegalWormException;
+import worms.model.Worm;
 
 public class Program<T> {
 	

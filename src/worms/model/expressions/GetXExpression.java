@@ -5,9 +5,9 @@ import worms.model.types.Entity;
 
 public class GetXExpression extends Expression<Double> {
 
-	private final EntityExpression<Worm> worm;
+	private final Entity<Worm> worm;
 	
-	public GetXExpression(EntityExpression<Worm> worm) {
+	public GetXExpression(Entity<Worm> worm) {
 		this.worm = worm;
 	}
 

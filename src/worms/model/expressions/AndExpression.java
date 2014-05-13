@@ -2,7 +2,9 @@ package worms.model.expressions;
 
 public class AndExpression<E> extends BooleanExpression{
 	
-	public AndExpression(Expression<Boolean> expr1,Expression<Boolean> expr2){
+	public AndExpression(Expression<E> expr1,Expression<E> expr2) throws IllegalArgumentException {
+		if (! (expr1 instanceof BooleanExpression && expr2 instanceof BooleanExpression))
+			throw new IllegalArgumentException();
 		this.expr1 = expr1;
 		this.expr2 = expr2;
 
@@ -14,7 +16,7 @@ public class AndExpression<E> extends BooleanExpression{
 
 	@Override
 	public Boolean getValue() {
-		return (expr1.getValue()&&expr2.getValue());
+		return ((Boolean) expr1.getValue() && (Boolean) expr2.getValue());
 	}
 
 	@Override
@@ -34,7 +36,7 @@ public class AndExpression<E> extends BooleanExpression{
 		return expr1.toString() + getOperatorSymbol() + expr2.toString();
 	}
 	
-	private final Expression<Boolean> expr1;
-	private final Expression<Boolean> expr2;
+	private final Expression<E> expr1;
+	private final Expression<E> expr2;
 
 }
