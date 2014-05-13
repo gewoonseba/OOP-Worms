@@ -6,7 +6,7 @@ import worms.model.expressions.*;
 
 public class Fire extends ActionStatement {
 	
-	public Fire(Expression<?> yield) throws IllegalArgumentException {
+	public Fire(Expression yield) throws IllegalArgumentException {
 		if (! (yield instanceof DoubleExpression))
 			throw new IllegalArgumentException();
 		this.yield = yield;
@@ -24,7 +24,7 @@ public class Fire extends ActionStatement {
 		handler.fire(self, getActualYield());
 	}
 	
-	private final Expression<?> yield;
+	private final Expression yield;
 	
 	private int getActualYield() {
 		return (Integer) yield.getValue();

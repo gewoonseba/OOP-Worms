@@ -4,10 +4,10 @@ import worms.model.expressions.*;
 
 public class While extends Statement {
 	 
-	private Expression<?> condition;
+	private Expression condition;
 	private Statement body;
 	
-	public While(Expression<?> condition,Statement body) {
+	public While(Expression condition,Statement body) {
 		this.condition = condition;
 		this.body = body;
 	}

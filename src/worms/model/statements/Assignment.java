@@ -6,7 +6,7 @@ import worms.model.types.Entity;
 
 public class Assignment<E> extends Statement {
 	
-	public Assignment(String variableName, Expression<E> rhs){
+	public Assignment(String variableName, Expression rhs){
 		this.variableName = variableName;
 		this.rhs = rhs;
 	}
@@ -30,6 +30,6 @@ public class Assignment<E> extends Statement {
 	
 	private final String variableName;
 	
-	private final Expression<E> rhs;
+	private final Expression rhs;
 
 }
