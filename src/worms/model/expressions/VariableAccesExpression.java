@@ -1,6 +1,6 @@
 package worms.model.expressions;
 
-public class VariableAccesExpression<E> extends Expression<E> {
+public class VariableAccesExpression extends Expression {
 	
 	private final String name;
 	
@@ -34,17 +34,9 @@ public class VariableAccesExpression<E> extends Expression<E> {
 
 
 	@Override
-	public E getValue() {
+	public Type getValue() {
 		// TODO Object?
-		return  (E) SelfWormExpression.getWorm().getProgram().getGlobals().get(name);
-	}
-
-
-
-	@Override
-	public boolean hasAsSubExpression(Expression<E> expression) {
-		// TODO Auto-generated method stub
-		return false;
+		return SelfWormExpression.getWorm().getProgram().getGlobals().get(name);
 	}
 
 }

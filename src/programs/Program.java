@@ -55,5 +55,9 @@ public class Program<T> {
 	}
 	
 	private final Map<String, T> globals;
+	
+	public void runProgram() {
+		
+	}
 
 }

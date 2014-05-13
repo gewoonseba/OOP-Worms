@@ -7,211 +7,211 @@ import worms.model.programs.ProgramFactory;
 import worms.model.statements.*;
 import worms.model.types.*;
 
-public class ProgramFactoryImpl<E> implements ProgramFactory<Expression<E>,Statement,Type>{
+public class ProgramFactoryImpl implements ProgramFactory<Expression,Statement,Type>{
 
 	@Override
-	public Expression<E> createDoubleLiteral(int line, int column, double d) {
-		return (Expression<E>) new DoubleLiteral(d);
+	public Expression createDoubleLiteral(int line, int column, double d) {
+		return (Expression) new DoubleLiteral(d);
 	}
 
 	@Override
-	public Expression<E> createBooleanLiteral(int line, int column, boolean b) {
-		return (Expression<E>) new BooleanLiteral(b);
+	public Expression createBooleanLiteral(int line, int column, boolean b) {
+		return (Expression) new BooleanLiteral(b);
 	}
 
 	@Override
-	public Expression<E> createAnd(int line, int column, Expression<E> e1,
-			Expression<E> e2) {
-		return (Expression<E>) new AndExpression<E>(e1, e2);
+	public Expression createAnd(int line, int column, Expression e1,
+			Expression e2) {
+		return (Expression) new AndExpression(e1, e2);
 	}
 
 	@Override
-	public Expression<E> createOr(int line, int column, Expression<E> e1,
-			Expression<E> e2) {
-		return (Expression<E>) new OrExpression<>(e1, e2);
+	public Expression createOr(int line, int column, Expression e1,
+			Expression e2) {
+		return (Expression) new OrExpression<>(e1, e2);
 	}
 
 	@Override
-	public Expression<E> createNot(int line, int column, Expression<E> e) {
+	public Expression createNot(int line, int column, Expression e) {
 		return null;
 	}
 
 	@Override
-	public Expression<E> createNull(int line, int column) {
-		return (Expression<E>) new NullLiteral();
+	public Expression createNull(int line, int column) {
+		return (Expression) new NullLiteral();
 	}
 
 	@Override
-	public Expression<E> createSelf(int line, int column) {
+	public Expression createSelf(int line, int column) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Expression<E> createGetX(int line, int column, Expression<E> e) {
-		return (Expression<E>) new GetXExpression(e);
+	public Expression createGetX(int line, int column, Expression e) {
+		return (Expression) new GetXExpression(e);
 	}
 
 	@Override
-	public Expression<E> createGetY(int line, int column, Expression<E> e) {
+	public Expression createGetY(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Expression<E> createGetRadius(int line, int column, Expression<E> e) {
+	public Expression createGetRadius(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Expression<E> createGetDir(int line, int column, Expression<E> e) {
+	public Expression createGetDir(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Expression<E> createGetAP(int line, int column, Expression<E> e) {
+	public Expression createGetAP(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Expression<E> createGetMaxAP(int line, int column, Expression<E> e) {
+	public Expression createGetMaxAP(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Expression<E> createGetHP(int line, int column, Expression<E> e) {
+	public Expression createGetHP(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Expression<E> createGetMaxHP(int line, int column, Expression<E> e) {
+	public Expression createGetMaxHP(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Expression<E> createSameTeam(int line, int column, Expression<E> e) {
+	public Expression createSameTeam(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Expression<E> createSearchObj(int line, int column, Expression<E> e) {
+	public Expression createSearchObj(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Expression<E> createIsWorm(int line, int column, Expression<E> e) {
+	public Expression createIsWorm(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Expression<E> createIsFood(int line, int column, Expression<E> e) {
+	public Expression createIsFood(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Expression<E> createVariableAccess(int line, int column, String name) {
-		return new VariableAccesExpression<E>(name);
+	public Expression createVariableAccess(int line, int column, String name) {
+		return new VariableAccesExpression(name);
 	}
 
 //	@Override
-//	public Expression<E> createVariableAccess(int line, int column, String name,
+//	public Expression createVariableAccess(int line, int column, String name,
 //			Type type) {
 //		return null;
 //	}
 
 	@Override
-	public Expression<E> createLessThan(int line, int column, Expression<E> e1,
-			Expression<E> e2) {
-		return (Expression<E>) new LessThan(e1,e2);
+	public Expression createLessThan(int line, int column, Expression e1,
+			Expression e2) {
+		return (Expression) new LessThan(e1,e2);
 	}
 
 	@Override
-	public Expression<E> createGreaterThan(int line, int column, Expression<E> e1,
-			Expression<E> e2) {
-		return (Expression<E>) new GreaterThan(e1,e2);
+	public Expression createGreaterThan(int line, int column, Expression e1,
+			Expression e2) {
+		return (Expression) new GreaterThan(e1,e2);
 	}
 
 	@Override
-	public Expression<E> createLessThanOrEqualTo(int line, int column,
-			Expression<E> e1, Expression<E> e2) {
-		return (Expression<E>) new LessThanOrEqual<>(e1, e2);
+	public Expression createLessThanOrEqualTo(int line, int column,
+			Expression e1, Expression e2) {
+		return (Expression) new LessThanOrEqual<>(e1, e2);
 	}
 
 	@Override
-	public Expression<E> createGreaterThanOrEqualTo(int line, int column,
-			Expression<E> e1, Expression<E> e2) {
-		return (Expression<E>) new GreaterThanOrEqual<>(e1, e2);
+	public Expression createGreaterThanOrEqualTo(int line, int column,
+			Expression e1, Expression e2) {
+		return (Expression) new GreaterThanOrEqual<>(e1, e2);
 	}
 
 	@Override
-	public Expression<E> createEquality(int line, int column, Expression<E> e1,
-			Expression<E> e2) {
-		return (Expression<E>) new Equality(e1,e2);
+	public Expression createEquality(int line, int column, Expression e1,
+			Expression e2) {
+		return (Expression) new Equality(e1,e2);
 	}
 
 	@Override
-	public Expression<E> createInequality(int line, int column, Expression<E> e1,
-			Expression<E> e2) {
-		return (Expression<E>) new Inequality(e1,e2);
+	public Expression createInequality(int line, int column, Expression e1,
+			Expression e2) {
+		return (Expression) new Inequality(e1,e2);
 	}
 
 	@Override
-	public Expression<E> createAdd(int line, int column, Expression<E> e1,
-			Expression<E> e2) {
-		return (Expression<E>) new Addition((DoubleExpression) e1,(DoubleExpression) e2);
+	public Expression createAdd(int line, int column, Expression e1,
+			Expression e2) {
+		return (Expression) new Addition((DoubleExpression) e1,(DoubleExpression) e2);
 	}
 
 	@Override
-	public Expression<E> createSubtraction(int line, int column, Expression<E> e1,
-			Expression<E> e2) {
+	public Expression createSubtraction(int line, int column, Expression e1,
+			Expression e2) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Expression<E> createMul(int line, int column, Expression<E> e1,
-			Expression<E> e2) {
+	public Expression createMul(int line, int column, Expression e1,
+			Expression e2) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Expression<E> createDivision(int line, int column, Expression<E> e1,
-			Expression<E> e2) {
+	public Expression createDivision(int line, int column, Expression e1,
+			Expression e2) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Expression<E> createSqrt(int line, int column, Expression<E> e) {
+	public Expression createSqrt(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Expression<E> createSin(int line, int column, Expression<E> e) {
+	public Expression createSin(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Expression<E> createCos(int line, int column, Expression<E> e) {
+	public Expression createCos(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Statement createTurn(int line, int column, Expression<E> angle) {
+	public Statement createTurn(int line, int column, Expression angle) {
 		return new Turn(angle);
 	}
 
@@ -231,7 +231,7 @@ public class ProgramFactoryImpl<E> implements ProgramFactory<Expression<E>,State
 	}
 
 	@Override
-	public Statement createFire(int line, int column, Expression<E> yield) {
+	public Statement createFire(int line, int column, Expression yield) {
 		return new Fire(yield);
 	}
 
@@ -243,18 +243,18 @@ public class ProgramFactoryImpl<E> implements ProgramFactory<Expression<E>,State
 
 	@Override
 	public Statement createAssignment(int line, int column,
-			String variableName, Expression<E> rhs) {
+			String variableName, Expression rhs) {
 		return new Assignment<E>(variableName, rhs);
 	}
 
 	@Override
-	public Statement createIf(int line, int column, Expression<E> condition,
+	public Statement createIf(int line, int column, Expression condition,
 			Statement then, Statement otherwise) {
 		return new If(condition, then, otherwise);
 	}
 
 	@Override
-	public Statement createWhile(int line, int column, Expression<E> condition,
+	public Statement createWhile(int line, int column, Expression condition,
 			Statement body) {
 		return new While(condition, body);
 	}
@@ -273,7 +273,7 @@ public class ProgramFactoryImpl<E> implements ProgramFactory<Expression<E>,State
 	}
 
 	@Override
-	public Statement createPrint(int line, int column, Expression<E> e) {
+	public Statement createPrint(int line, int column, Expression e) {
 		return new Print(e);
 	}
 

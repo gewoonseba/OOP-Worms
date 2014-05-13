@@ -16,4 +16,10 @@ public class Sqrt extends DoubleUnaryExpression {
 		return Math.sqrt((getOperand().getValue()));
 	}
 
+	@Override
+	protected void setOperandAt(int index, Expression<?> left) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

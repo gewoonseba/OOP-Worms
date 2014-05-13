@@ -882,6 +882,8 @@ public class World {
 			currentWorm.setHitPoints(currentWorm.getHitPoints()+10);
 		}
 		currentWorm.setCurrentAP(currentWorm.getMaxAP());
+		if (currentWorm.getProgram() != null)
+			currentWorm.getProgram().runProgram();
 	}
 	
 	/**

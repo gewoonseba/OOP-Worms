@@ -17,15 +17,8 @@ public class Assignment<E> extends Statement {
 	}
 	
 	public void executeStatement() {
-		Object value = null;
-		if (rhs instanceof DoubleExpression)
-			value = ((DoubleExpression) rhs).getValue();
-		else if (rhs instanceof BooleanExpression)
-			value = ((BooleanExpression) rhs).getValue();
-		else if (rhs instanceof EntityExpression)
-			value = ((EntityExpression) rhs).getValue();
 		Worm self = SelfWormExpression.getWorm();
-		self.getProgram().getGlobals().put(variableName,value);
+		self.getProgram().getGlobals().put(variableName,rhs.getValue());
 	}
 	
 	private final String variableName;
