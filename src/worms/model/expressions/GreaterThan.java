@@ -5,8 +5,8 @@ import worms.model.types.BooleanType;
 public class GreaterThan extends BooleanCompareExpression {
 	
 	public GreaterThan(Expression left,Expression right){
-		this.leftOperand = (DoubleExpression) left;
-		this.rightOperand = (DoubleExpression) right;
+		this.leftOperand = left;
+		this.rightOperand = right;
 	}
 	
 	@Override
@@ -16,7 +16,7 @@ public class GreaterThan extends BooleanCompareExpression {
 
 	@Override
 	public BooleanType getValue() {
-		return new BooleanType(getLeftOperand().getValue().getValue() >(Double)getRightOperand().getValue().getValue());
+		return new BooleanType((Double)getLeftOperand().getValue().getValue() >(Double)getRightOperand().getValue().getValue());
 	}
 
 
@@ -27,16 +27,16 @@ public class GreaterThan extends BooleanCompareExpression {
 	}
 
 	@Override
-	public DoubleExpression getLeftOperand() {
+	public Expression getLeftOperand() {
 		return leftOperand;
 	}
 
 	@Override
-	public DoubleExpression getRightOperand() {
+	public Expression getRightOperand() {
 		return rightOperand;
 	}
 	
-	private final DoubleExpression leftOperand;
-	private final DoubleExpression rightOperand;
+	private final Expression leftOperand;
+	private final Expression rightOperand;
 
 }
