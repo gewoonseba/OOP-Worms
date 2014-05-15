@@ -24,11 +24,6 @@ public class Equality extends BooleanCompareExpression {
 
 	
 
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Expression getLeftOperand() {
@@ -43,5 +38,11 @@ public class Equality extends BooleanCompareExpression {
 	private final Expression leftOperand;
 	
 	private final Expression rightOperand;
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

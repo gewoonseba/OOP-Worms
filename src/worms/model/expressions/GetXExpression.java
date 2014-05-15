@@ -10,7 +10,10 @@ public class GetXExpression extends Expression {
 	private final EntityExpression<?> worm;
 	
 	public GetXExpression(Expression worm) {
-		this.worm = (EntityExpression<?>)worm;
+		if (worm instanceof SelfWormExpression)
+			this.worm= new EntityExpression<Worm>((new SelfWormExpression()).getValue());
+		else
+			this.worm = (EntityExpression<?>)worm;
 	}
 
 	@Override

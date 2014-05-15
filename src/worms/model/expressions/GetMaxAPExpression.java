@@ -9,7 +9,10 @@ public class GetMaxAPExpression extends Expression{
 	private final EntityExpression<Worm> worm;
 	
 	public GetMaxAPExpression(Expression worm) {
-		this.worm =(EntityExpression<Worm>) worm;
+		if (worm instanceof SelfWormExpression)
+			this.worm= new EntityExpression<Worm>((new SelfWormExpression()).getValue());
+		else
+			this.worm = (EntityExpression<Worm>)worm;
 	}
 	
 	

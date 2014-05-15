@@ -9,9 +9,11 @@ public class GetMaxHPExpression extends Expression {
 	private final EntityExpression<Worm> worm;
 	
 	public GetMaxHPExpression(Expression worm) {
-		this.worm =(EntityExpression<Worm>) worm;
+		if (worm instanceof SelfWormExpression)
+			this.worm= new EntityExpression<Worm>((new SelfWormExpression()).getValue());
+		else
+			this.worm = (EntityExpression<Worm>)worm;
 	}
-	
 
 	@Override
 	public boolean equals(Object other) {
