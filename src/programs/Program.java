@@ -13,12 +13,11 @@ import worms.model.Worm;
 
 public class Program {
 	
-	public Program(String programText, IActionHandler handler, Map<String, Type> globals,Statement statement, Worm selfWorm) {
+	public Program(String programText, IActionHandler handler, Map<String, Type> globals,Statement statement) {
 		this.handler = handler;
 		this.programText = programText;
 		this.globals = globals;
 		this.statement=statement;
-		new SelfWormExpression(selfWorm);
 	}
 	
 	public void addAsWorm(Worm worm) {

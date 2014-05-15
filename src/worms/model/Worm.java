@@ -59,7 +59,8 @@ public class Worm {
 		this.addAsWeapon("Rifle");
 		this.addAsWeapon("Bazooka");
 		this.program = program;
-		program.addAsWorm(this);
+		if (!(program == null))
+			program.addAsWorm(this);
 	}
 	
 
