@@ -6,13 +6,13 @@ import worms.model.types.Entity;
 
 public class GetDirectionExpression extends Expression {
 
-	private final EntityExpression<Worm> worm;
+	private final Expression worm;
 	
 	public GetDirectionExpression(Expression worm) {
 		if (worm instanceof SelfWormExpression)
 			this.worm= new EntityExpression<Worm>((new SelfWormExpression()).getValue());
 		else
-			this.worm = (EntityExpression<Worm>)worm;
+			this.worm = worm;
 	}
 	
 
@@ -30,7 +30,8 @@ public class GetDirectionExpression extends Expression {
 
 	@Override
 	public DoubleType getValue() {
-		return new DoubleType(worm.getValue().getValue().getDirection());
+		Entity<Worm> entity = (Entity<Worm>) worm.getValue();
+		return new DoubleType(entity.getValue().getDirection());
 	}
 
 }

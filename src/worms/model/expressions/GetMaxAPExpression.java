@@ -6,13 +6,13 @@ import worms.model.types.Entity;
 
 public class GetMaxAPExpression extends Expression{
 
-	private final EntityExpression<Worm> worm;
+	private final Expression worm;
 	
 	public GetMaxAPExpression(Expression worm) {
 		if (worm instanceof SelfWormExpression)
 			this.worm= new EntityExpression<Worm>((new SelfWormExpression()).getValue());
 		else
-			this.worm = (EntityExpression<Worm>)worm;
+			this.worm = worm;
 	}
 	
 	
@@ -30,7 +30,7 @@ public class GetMaxAPExpression extends Expression{
 
 	@Override
 	public DoubleType getValue() {
-		return new DoubleType((double) worm.getValue().getValue().getMaxAP());
+		return new DoubleType((double) ((Entity<Worm>) worm.getValue()).getValue().getMaxAP());
 	}
 
 }
