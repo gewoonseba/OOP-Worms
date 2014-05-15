@@ -1,20 +1,18 @@
 package worms.model.expressions;
 
+import worms.model.types.Entity;
 
-public class NullLiteral extends Expression<Double> {
 
-	private Double double1;
+public class NullLiteral extends Expression{
+
+	private Entity<Double> double1;
 
 	@Override
-	public Double getValue() {
+	public Entity<Double> getValue() {
 		return double1;
 	}
 	
 
-	@Override
-	public boolean isMutable() {
-		return false;
-	}
 
 	@Override
 	public boolean equals(Object other) {
@@ -27,11 +25,5 @@ public class NullLiteral extends Expression<Double> {
 		return "null";
 	}
 
-
-	@Override
-	public boolean hasAsSubExpression(Expression<Double> expression) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 }

@@ -12,15 +12,11 @@ public class IsFoodExpression<E> extends BooleanExpression {
 	}
 
 	@Override
-	public Boolean getValue() {
-		return (entity instanceof Food);	
+	public BooleanType getValue() {
+		return new BooleanType(entity instanceof Food);	
 	}
 
-	@Override
-	public boolean isMutable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+
 
 	@Override
 	public boolean equals(Object other) {

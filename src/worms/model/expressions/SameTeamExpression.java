@@ -1,6 +1,7 @@
 package worms.model.expressions;
 import worms.model.Worm;
 import worms.model.Team;
+import worms.model.types.BooleanType;
 
 public class SameTeamExpression extends BooleanExpression {
 	
@@ -11,15 +12,11 @@ public class SameTeamExpression extends BooleanExpression {
 	}
 
 	@Override
-	public Boolean getValue() {
-		return team == SelfWormExpression.getWorm().getTeam();
+	public BooleanType getValue() {
+		return new BooleanType(team == SelfWormExpression.getWorm().getTeam());
 	}
 
-	@Override
-	public boolean isMutable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 
 	@Override
 	public boolean equals(Object other) {

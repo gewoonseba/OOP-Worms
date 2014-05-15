@@ -1,5 +1,7 @@
 package worms.model.expressions;
 
+import worms.model.types.DoubleType;
+
 public class CosExpression extends DoubleUnaryExpression {
 
 	protected CosExpression(DoubleExpression operand)
@@ -14,8 +16,8 @@ public class CosExpression extends DoubleUnaryExpression {
 	}
 
 	@Override
-	public Double getValue() {
-		return Math.cos(getOperand().getValue());
+	public DoubleType getValue() {
+		return new DoubleType(Math.cos(getOperand().getValue().getValue()));
 	}
 
 }

@@ -1,6 +1,7 @@
 package worms.model.expressions;
 
 
+import worms.model.types.DoubleType;
 import be.kuleuven.cs.som.annotate.*;
 
 /**
@@ -23,7 +24,9 @@ public class DoubleLiteral extends DoubleBasicExpression {
 	public DoubleLiteral(double value) {
 		if (value > Double.MAX_VALUE)
 			value = Double.MAX_VALUE;
-		this.value = value;
+		DoubleType doubleType=new DoubleType();
+		doubleType.setValue(value);
+		this.value = doubleType;
 	}
 
 	/**
@@ -53,14 +56,14 @@ public class DoubleLiteral extends DoubleBasicExpression {
 	 */
 	@Override
 	@Basic @Immutable
-	public Double getValue() {
+	public DoubleType getValue() {
 		return value;
 	}
 
 	/**
 	 * Variable registering the value of this double literal.
 	 */
-	private final double value;
+	private final DoubleType value;
 
 	/**
 	 * Check whether this double literal is equal to the given
@@ -79,36 +82,12 @@ public class DoubleLiteral extends DoubleBasicExpression {
 				&& (getValue() == ((DoubleLiteral) other).getValue());
 	}
 
-	/**
-	 * Check whether the state of this double literal can be changed.
-	 * 
-	 * @return Always false.
-	 *       | result == false
-	 */
-	@Override
-	public final boolean isMutable() {
-		return false;
-	}
-
-	/**
-	 * Return a textual representation of this double literal.
-	 *
-	 * @return The textual representation of the value of this double
-	 *         literal as defined by the predefined class Double.
-	 *       | result.equals(Double.toString(getValue())
-	 */
 	@Override
 	public String toString() {
-		return Double.toString(getValue());
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
-	public int toInt(){
-		int newInt;
-		if (getValue() > Integer.MAX_VALUE)
-			newInt = Integer.MAX_VALUE;
-		else
-			newInt = (int) Math.floor(getValue());
-		return newInt;
-	}
+
+
 
 }

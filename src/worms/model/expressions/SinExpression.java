@@ -1,5 +1,7 @@
 package worms.model.expressions;
 
+import worms.model.types.DoubleType;
+
 public class SinExpression extends DoubleUnaryExpression {
 
 	protected SinExpression(DoubleExpression operand)
@@ -15,8 +17,8 @@ public class SinExpression extends DoubleUnaryExpression {
 	}
 
 	@Override
-	public Double getValue() {
-		return Math.sin(getOperand().getValue());
+	public DoubleType getValue() {
+		return new DoubleType(Math.sin(getOperand().getValue().getValue()));
 	}
 
 }

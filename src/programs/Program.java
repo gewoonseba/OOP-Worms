@@ -5,13 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import worms.gui.game.IActionHandler;
-<<<<<<< HEAD:src/worms/model/Program.java
 import worms.model.statements.Statement;
 import worms.model.types.Type;
-=======
+
 import worms.model.IllegalWormException;
 import worms.model.Worm;
->>>>>>> 734409432258e8c3e9cf562a2084aa04af2dd360:src/programs/Program.java
 
 public class Program {
 	

@@ -1,5 +1,7 @@
 package worms.model.expressions;
 
+import worms.model.types.DoubleType;
+
 public class DoubleNegation extends DoubleUnaryExpression {
 
 	/**
@@ -22,8 +24,8 @@ public class DoubleNegation extends DoubleUnaryExpression {
 	 *       | result == - getOperand().getValue()
 	 */
 	@Override
-	public Double getValue() {
-		return -(getOperand().getValue());
+	public DoubleType getValue() {
+		return new DoubleType(-(getOperand().getValue().getValue()));
 	}
 
 	/**

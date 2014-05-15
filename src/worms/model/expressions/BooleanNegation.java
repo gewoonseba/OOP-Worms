@@ -1,5 +1,7 @@
 package worms.model.expressions;
 
+import worms.model.types.BooleanType;
+
 
 
 public class BooleanNegation extends BooleanUnaryExpression {
@@ -26,8 +28,9 @@ public class BooleanNegation extends BooleanUnaryExpression {
 	 *       | result == - getOperand().getValue()
 	 */
 	@Override
-	public Boolean getValue() {
-		return !(getOperand().getValue());
+	public BooleanType getValue() {
+		
+		return new BooleanType(!getOperand().getValue().getValue());
 	}
 
 	/**

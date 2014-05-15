@@ -1,5 +1,7 @@
 package worms.model.expressions;
 
+import worms.model.types.BooleanType;
+
 public class BooleanLiteral extends BooleanBasicExpressions {
 	
 	/**
@@ -12,7 +14,8 @@ public class BooleanLiteral extends BooleanBasicExpressions {
 	 *       | new.getValue() == value
 	 */
 	public BooleanLiteral(boolean value) {
-		this.value = value;
+		BooleanType valueType = new BooleanType(value);
+		this.value = valueType;
 	}
 	
 	public BooleanLiteral(){
@@ -22,19 +25,16 @@ public class BooleanLiteral extends BooleanBasicExpressions {
 	/**
 	 * Variable registering the value of this double literal.
 	 */
-	private final boolean value;
+	private final BooleanType value;
 
 	@Override
-	public Boolean getValue() {
+	public BooleanType getValue() {
 		return this.value;
 	}
 	//TODO:How to implement getValue and getBooleanValue.
 	
 	
-	@Override
-	public boolean isMutable() {
-		return false;
-	}
+	
 
 	@Override
 	public boolean equals(Object other) {
@@ -44,7 +44,9 @@ public class BooleanLiteral extends BooleanBasicExpressions {
 
 	@Override
 	public String toString() {
-		return Boolean.toString(getValue());
+		// TODO Auto-generated method stub
+		return null;
 	}
 
+	
 }

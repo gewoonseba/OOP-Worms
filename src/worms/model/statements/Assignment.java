@@ -3,10 +3,11 @@ package worms.model.statements;
 import worms.model.Worm;
 import worms.model.expressions.*;
 import worms.model.types.Entity;
+import worms.model.types.Type;
 
 public class Assignment<E> extends Statement {
 	
-	public Assignment(String variableName, Expression<E> rhs){
+	public Assignment(String variableName, Expression rhs){
 		this.variableName = variableName;
 		this.rhs = rhs;
 	}
@@ -17,7 +18,7 @@ public class Assignment<E> extends Statement {
 	}
 	
 	public void executeStatement() {
-		Object value = null;
+		Type value = null;
 		if (rhs instanceof DoubleExpression)
 			value = ((DoubleExpression) rhs).getValue();
 		else if (rhs instanceof BooleanExpression)
@@ -30,6 +31,6 @@ public class Assignment<E> extends Statement {
 	
 	private final String variableName;
 	
-	private final Expression<E> rhs;
+	private final Expression rhs;
 
 }

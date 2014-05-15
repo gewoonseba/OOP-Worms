@@ -1,8 +1,10 @@
 package worms.model.expressions;
 
-public class OrExpression<E> extends BooleanExpression {
+import worms.model.types.BooleanType;
+
+public class OrExpression extends BooleanExpression {
 	
-	public OrExpression(Expression<E> expr1,Expression<E> expr2) throws IllegalArgumentException {
+	public OrExpression(BooleanExpression expr1,BooleanExpression expr2) throws IllegalArgumentException {
 		if( ! (expr1 instanceof BooleanExpression && expr2 instanceof BooleanExpression))
 			throw new IllegalArgumentException();
 		this.expr1=expr1;
@@ -14,15 +16,10 @@ public class OrExpression<E> extends BooleanExpression {
 	}
 
 	@Override
-	public Boolean getValue() {
-		return ((Boolean) expr1.getValue() || (Boolean)expr2.getValue());
+	public BooleanType getValue() {
+		return new BooleanType(expr1.getValue().getValue() || (Boolean)expr2.getValue().getValue());
 	}
 
-	@Override
-	public boolean isMutable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public boolean equals(Object other) {
@@ -35,6 +32,6 @@ public class OrExpression<E> extends BooleanExpression {
 		return expr1.toString() + getOperatorSymbol() + expr2.toString();
 	}
 
-	private final Expression<E> expr1;
-	private final Expression<E> expr2;
+	private final BooleanExpression expr1;
+	private final BooleanExpression expr2;
 }
