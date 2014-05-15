@@ -1,5 +1,7 @@
 package worms.model.expressions;
 
+import worms.model.types.DoubleType;
+
 public class Division extends DoubleBinaryExpression {
 
 	
@@ -10,8 +12,8 @@ public class Division extends DoubleBinaryExpression {
 
 
 	@Override
-	public Double getValue() {
-		return getLeftOperand().getValue() / getRightOperand().getValue();
+	public DoubleType getValue() {
+		return new DoubleType(getLeftOperand().getValue().getValue() / getRightOperand().getValue().getValue());
 	}
 
 	
@@ -19,4 +21,21 @@ public class Division extends DoubleBinaryExpression {
 	public String getOperatorSymbol() {
 		return "/";
 	}
+
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	protected void setOperandAt(int index, DoubleExpression left) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	
 }

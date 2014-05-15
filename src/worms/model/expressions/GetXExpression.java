@@ -1,26 +1,15 @@
 package worms.model.expressions;
 
 import worms.model.Worm;
+import worms.model.types.DoubleType;
 import worms.model.types.Entity;
 
-public class GetXExpression extends Expression<Double> {
+public class GetXExpression extends Expression {
 
-	private final Entity<Worm> worm;
+	private final EntityExpression<Worm> worm;
 	
-	public GetXExpression(Entity<Worm> worm) {
+	public GetXExpression(EntityExpression<Worm> worm) {
 		this.worm = worm;
-	}
-
-	@Override
-	public boolean hasAsSubExpression(Expression<Double> expression) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isMutable() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
@@ -36,8 +25,8 @@ public class GetXExpression extends Expression<Double> {
 	}
 
 	@Override
-	public Double getValue() {
-		return worm.getValue().getValue().getX();
+	public DoubleType getValue() {
+		return new DoubleType(worm.getValue().getValue().getX());
 	}
 
 }

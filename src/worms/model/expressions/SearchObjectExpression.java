@@ -1,7 +1,7 @@
 package worms.model.expressions;
 import worms.model.*;
 import worms.model.types.Entity;
-public class SearchObjectExpression extends Expression<Object> {
+public class SearchObjectExpression extends Expression {
 	
 	private final double angleIncrease;
 	private Worm nearestWorm;
@@ -9,16 +9,12 @@ public class SearchObjectExpression extends Expression<Object> {
 	private Object nearestObject;
 	
     public SearchObjectExpression(DoubleExpression e) {
-    	this.angleIncrease =e.getValue();
+    	this.angleIncrease =e.getValue().getValue();
 	}
 
 	
 
-	@Override
-	public boolean isMutable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+
 
 	@Override
 	public boolean equals(Object other) {
@@ -33,7 +29,7 @@ public class SearchObjectExpression extends Expression<Object> {
 	}
 
 	@Override
-	public Object getValue() {
+	public Entity<?> getValue() {
 		// TODO Eleganter?
 		for (Worm w:SelfWormExpression.getWorm().getWorld().getWorms()){
 			if (w!=SelfWormExpression.getWorm()){
@@ -69,16 +65,11 @@ public class SearchObjectExpression extends Expression<Object> {
 				(Math.sqrt(Math.pow((nearestWorm.getY()-SelfWormExpression.getWorm().getY()),2)+
 						Math.pow((nearestWorm.getX()-SelfWormExpression.getWorm().getX()),2))))
 			nearestObject= nearestFood;
-		return nearestObject;
+		return new Entity<>(nearestObject);
 	}
 
 
 
-	@Override
-	public boolean hasAsSubExpression(Expression<Object> expression) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	
 

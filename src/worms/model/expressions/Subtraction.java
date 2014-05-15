@@ -1,5 +1,7 @@
 package worms.model.expressions;
 
+import worms.model.types.DoubleType;
+
 
 /**
  * A class of binary expressions, representing the subtraction of the
@@ -36,8 +38,8 @@ public class Subtraction extends DoubleBinaryExpression {
 	 *       |   getRightOperand().getValue()
 	 */
 	@Override
-	public Double getValue() {
-		return getLeftOperand().getValue() - getRightOperand().getValue();
+	public DoubleType getValue() {
+		return new DoubleType(getLeftOperand().getValue().getValue() - getRightOperand().getValue().getValue());
 	}
 
 	/**
@@ -49,6 +51,18 @@ public class Subtraction extends DoubleBinaryExpression {
 	@Override
 	public String getOperatorSymbol() {
 		return "-";
+	}
+
+	@Override
+	protected void setOperandAt(int index, DoubleExpression left) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

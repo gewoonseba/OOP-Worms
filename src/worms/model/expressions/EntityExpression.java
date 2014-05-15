@@ -2,7 +2,7 @@ package worms.model.expressions;
 
 import worms.model.types.Entity;
 
-public class EntityExpression<E> extends Expression<Entity<E>> {
+public class EntityExpression<E> extends Expression {
 	
 	public EntityExpression(Entity<E> entity){
 		this.value = entity;
@@ -15,17 +15,9 @@ public class EntityExpression<E> extends Expression<Entity<E>> {
 	}
 
 	
-	@Override
-	public boolean hasAsSubExpression(Expression<Entity<E>> expression) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
-	@Override
-	public boolean isMutable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
+	
 
 	@Override
 	public boolean equals(Object other) {

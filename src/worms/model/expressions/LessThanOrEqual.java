@@ -1,24 +1,22 @@
 package worms.model.expressions;
 
+import worms.model.types.BooleanType;
 import be.kuleuven.cs.som.annotate.Model;
 
-public class LessThanOrEqual<E> extends BooleanCompareExpression<E> {
+public class LessThanOrEqual extends BooleanCompareExpression {
 
 	@Model
-	public LessThanOrEqual(Expression<?> left, Expression<?> right) {
+	public LessThanOrEqual(DoubleExpression left, DoubleExpression right) {
 		this.leftOperand = left;
 		this.rightOperand = right;
 	}
 		
 	@Override
-	public Boolean getValue() {
-		return (Double) getLeftOperand().getValue() <= (Double) getRightOperand().getValue();
+	public BooleanType getValue() {
+		return new BooleanType((Double) getLeftOperand().getValue().getValue() <= (Double) getRightOperand().getValue().getValue());
 	}
 
-	@Override
-	public boolean isMutable() {
-		return false;
-	}
+	
 
 	@Override
 	public boolean equals(Object other) {
@@ -38,16 +36,16 @@ public class LessThanOrEqual<E> extends BooleanCompareExpression<E> {
 	}
 
 	@Override
-	public Expression<E> getLeftOperand() {
-		return (Expression<E>) leftOperand;
+	public DoubleExpression getLeftOperand() {
+		return (DoubleExpression) leftOperand;
 	}
 
 	@Override
-	public Expression<E> getRightOperand() {
-		return (Expression<E>) rightOperand;
+	public DoubleExpression getRightOperand() {
+		return (DoubleExpression) rightOperand;
 	}
 	
-	private final Expression<?> leftOperand;
-	private final Expression<?> rightOperand;
+	private final DoubleExpression leftOperand;
+	private final DoubleExpression rightOperand;
 }
 

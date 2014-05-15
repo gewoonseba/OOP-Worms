@@ -7,7 +7,7 @@ import worms.model.expressions.*;
 
 public class Turn extends ActionStatement {
 	
-	public Turn(Expression angle) {
+	public Turn(DoubleExpression angle) {
 		if (!(angle instanceof DoubleExpression))
 			throw new IllegalArgumentException();
 		this.angle = angle;
@@ -25,10 +25,10 @@ public class Turn extends ActionStatement {
 		handler.turn(self, getActualAngle());
 	}
 	
-	private final Expression angle;
+	private final DoubleExpression angle;
 	
 	private double getActualAngle() {
-		return (Double) angle.getValue();
+		return (Double) angle.getValue().getValue();
 	}
 
 }

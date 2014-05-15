@@ -1,8 +1,10 @@
 package worms.model.expressions;
 
-public class GreaterThanOrEqual<E> extends BooleanCompareExpression<E> {
+import worms.model.types.BooleanType;
 
-	public GreaterThanOrEqual(Expression<?> left,Expression<?> right){
+public class GreaterThanOrEqual extends BooleanCompareExpression {
+
+	public GreaterThanOrEqual(DoubleExpression left,DoubleExpression right){
 		this.leftOperand = left;
 		this.rightOperand = right;
 	}
@@ -13,15 +15,11 @@ public class GreaterThanOrEqual<E> extends BooleanCompareExpression<E> {
 	}
 	
 	@Override
-	public Boolean getValue() {
-		return (Double) getLeftOperand().getValue() >= (Double) getRightOperand().getValue();
+	public BooleanType getValue() {
+		return new BooleanType((Double) getLeftOperand().getValue().getValue() >= (Double) getRightOperand().getValue().getValue());
 	}
 
-	@Override
-	public boolean isMutable() {
-		return false;
-	}
-
+	
 	@Override
 	public boolean equals(Object other) {
 		// TODO Auto-generated method stub
@@ -34,16 +32,14 @@ public class GreaterThanOrEqual<E> extends BooleanCompareExpression<E> {
 		return null;
 	}
 
-	@Override
-	public Expression<E> getLeftOperand() {
-		return (Expression<E>) leftOperand;
+	public DoubleExpression getLeftOperand() {
+		return  leftOperand;
 	}
 
-	@Override
-	public Expression<E> getRightOperand() {
-		return (Expression<E>) rightOperand;
+	public DoubleExpression getRightOperand() {
+		return rightOperand;
 	}
 	
-	private final Expression<?> leftOperand;
-	private final Expression<?> rightOperand;
+	private final DoubleExpression leftOperand;
+	private final DoubleExpression  rightOperand;
 }

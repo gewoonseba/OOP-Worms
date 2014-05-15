@@ -2,7 +2,7 @@ package worms.model.expressions;
 import worms.model.Worm;
 import worms.model.types.*;
 
-public class GetYExpression extends Expression<Double> {
+public class GetYExpression extends Expression {
 	
 	private final EntityExpression<Worm> worm;
 	
@@ -10,17 +10,6 @@ public class GetYExpression extends Expression<Double> {
 		this.worm = worm;
 	}
 
-	@Override
-	public boolean isMutable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean equals(Object other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public String toString() {
@@ -30,14 +19,10 @@ public class GetYExpression extends Expression<Double> {
 
 
 	@Override
-	public Double getValue() {
-		return worm.getValue().getValue().getY();
+	public DoubleType getValue() {
+		return new DoubleType(worm.getValue().getValue().getY());
 	}
 
-	@Override
-	public boolean hasAsSubExpression(Expression<Double> expression) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 
 }

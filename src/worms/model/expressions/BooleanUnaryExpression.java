@@ -30,8 +30,7 @@ public abstract class BooleanUnaryExpression extends BooleanComposedExpression {
 	@Model
 	protected BooleanUnaryExpression(BooleanExpression operand)
 			throws IllegalOperandException {
-		if (!canHaveAsOperand(operand))
-			throw new IllegalOperandException(this, operand);
+	
 		setOperandAt(1, operand);
 	}
 

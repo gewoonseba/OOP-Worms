@@ -1,11 +1,11 @@
 package worms.model.expressions;
 
-public abstract class DoubleExpression extends Expression<Double> {
+import worms.model.types.DoubleType;
 
-	@Override
-	public boolean hasAsSubExpression(Expression<Double> expression) {
-		return expression==this;
-	}
 
-	public abstract Double getValue();
+public abstract class DoubleExpression extends Expression{
+
+	
+    @Override
+	public abstract DoubleType getValue();
 }

@@ -1,9 +1,10 @@
 package worms.model.expressions;
 
 import worms.model.Worm;
+import worms.model.types.DoubleType;
 import worms.model.types.Entity;
 
-public class GetHPExpression extends Expression<Double> {
+public class GetHPExpression extends Expression {
 
 	private final EntityExpression<Worm> worm;	
 	
@@ -11,17 +12,6 @@ public class GetHPExpression extends Expression<Double> {
 		this.worm = worm;
 	}
 	
-	@Override
-	public boolean hasAsSubExpression(Expression<Double> expression) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isMutable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public boolean equals(Object other) {
@@ -36,8 +26,8 @@ public class GetHPExpression extends Expression<Double> {
 	}
 
 	@Override
-	public Double getValue() {
-		return (double) worm.getValue().getValue().getHitPoints();
+	public DoubleType getValue() {
+		return new DoubleType((double) worm.getValue().getValue().getHitPoints());
 	}
 
 }

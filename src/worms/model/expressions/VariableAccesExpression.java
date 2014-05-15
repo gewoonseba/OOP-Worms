@@ -1,19 +1,15 @@
 package worms.model.expressions;
 
+
+import worms.model.types.Type;
+
+
 public class VariableAccesExpression extends Expression {
 	
 	private final String name;
 	
 	public VariableAccesExpression(String name){
 		this.name = name;
-	}
-
-	
-
-	@Override
-	public boolean isMutable() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
@@ -38,5 +34,6 @@ public class VariableAccesExpression extends Expression {
 		// TODO Object?
 		return SelfWormExpression.getWorm().getProgram().getGlobals().get(name);
 	}
+
 
 }

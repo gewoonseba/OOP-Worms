@@ -3,6 +3,7 @@ package worms.model.statements;
 import worms.model.Worm;
 import worms.model.expressions.*;
 import worms.model.types.Entity;
+import worms.model.types.Type;
 
 public class Assignment<E> extends Statement {
 	
@@ -17,6 +18,7 @@ public class Assignment<E> extends Statement {
 	}
 	
 	public void executeStatement() {
+
 		Worm self = SelfWormExpression.getWorm();
 		self.getProgram().getGlobals().put(variableName,rhs.getValue());
 	}

@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import worms.gui.game.IActionHandler;
-import worms.model.IllegalWormException;
-import worms.model.Worm;
+
 import worms.model.statements.Statement;
 import worms.model.types.Type;
 
+import worms.model.IllegalWormException;
+import worms.model.Worm;
 
 public class Program {
 	

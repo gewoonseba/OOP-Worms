@@ -1,8 +1,10 @@
 package worms.model.expressions;
 
-public class Inequality<E> extends BooleanCompareExpression<E> {
+import worms.model.types.BooleanType;
 
-	public Inequality(Expression<E> left,Expression<E> right){
+public class Inequality extends BooleanCompareExpression {
+
+	public Inequality(DoubleExpression left,DoubleExpression right){
 		this.leftOperand = left;
 		this.rightOperand = right;
 	}
@@ -13,20 +15,11 @@ public class Inequality<E> extends BooleanCompareExpression<E> {
 	}
 
 	@Override
-	public Boolean getValue() {
-		return getLeftOperand().getValue() != getRightOperand().getValue();
+	public BooleanType getValue() {
+		return new BooleanType(!getLeftOperand().getValue().equals(getRightOperand().getValue()));
 	}
 
-	@Override
-	public boolean isMutable() {
-		return false;
-	}
-
-	@Override
-	public boolean equals(Object other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 
 	@Override
 	public String toString() {
@@ -35,16 +28,16 @@ public class Inequality<E> extends BooleanCompareExpression<E> {
 	}
 
 	@Override
-	public Expression<E> getLeftOperand() {
+	public Expression getLeftOperand() {
 		return leftOperand;
 	}
 
 	@Override
-	public Expression<E> getRightOperand() {
+	public Expression getRightOperand() {
 		return rightOperand;
 	}
 	
-	private final Expression<E> leftOperand;
-	private final Expression<E> rightOperand;
+	private final Expression leftOperand;
+	private final Expression rightOperand;
 
 }

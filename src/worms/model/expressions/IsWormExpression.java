@@ -11,15 +11,10 @@ public class IsWormExpression<E> extends BooleanExpression {
 	}
 
 	@Override
-	public Boolean getValue() {
-		return (entity instanceof Worm);	
+	public BooleanType getValue() {
+		return new BooleanType(entity instanceof Worm);	
 	}
 
-	@Override
-	public boolean isMutable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public boolean equals(Object other) {
