@@ -7,8 +7,8 @@ public class LessThan extends BooleanCompareExpression {
 
 	@Model
 	public LessThan(Expression left, Expression right) {
-		this.leftOperand = (DoubleExpression) left;
-		this.rightOperand = (DoubleExpression) right;
+		this.leftOperand = left;
+		this.rightOperand = right;
 	}
 		
 	public BooleanType getValue() {
@@ -34,16 +34,16 @@ public class LessThan extends BooleanCompareExpression {
 	}
 
 	@Override
-	public DoubleExpression getLeftOperand() {
-		return (DoubleExpression) leftOperand;
+	public Expression getLeftOperand() {
+		return leftOperand;
 	}
 
 	@Override
-	public DoubleExpression getRightOperand() {
-		return (DoubleExpression) rightOperand;
+	public Expression getRightOperand() {
+		return rightOperand;
 	}
 	
-	private final DoubleExpression leftOperand;
-	private final DoubleExpression rightOperand;
+	private final Expression leftOperand;
+	private final Expression rightOperand;
 }
 

@@ -166,7 +166,7 @@ public class ProgramFactoryImpl implements ProgramFactory<Expression,Statement,T
 	@Override
 	public Expression createAdd(int line, int column, Expression e1,
 			Expression e2) {
-		return new Addition((DoubleExpression) e1,(DoubleExpression) e2);
+		return new Addition( e1, e2);
 	}
 
 	@Override

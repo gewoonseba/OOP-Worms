@@ -5,15 +5,15 @@ import worms.model.types.*;
 
 public class SameTeamExpression extends BooleanExpression {
 	
-	private final Team team;
+	private final Expression entity;
 	
 	public SameTeamExpression(Expression entity){
-		team= ((Entity<Worm>) entity.getValue()).getValue().getTeam();
+		this.entity= entity;
 	}
 
 	@Override
 	public BooleanType getValue() {
-		return new BooleanType(team == SelfWormExpression.getWorm().getTeam());
+		return new BooleanType(((Entity<Worm>) this.entity.getValue()).getValue().getTeam() == SelfWormExpression.getWorm().getTeam());
 	}
 
 	

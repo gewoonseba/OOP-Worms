@@ -13,7 +13,8 @@ public class Division extends DoubleBinaryExpression {
 
 	@Override
 	public DoubleType getValue() {
-		return new DoubleType(getLeftOperand().getValue().getValue() / getRightOperand().getValue().getValue());
+		return new DoubleType(((Double) getLeftOperand().getValue().getValue()) / 
+				((Double) getRightOperand().getValue().getValue()));
 	}
 
 	
