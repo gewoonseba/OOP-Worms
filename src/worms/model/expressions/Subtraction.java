@@ -25,7 +25,7 @@ public class Subtraction extends DoubleBinaryExpression {
 	 */
 	public Subtraction(Expression left, Expression right)
 			throws IllegalOperandException {
-		super((DoubleExpression)left, (DoubleExpression)right);
+		super(left, right);
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class Subtraction extends DoubleBinaryExpression {
 	 */
 	@Override
 	public DoubleType getValue() {
-		return new DoubleType(getLeftOperand().getValue().getValue() - getRightOperand().getValue().getValue());
+		return new DoubleType(((DoubleType) getLeftOperand().getValue()).getValue() - ((DoubleType) getRightOperand().getValue()).getValue());
 	}
 
 	/**
