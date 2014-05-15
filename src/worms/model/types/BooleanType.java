@@ -5,6 +5,7 @@ public class BooleanType extends Type {
 		setValue(value);
 	}
 	
+	@Override
 	public Boolean getValue() {
 		return value;
 	}

@@ -18,6 +18,7 @@ public class Entity<E> extends Type{
 	
 	private E value;
 	
+	@Override
 	public E getValue(){
 		return this.value;
 	}

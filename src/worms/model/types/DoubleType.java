@@ -8,7 +8,8 @@ public class DoubleType extends Type{
 		setValue(value);
 	}
 	
-	public double getValue() {
+	@Override
+	public Double getValue() {
 		return value;
 	}
 
