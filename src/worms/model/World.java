@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import programs.Program;
+import worms.model.expressions.SelfWormExpression;
 import be.kuleuven.cs.som.annotate.*;
 
 /**
@@ -883,6 +884,7 @@ public class World {
 		}
 		currentWorm.setCurrentAP(currentWorm.getMaxAP());
 		if (currentWorm.getProgram() != null)
+			new SelfWormExpression(currentWorm);
 			currentWorm.getProgram().executeProgram(); 
 	}
 	
