@@ -8,9 +8,9 @@ public class If extends Statement {
 	
 	private Statement then;
 	private Statement otherwise;
-	private Expression<?> condition;
+	private BooleanExpression condition;
 	
-	public If(Expression<?> condition,Statement then,Statement otherwise) {
+	public If(BooleanExpression condition,Statement then,Statement otherwise) {
 		if (! (condition instanceof BooleanExpression))
 			throw new IllegalArgumentException();
 		this.then = then;
@@ -33,7 +33,7 @@ public class If extends Statement {
 	}
 	
 	private boolean getActualCondition() {
-		return (Boolean) condition.getValue();
+		return (Boolean) condition.getValue().getValue();
 	}
 
 }

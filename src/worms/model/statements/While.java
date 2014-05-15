@@ -1,18 +1,15 @@
 package worms.model.statements;
 
-<<<<<<< HEAD
-import worms.model.expressions.BooleanExpression;
-import worms.model.expressions.BooleanExpressions;
-=======
+
 import worms.model.expressions.*;
->>>>>>> 734409432258e8c3e9cf562a2084aa04af2dd360
+
 
 public class While extends Statement {
 	 
-	private Expression<?> condition;
+	private BooleanExpression condition;
 	private Statement body;
 	
-	public While(Expression<?> condition,Statement body) {
+	public While(BooleanExpression condition,Statement body) {
 		this.condition = condition;
 		this.body = body;
 	}
@@ -33,7 +30,7 @@ public class While extends Statement {
 	}
 	
 	private boolean getActualCondition() {
-		return (Boolean) condition.getValue();
+		return (Boolean) condition.getValue().getValue();
 	}
 
 }

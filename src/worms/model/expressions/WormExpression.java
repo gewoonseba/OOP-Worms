@@ -4,7 +4,7 @@ import worms.model.Worm;
 
 public abstract class WormExpression extends Expression{
 
-	
+
 
 	@Override
 	public boolean equals(Object other) {

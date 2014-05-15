@@ -1,6 +1,8 @@
 package worms.model.expressions;
 
+
 import worms.model.types.Type;
+
 
 public class VariableAccesExpression extends Expression {
 	
@@ -30,7 +32,7 @@ public class VariableAccesExpression extends Expression {
 	@Override
 	public Type getValue() {
 		// TODO Object?
-		return   SelfWormExpression.getWorm().getProgram().getGlobals().get(name);
+		return SelfWormExpression.getWorm().getProgram().getGlobals().get(name);
 	}
 
 
