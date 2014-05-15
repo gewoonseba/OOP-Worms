@@ -5,20 +5,20 @@ import java.util.List;
 import java.util.Map;
 
 import worms.gui.game.IActionHandler;
-
+import worms.model.expressions.SelfWormExpression;
 import worms.model.statements.Statement;
 import worms.model.types.Type;
-
 import worms.model.IllegalWormException;
 import worms.model.Worm;
 
 public class Program {
 	
-	public Program(String programText, IActionHandler handler, Map<String, Type> globals,Statement statement) {
+	public Program(String programText, IActionHandler handler, Map<String, Type> globals,Statement statement, Worm selfWorm) {
 		this.handler = handler;
 		this.programText = programText;
 		this.globals = globals;
 		this.statement=statement;
+		new SelfWormExpression(selfWorm);
 	}
 	
 	public void addAsWorm(Worm worm) {
