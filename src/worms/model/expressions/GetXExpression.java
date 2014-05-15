@@ -1,15 +1,16 @@
 package worms.model.expressions;
 
+import worms.model.Food;
 import worms.model.Worm;
 import worms.model.types.DoubleType;
 import worms.model.types.Entity;
 
 public class GetXExpression extends Expression {
 
-	private final EntityExpression<Worm> worm;
+	private final EntityExpression<?> worm;
 	
-	public GetXExpression(EntityExpression<Worm> worm) {
-		this.worm = worm;
+	public GetXExpression(Expression worm) {
+		this.worm = (EntityExpression<?>)worm;
 	}
 
 	@Override
@@ -26,7 +27,9 @@ public class GetXExpression extends Expression {
 
 	@Override
 	public DoubleType getValue() {
-		return new DoubleType(worm.getValue().getValue().getX());
+		if (worm.getValue().getValue() instanceof Worm)
+			return new DoubleType(((Worm)worm.getValue().getValue()).getX());
+		return new DoubleType(((Food)worm.getValue().getValue()).getX());
 	}
 
 }

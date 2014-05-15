@@ -8,8 +8,8 @@ public class GetDirectionExpression extends Expression {
 
 	private final EntityExpression<Worm> worm;
 	
-	public GetDirectionExpression(EntityExpression<Worm> worm) {
-		this.worm = worm;
+	public GetDirectionExpression(Expression worm) {
+		this.worm = (EntityExpression<Worm>)worm;
 	}
 	
 	

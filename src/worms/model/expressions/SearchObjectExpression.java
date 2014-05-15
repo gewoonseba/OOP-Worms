@@ -8,8 +8,8 @@ public class SearchObjectExpression extends Expression {
 	private Food nearestFood;
 	private Object nearestObject;
 	
-    public SearchObjectExpression(DoubleExpression e) {
-    	this.angleIncrease =e.getValue().getValue();
+    public SearchObjectExpression(Expression e) {
+    	this.angleIncrease =((DoubleExpression)e).getValue().getValue();
 	}
 
 	

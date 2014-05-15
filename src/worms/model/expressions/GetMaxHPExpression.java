@@ -8,8 +8,8 @@ public class GetMaxHPExpression extends Expression {
 
 	private final EntityExpression<Worm> worm;
 	
-	public GetMaxHPExpression(EntityExpression<Worm> worm) {
-		this.worm = worm;
+	public GetMaxHPExpression(Expression worm) {
+		this.worm =(EntityExpression<Worm>) worm;
 	}
 	
 

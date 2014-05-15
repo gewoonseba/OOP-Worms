@@ -3,7 +3,11 @@ import worms.model.types.*;
 import worms.model.Worm;
 
 public class SelfWormExpression extends WormExpression {
-	
+
+	public SelfWormExpression(){
+		
+	}
+
 	public SelfWormExpression(Worm worm){
 		setWorm(worm);
 	}

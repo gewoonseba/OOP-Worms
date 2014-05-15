@@ -1,15 +1,16 @@
 package worms.model.expressions;
 
+import worms.model.Food;
 import worms.model.Worm;
 import worms.model.types.DoubleType;
 import worms.model.types.Entity;
 
 public class GetRadiusExpression extends Expression {
 
-	private final EntityExpression<Worm> worm;
+	private final EntityExpression<?> worm;
 	
-	public GetRadiusExpression(EntityExpression<Worm> worm) {
-		this.worm = worm;
+	public GetRadiusExpression(Expression worm) {
+		this.worm =(EntityExpression<?>) worm;
 	}
 	
 	
@@ -28,7 +29,9 @@ public class GetRadiusExpression extends Expression {
 
 	@Override
 	public DoubleType getValue() {
-		return new DoubleType( worm.getValue().getValue().getRadius());
+		if (worm.getValue().getValue() instanceof Worm)
+			return new DoubleType(((Worm)worm.getValue().getValue()).getRadius());
+		return new DoubleType(Food.getRadius());
 	}
 
 }

@@ -8,8 +8,8 @@ public class GetMaxAPExpression extends Expression{
 
 	private final EntityExpression<Worm> worm;
 	
-	public GetMaxAPExpression(EntityExpression<Worm> worm) {
-		this.worm = worm;
+	public GetMaxAPExpression(Expression worm) {
+		this.worm =(EntityExpression<Worm>) worm;
 	}
 	
 	

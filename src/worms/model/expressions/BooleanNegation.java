@@ -15,8 +15,8 @@ public class BooleanNegation extends BooleanUnaryExpression {
 	 *         with the given operand as its operand.
 	 *       | super(operand)
 	 */
-	public BooleanNegation(BooleanExpression operand) throws IllegalOperandException {
-		super(operand);
+	public BooleanNegation(Expression operand) throws IllegalOperandException {
+		super((BooleanExpression)operand);
 	}
 
 	
