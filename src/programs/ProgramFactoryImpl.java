@@ -108,14 +108,12 @@ public class ProgramFactoryImpl implements ProgramFactory<Expression,Statement,T
 
 	@Override
 	public Expression createIsWorm(int line, int column, Expression e) {
-		// TODO Auto-generated method stub
-		return null;
+		return new IsWormExpression<>(e);
 	}
 
 	@Override
 	public Expression createIsFood(int line, int column, Expression e) {
-		// TODO Auto-generated method stub
-		return null;
+		return new IsFoodExpression<>(e);
 	}
 
 	@Override
@@ -132,82 +130,76 @@ public class ProgramFactoryImpl implements ProgramFactory<Expression,Statement,T
 	@Override
 	public Expression createLessThan(int line, int column, Expression e1,
 			Expression e2) {
-		return (Expression) new LessThan(e1,e2);
+		return new LessThan(e1,e2);
 	}
 
 	@Override
 	public Expression createGreaterThan(int line, int column, Expression e1,
 			Expression e2) {
-		return (Expression) new GreaterThan(e1,e2);
+		return new GreaterThan(e1,e2);
 	}
 
 	@Override
 	public Expression createLessThanOrEqualTo(int line, int column,
 			Expression e1, Expression e2) {
-		return (Expression) new LessThanOrEqual<>(e1, e2);
+		return new LessThanOrEqual(e1, e2);
 	}
 
 	@Override
 	public Expression createGreaterThanOrEqualTo(int line, int column,
 			Expression e1, Expression e2) {
-		return (Expression) new GreaterThanOrEqual<>(e1, e2);
+		return new GreaterThanOrEqual(e1, e2);
 	}
 
 	@Override
 	public Expression createEquality(int line, int column, Expression e1,
 			Expression e2) {
-		return (Expression) new Equality(e1,e2);
+		return new Equality(e1,e2);
 	}
 
 	@Override
 	public Expression createInequality(int line, int column, Expression e1,
 			Expression e2) {
-		return (Expression) new Inequality(e1,e2);
+		return new Inequality(e1,e2);
 	}
 
 	@Override
 	public Expression createAdd(int line, int column, Expression e1,
 			Expression e2) {
-		return (Expression) new Addition((DoubleExpression) e1,(DoubleExpression) e2);
+		return new Addition((DoubleExpression) e1,(DoubleExpression) e2);
 	}
 
 	@Override
 	public Expression createSubtraction(int line, int column, Expression e1,
 			Expression e2) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Subtraction(e1,e2);
 	}
 
 	@Override
 	public Expression createMul(int line, int column, Expression e1,
 			Expression e2) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Multiplication(e1,e2);
 	}
 
 	@Override
 	public Expression createDivision(int line, int column, Expression e1,
 			Expression e2) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Division(e1,e2);
 	}
 
 	@Override
 	public Expression createSqrt(int line, int column, Expression e) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Sqrt(e);
 	}
 
 	@Override
 	public Expression createSin(int line, int column, Expression e) {
-		// TODO Auto-generated method stub
-		return null;
+		return new SinExpression(e);
 	}
 
 	@Override
 	public Expression createCos(int line, int column, Expression e) {
-		// TODO Auto-generated method stub
-		return null;
+		return new CosExpression(e);
 	}
 
 	@Override
@@ -237,14 +229,13 @@ public class ProgramFactoryImpl implements ProgramFactory<Expression,Statement,T
 
 	@Override
 	public Statement createSkip(int line, int column) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Skip();
 	}
 
 	@Override
 	public Statement createAssignment(int line, int column,
 			String variableName, Expression rhs) {
-		return new Assignment<E>(variableName, rhs);
+		return new Assignment(variableName, rhs);
 	}
 
 	@Override
@@ -279,19 +270,17 @@ public class ProgramFactoryImpl implements ProgramFactory<Expression,Statement,T
 
 	@Override
 	public Type createDoubleType() {
-		// TODO Auto-generated method stub
-		return null;
+		return new DoubleType();
 	}
 
 	@Override
 	public Type createBooleanType() {
-		// TODO Auto-generated method stub
-		return null;
+		return new BooleanType();
 	}
 
 	@Override
 	public Type createEntityType() {
-		return null;
+		return new Entity<>();
 	}
 
 }

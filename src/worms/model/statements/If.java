@@ -10,12 +10,12 @@ public class If extends Statement {
 	private Statement otherwise;
 	private BooleanExpression condition;
 	
-	public If(BooleanExpression condition,Statement then,Statement otherwise) {
+	public If(Expression condition,Statement then,Statement otherwise) {
 		if (! (condition instanceof BooleanExpression))
 			throw new IllegalArgumentException();
+		this.condition = (BooleanExpression) condition;
 		this.then = then;
 		this.otherwise = otherwise;
-		this.condition= condition;
 	}
 
 	@Override

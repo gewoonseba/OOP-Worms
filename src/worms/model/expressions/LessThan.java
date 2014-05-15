@@ -6,9 +6,9 @@ import be.kuleuven.cs.som.annotate.Model;
 public class LessThan extends BooleanCompareExpression {
 
 	@Model
-	public LessThan(DoubleExpression left, DoubleExpression right) {
-		this.leftOperand = left;
-		this.rightOperand = right;
+	public LessThan(Expression left, Expression right) {
+		this.leftOperand = (DoubleExpression) left;
+		this.rightOperand = (DoubleExpression) right;
 	}
 		
 	public BooleanType getValue() {

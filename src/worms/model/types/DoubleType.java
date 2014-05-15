@@ -2,6 +2,7 @@ package worms.model.types;
 
 public class DoubleType extends Type{
 	public DoubleType(){
+		this.setValue(0);
 	}
 	public DoubleType(double value){
 		setValue(value);

@@ -5,9 +5,9 @@ import worms.model.types.DoubleType;
 public class Division extends DoubleBinaryExpression {
 
 	
-	public Division(DoubleExpression left, DoubleExpression right)
+	public Division(Expression left, Expression right)
 			throws IllegalOperandException {
-		super(left, right);
+		super((DoubleExpression)left, (DoubleExpression)right);
 	}
 
 

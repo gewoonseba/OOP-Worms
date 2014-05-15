@@ -7,10 +7,10 @@ import worms.model.expressions.*;
 
 public class Turn extends ActionStatement {
 	
-	public Turn(DoubleExpression angle) {
+	public Turn(Expression angle) {
 		if (!(angle instanceof DoubleExpression))
 			throw new IllegalArgumentException();
-		this.angle = angle;
+		this.angle = (DoubleExpression) angle;
 	}
 
 	@Override

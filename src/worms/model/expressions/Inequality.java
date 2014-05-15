@@ -4,7 +4,7 @@ import worms.model.types.BooleanType;
 
 public class Inequality extends BooleanCompareExpression {
 
-	public Inequality(DoubleExpression left,DoubleExpression right){
+	public Inequality(Expression left,Expression right){
 		this.leftOperand = left;
 		this.rightOperand = right;
 	}

@@ -4,8 +4,8 @@ import worms.model.types.DoubleType;
 
 public class Sqrt extends DoubleUnaryExpression {
 
-	protected Sqrt(DoubleExpression operand) throws IllegalOperandException {
-		super(operand);
+	public Sqrt(Expression operand) throws IllegalOperandException {
+		super((DoubleExpression)operand);
 	}
 
 	@Override

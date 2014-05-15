@@ -4,9 +4,9 @@ import worms.model.types.DoubleType;
 
 public class SinExpression extends DoubleUnaryExpression {
 
-	protected SinExpression(DoubleExpression operand)
+	public SinExpression(Expression operand)
 			throws IllegalOperandException {
-		super(operand);
+		super((DoubleExpression) operand);
 		
 	}
 

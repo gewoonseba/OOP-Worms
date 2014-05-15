@@ -4,9 +4,9 @@ import worms.model.types.BooleanType;
 
 public class GreaterThanOrEqual extends BooleanCompareExpression {
 
-	public GreaterThanOrEqual(DoubleExpression left,DoubleExpression right){
-		this.leftOperand = left;
-		this.rightOperand = right;
+	public GreaterThanOrEqual(Expression left,Expression right){
+		this.leftOperand = (DoubleExpression) left;
+		this.rightOperand = (DoubleExpression) right;
 	}
 	
 	@Override

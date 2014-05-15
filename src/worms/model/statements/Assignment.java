@@ -5,7 +5,7 @@ import worms.model.expressions.*;
 import worms.model.types.Entity;
 import worms.model.types.Type;
 
-public class Assignment<E> extends Statement {
+public class Assignment extends Statement {
 	
 	public Assignment(String variableName, Expression rhs){
 		this.variableName = variableName;

@@ -5,6 +5,9 @@ public class BooleanType extends Type {
 		setValue(value);
 	}
 	
+	public BooleanType() {
+	}
+	
 	public Boolean getValue() {
 		return value;
 	}

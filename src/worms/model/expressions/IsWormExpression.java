@@ -6,8 +6,8 @@ public class IsWormExpression<E> extends BooleanExpression {
 	
 	private final E entity;
 	
-	public IsWormExpression(EntityExpression<E> entity) {
-		this.entity = entity.getValue().getValue();
+	public IsWormExpression(Expression entity) {
+		this.entity = ((EntityExpression<E>)entity).getValue().getValue();
 	}
 
 	@Override

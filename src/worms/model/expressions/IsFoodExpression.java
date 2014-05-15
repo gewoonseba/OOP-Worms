@@ -7,8 +7,8 @@ public class IsFoodExpression<E> extends BooleanExpression {
 	
 	private final E entity;
 	
-	public IsFoodExpression(EntityExpression<E> entity) {
-		this.entity = entity.getValue().getValue();
+	public IsFoodExpression(Expression entity) {
+		this.entity = ((EntityExpression<E>) entity).getValue().getValue();
 	}
 
 	@Override

@@ -9,8 +9,8 @@ public class While extends Statement {
 	private BooleanExpression condition;
 	private Statement body;
 	
-	public While(BooleanExpression condition,Statement body) {
-		this.condition = condition;
+	public While(Expression condition,Statement body) {
+		this.condition = (BooleanExpression) condition;
 		this.body = body;
 	}
 
