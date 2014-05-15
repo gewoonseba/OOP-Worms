@@ -8,8 +8,8 @@ public class GetHPExpression extends Expression {
 
 	private final EntityExpression<Worm> worm;	
 	
-	public GetHPExpression(EntityExpression<Worm> worm) {
-		this.worm = worm;
+	public GetHPExpression(Expression worm) {
+		this.worm =(EntityExpression<Worm>) worm;
 	}
 	
 

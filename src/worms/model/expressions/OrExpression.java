@@ -4,11 +4,11 @@ import worms.model.types.BooleanType;
 
 public class OrExpression extends BooleanExpression {
 	
-	public OrExpression(BooleanExpression expr1,BooleanExpression expr2) throws IllegalArgumentException {
+	public OrExpression(Expression expr1,Expression expr2) throws IllegalArgumentException {
 		if( ! (expr1 instanceof BooleanExpression && expr2 instanceof BooleanExpression))
 			throw new IllegalArgumentException();
-		this.expr1=expr1;
-		this.expr2=expr2;
+		this.expr1=(BooleanExpression)expr1;
+		this.expr2=(BooleanExpression)expr2;
 	}
 	
 	public String getOperatorSymbol() {

@@ -1,13 +1,14 @@
 package worms.model.expressions;
+import worms.model.Food;
 import worms.model.Worm;
 import worms.model.types.*;
 
 public class GetYExpression extends Expression {
 	
-	private final EntityExpression<Worm> worm;
+	private final EntityExpression<?> worm;
 	
-	public GetYExpression(EntityExpression<Worm> worm){
-		this.worm = worm;
+	public GetYExpression(Expression worm){
+		this.worm =(EntityExpression<?>) worm;
 	}
 
 
@@ -20,7 +21,9 @@ public class GetYExpression extends Expression {
 
 	@Override
 	public DoubleType getValue() {
-		return new DoubleType(worm.getValue().getValue().getY());
+		if (worm.getValue().getValue() instanceof Worm)
+			return new DoubleType(((Worm)worm.getValue().getValue()).getY());
+		return new DoubleType(((Food)worm.getValue().getValue()).getY());
 	}
 
 	

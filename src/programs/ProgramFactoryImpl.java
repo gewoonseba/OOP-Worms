@@ -28,12 +28,12 @@ public class ProgramFactoryImpl implements ProgramFactory<Expression,Statement,T
 	@Override
 	public Expression createOr(int line, int column, Expression e1,
 			Expression e2) {
-		return (Expression) new OrExpression<>(e1, e2);
+		return (Expression) new OrExpression(e1, e2);
 	}
 
 	@Override
 	public Expression createNot(int line, int column, Expression e) {
-		return null;
+		return new BooleanNegation(e);
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class ProgramFactoryImpl implements ProgramFactory<Expression,Statement,T
 	@Override
 	public Expression createSelf(int line, int column) {
 		// TODO Auto-generated method stub
-		return null;
+		return new SelfWormExpression();
 	}
 
 	@Override
@@ -55,55 +55,55 @@ public class ProgramFactoryImpl implements ProgramFactory<Expression,Statement,T
 	@Override
 	public Expression createGetY(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
-		return null;
+		return new GetYExpression(e);
 	}
 
 	@Override
 	public Expression createGetRadius(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
-		return null;
+		return new GetRadiusExpression(e);
 	}
 
 	@Override
 	public Expression createGetDir(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
-		return null;
+		return new GetDirectionExpression(e);
 	}
 
 	@Override
 	public Expression createGetAP(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
-		return null;
+		return new GetAPExpression(e);
 	}
 
 	@Override
 	public Expression createGetMaxAP(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
-		return null;
+		return new GetMaxAPExpression(e);
 	}
 
 	@Override
 	public Expression createGetHP(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
-		return null;
+		return new GetHPExpression(e);
 	}
 
 	@Override
 	public Expression createGetMaxHP(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
-		return null;
+		return new GetMaxHPExpression(e);
 	}
 
 	@Override
 	public Expression createSameTeam(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
-		return null;
+		return new SameTeamExpression(e);
 	}
 
 	@Override
 	public Expression createSearchObj(int line, int column, Expression e) {
 		// TODO Auto-generated method stub
-		return null;
+		return new SearchObjectExpression(e);
 	}
 
 	@Override
@@ -281,6 +281,13 @@ public class ProgramFactoryImpl implements ProgramFactory<Expression,Statement,T
 	@Override
 	public Type createEntityType() {
 		return new Entity<>();
+	}
+
+	@Override
+	public Expression createVariableAccess(int line, int column, String name,
+			Type type) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

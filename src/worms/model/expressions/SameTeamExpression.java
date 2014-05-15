@@ -1,14 +1,14 @@
 package worms.model.expressions;
 import worms.model.Worm;
 import worms.model.Team;
-import worms.model.types.BooleanType;
+import worms.model.types.*;
 
 public class SameTeamExpression extends BooleanExpression {
 	
 	private final Team team;
 	
-	public SameTeamExpression(EntityExpression<Worm> entity){
-		team= entity.getValue().getValue().getTeam();
+	public SameTeamExpression(Expression entity){
+		team= ((Entity<Worm>) entity.getValue()).getValue().getTeam();
 	}
 
 	@Override

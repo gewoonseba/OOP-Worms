@@ -4,7 +4,11 @@ import worms.model.Worm;
 
 public class SelfWormExpression extends WormExpression {
 	
-	SelfWormExpression(Worm worm){
+	public SelfWormExpression(){
+		
+	}
+	
+	public SelfWormExpression(Worm worm){
 		setWorm(worm);
 	}
    
