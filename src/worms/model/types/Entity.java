@@ -6,6 +6,7 @@ import worms.model.Worm;
 
 public class Entity<E> extends Type{
 	public Entity(){
+		this.value=null;
 	}
 	
 	public Entity(E object){

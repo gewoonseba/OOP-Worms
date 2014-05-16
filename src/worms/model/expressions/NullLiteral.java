@@ -9,7 +9,7 @@ public class NullLiteral extends Expression{
 
 	@Override
 	public Entity<Double> getValue() {
-		return double1;
+		return new Entity<Double>();
 	}
 	
 

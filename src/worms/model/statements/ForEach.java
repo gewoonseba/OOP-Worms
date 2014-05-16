@@ -13,7 +13,9 @@ public class ForEach extends Statement {
 
 	
 	public ForEach(ForeachType type,String name,Statement body) {
-		// TODO Auto-generated constructor stub
+		this.type = type;
+		this.body = body;
+		this.name = name;
 	}
 
 	@Override

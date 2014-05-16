@@ -5,13 +5,11 @@ import worms.model.types.*;
 
 public class GetYExpression extends Expression {
 	
-	private final Expression worm;
+	private Expression entity;
 	
 	public GetYExpression(Expression worm){
-		if (worm instanceof SelfWormExpression)
-			this.worm= new EntityExpression<Worm>((new SelfWormExpression()).getValue());
-		else
-			this.worm = (Expression) worm;
+	
+		this.entity = (Expression) worm;
 	}
 
 
@@ -24,9 +22,11 @@ public class GetYExpression extends Expression {
 
 	@Override
 	public DoubleType getValue() {
-		if (((Entity<?>)worm.getValue()).getValue() instanceof Worm)
-			return new DoubleType(((Worm)((Entity<?>) worm.getValue()).getValue()).getY());
-		return new DoubleType(((Food)((Entity<?>) worm.getValue()).getValue()).getY());
+		if (entity instanceof SelfWormExpression){
+			this.entity= new EntityExpression<Worm>((new SelfWormExpression()).getValue());}
+		if (((Entity<?>)entity.getValue()).getValue() instanceof Worm)
+			return new DoubleType(((Worm)((Entity<?>) entity.getValue()).getValue()).getY());
+		return new DoubleType(((Food)((Entity<?>) entity.getValue()).getValue()).getY());
 	}
 
 	

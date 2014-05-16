@@ -7,13 +7,10 @@ import worms.model.types.Entity;
 
 public class GetXExpression extends Expression {
 
-	private final Expression worm;
+	private Expression entity;
 	
-	public GetXExpression(Expression worm) {
-		if (worm instanceof SelfWormExpression)
-			this.worm= new EntityExpression<Worm>((new SelfWormExpression()).getValue());
-		else
-			this.worm = worm;
+	public GetXExpression(Expression entity) {
+		this.entity = entity;
 	}
 
 	@Override
@@ -30,9 +27,12 @@ public class GetXExpression extends Expression {
 
 	@Override
 	public DoubleType getValue() {
-		if (((Entity<?>)worm.getValue()).getValue() instanceof Worm)
-			return new DoubleType(((Worm)((Entity<?>) worm.getValue()).getValue()).getX());
-		return new DoubleType(((Food)((Entity<?>) worm.getValue()).getValue()).getX());
+		if (entity instanceof SelfWormExpression){
+			this.entity= new EntityExpression<Worm>((new SelfWormExpression()).getValue());}
+		System.out.println((entity.getValue().getValue().getClass()));
+		if ((entity.getValue().getValue()) instanceof Worm)
+			return new DoubleType(((Worm)((Entity<?>) entity.getValue()).getValue()).getX());
+		return new DoubleType(((Food)((Entity<?>) entity.getValue()).getValue()).getX());
 	}
 
 }

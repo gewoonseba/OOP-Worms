@@ -13,6 +13,9 @@ public class SameTeamExpression extends BooleanExpression {
 
 	@Override
 	public BooleanType getValue() {
+		if (SelfWormExpression.getWorm().getTeam()== null)
+			return new BooleanType(false);
+		
 		return new BooleanType(((Entity<Worm>) this.entity.getValue()).getValue().getTeam() == SelfWormExpression.getWorm().getTeam());
 	}
 

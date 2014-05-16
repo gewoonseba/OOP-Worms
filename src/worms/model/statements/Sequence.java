@@ -17,6 +17,7 @@ public class Sequence extends Statement {
 		int i = 0;
 		while (i <statements.size()){
 			statements.get(i).executeStatement();
+			i+=1;
 		}
 	}
 	
