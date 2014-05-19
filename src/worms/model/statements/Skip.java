@@ -15,9 +15,11 @@ public class Skip extends ActionStatement {
 	//FIXME: should use actionhandler
 	@Override
 	public void executeStatement() {
-		this.executed=false;
-		SelfWormExpression.getWorm().setCurrentAP(0);
-		this.executed=true;
+		if (!(SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)){
+			this.executed=false;
+			SelfWormExpression.getWorm().setCurrentAP(0);
+			SelfWormExpression.getWorm().getProgram().increaseCount();
+			this.executed=true;}
 	}
 	
 	@Override

@@ -20,10 +20,12 @@ public class Assignment extends Statement {
 	}
 	
 	public void executeStatement() {
-        this.executed=false;
-		Worm self = SelfWormExpression.getWorm();
-		self.getProgram().getGlobals().put(variableName,rhs.getValue());
-		this.executed=true;
+		if ((!(SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000))){
+        	this.executed=false;
+        	Worm self = SelfWormExpression.getWorm();
+        	self.getProgram().getGlobals().put(variableName,rhs.getValue());
+        	self.getProgram().increaseCount();
+        	this.executed=true;}
 	}
 	
 	private final String variableName;

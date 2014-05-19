@@ -21,13 +21,14 @@ public class Fire extends ActionStatement {
 
 	@Override
 	public void executeStatement() {
-		System.out.println(SelfWormExpression.getWorm().getName());
-		System.out.println("VUUR");
-		this.executed=false;
-		Worm self = SelfWormExpression.getWorm();
-		IActionHandler handler = self.getProgram().getHandler();
-		handler.fire(self, getActualYield());
-		this.executed=true;
+		if (!(SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)){
+		
+			this.executed=false;
+			Worm self = SelfWormExpression.getWorm();
+			IActionHandler handler = self.getProgram().getHandler();
+			handler.fire(self, getActualYield());
+			self.getProgram().increaseCount();
+			this.executed=true;}
 	}
 	
 	private final DoubleExpression yield;
@@ -49,7 +50,8 @@ public class Fire extends ActionStatement {
 	
 	@Override
 	public boolean enoughAp() {
-		
+		System.out.println("SCHIETAP");
+		System.out.println(SelfWormExpression.getWorm().getShootAP());
 		return SelfWormExpression.getWorm().getShootAP()>=0;
 	}
 

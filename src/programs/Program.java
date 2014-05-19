@@ -63,10 +63,22 @@ public class Program {
 	private final Statement statement;
 	
 	public void executeProgram(){
+		statementCount=0;
 		statement.executeStatement();
 	}
 	
 	private boolean inForEach;
+	
+	private int statementCount;
+	
+	public int getstatementCount(){
+		return this.statementCount;
+	}
+	
+	public void increaseCount(){
+		statementCount+=1;
+		System.out.println(statementCount);
+	}
 	
 	public boolean wellFormed(){
 		inForEach=false;

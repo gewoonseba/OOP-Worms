@@ -30,28 +30,39 @@ public class If extends Statement {
 	@Override
 	public void executeStatement(){
 		this.executed=false;
-		if (getActualCondition()){
+		if ((SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)){
+			SelfWormExpression.getWorm().setCurrentAP(0);}
+		else if(getActualCondition()){
 			if (then instanceof ActionStatement){
 				if (!((ActionStatement)then).enoughAp()){
+					System.out.println("in");
 					SelfWormExpression.getWorm().setCurrentAP(0);
 					}
 				else{
+					SelfWormExpression.getWorm().getProgram().increaseCount();
 					this.executed=true;
-				then.executeStatement();}}
+					then.executeStatement();}
+			}
 			else{
+				SelfWormExpression.getWorm().getProgram().increaseCount();
 				this.executed=true;
-			then.executeStatement();}}
-		else{
+				then.executeStatement();}
+		}
+		else if(!getActualCondition()){
 			if (otherwise instanceof ActionStatement){
 				if (!((ActionStatement)otherwise).enoughAp()){
 					SelfWormExpression.getWorm().setCurrentAP(0);
 					}
 				else{
+					SelfWormExpression.getWorm().getProgram().increaseCount();
 					this.executed=true;
-				otherwise.executeStatement();}}
+					otherwise.executeStatement();}
+			}
 			else{
-				this.executed=true;
-			otherwise.executeStatement();}}
+				SelfWormExpression.getWorm().getProgram().increaseCount();
+				this.executed=true;}
+			otherwise.executeStatement();}
+	
 	}
 	
 	private boolean getActualCondition() {

@@ -24,14 +24,16 @@ public class Sequence extends Statement {
 		if (i ==statements.size())
 			i=0;
 		while (i <statements.size()){
+			if (SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)
+				break;
 			if (statements.get(i).isexecuted()){
 				statements.get(i).setExecuted(false);
 				i+=1;
 		        continue;}
-			if (statements.get(i) instanceof ActionStatement)
+			if (statements.get(i) instanceof ActionStatement){
 				if (!((ActionStatement)statements.get(i)).enoughAp()){
 					SelfWormExpression.getWorm().setCurrentAP(0);
-					break;}
+					break;}}
 			statements.get(i).executeStatement();
 			if (SelfWormExpression.getWorm().getCurrentAP()==0||SelfWormExpression.getWorm().getHitPoints()==0)
 				break;
@@ -39,6 +41,7 @@ public class Sequence extends Statement {
 			i+=1;
 		}
 		if (i == statements.size())
+	        SelfWormExpression.getWorm().getProgram().increaseCount();
 			this.executed=true;
 	}
 	

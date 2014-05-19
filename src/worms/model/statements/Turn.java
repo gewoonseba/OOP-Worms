@@ -21,11 +21,13 @@ public class Turn extends ActionStatement {
 
 	@Override
 	public void executeStatement() {
-		this.executed=false;
-		Worm self = SelfWormExpression.getWorm();
-		IActionHandler handler = self.getProgram().getHandler();
-		handler.turn(self, getActualAngle());
-		this.executed=true;
+		if (!(SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)){
+			this.executed=false;
+			Worm self = SelfWormExpression.getWorm();
+			IActionHandler handler = self.getProgram().getHandler();
+			handler.turn(self, getActualAngle());
+			self.getProgram().increaseCount();
+			this.executed=true;}
 	}
 	
 	private final Expression angle;

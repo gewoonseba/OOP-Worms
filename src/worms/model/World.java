@@ -448,9 +448,8 @@ public class World {
 				return false;
 			change+=maxDistance/(Math.ceil((radius/(getHeightScale()))));
 			while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<=maxDistance )){
-				if (change!=maxDistance){
-					if (passableMap[coordinatesToPixels(x + xchange, y+change)[1]][coordinatesToPixels(x + xchange, y+ change)[0]]==false)
-						return false;}
+				if (passableMap[coordinatesToPixels(x + xchange, y+change)[1]][coordinatesToPixels(x + xchange, y+ change)[0]]==false)
+						return false;
 				if (passableMap[coordinatesToPixels(x + xchange, y-change)[1]][coordinatesToPixels(x + xchange, y- change)[0]]==false)
 					return false;
 				change+=maxDistance/(Math.ceil((radius/(getHeightScale()))));

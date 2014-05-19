@@ -33,6 +33,8 @@ public class ForEach extends Statement {
 		case WORM:
 			Entity<Worm> e=new Entity<Worm>();
 			for (Worm w:SelfWormExpression.getWorm().getWorld().getWorms()){
+				if (SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)
+					break;
 				e.setValue(w);
 				SelfWormExpression.getWorm().getProgram().getGlobals().put(name,e );
 				body.executeStatement();
@@ -40,6 +42,8 @@ public class ForEach extends Statement {
 		case FOOD:
 			Entity<Food> f=new Entity<Food>();
 			for (Food w:SelfWormExpression.getWorm().getWorld().getFood()){
+				if (SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)
+					break;
 				f.setValue(w);
 				SelfWormExpression.getWorm().getProgram().getGlobals().put(name, f);
 				body.executeStatement();
@@ -47,12 +51,16 @@ public class ForEach extends Statement {
 		case ANY:
 			Entity<Food> v=new Entity<Food>();
 			for (Food w:SelfWormExpression.getWorm().getWorld().getFood()){
+				if (SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)
+					break;
 				v.setValue(w);
 				SelfWormExpression.getWorm().getProgram().getGlobals().put(name, v);
 				body.executeStatement();
 			}
 			Entity<Worm> a=new Entity<Worm>();
 			for (Worm w:SelfWormExpression.getWorm().getWorld().getWorms()){
+				if (SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)
+					break;
 				a.setValue(w);
 				SelfWormExpression.getWorm().getProgram().getGlobals().put(name,a );
 				body.executeStatement();
@@ -60,6 +68,7 @@ public class ForEach extends Statement {
 			
 			
 		}
+		SelfWormExpression.getWorm().getProgram().increaseCount();
 		this.executed=true;
 
 	}

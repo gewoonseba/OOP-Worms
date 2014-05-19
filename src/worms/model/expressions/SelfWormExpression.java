@@ -22,7 +22,6 @@ public class SelfWormExpression extends WormExpression {
 	public Entity<Worm> getValue() {
 		Entity<Worm> wormpie =new Entity<Worm>();
 	    wormpie.setValue(getWorm());
-	    System.out.println(getWorm());
 		return wormpie;
 	}
 

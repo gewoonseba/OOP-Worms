@@ -1,6 +1,7 @@
 package worms.model.statements;
 
 import worms.model.expressions.Expression;
+import worms.model.expressions.SelfWormExpression;
 
 public class Print extends Statement {
 	
@@ -16,9 +17,11 @@ public class Print extends Statement {
 	}
 	
 	public void executeStatement(){
-		this.executed=false;
-		System.out.println(print1.getValue().getValue());
-		this.executed=true;
+		if (!(SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)){
+			this.executed=false;
+			System.out.println(print1.getValue().getValue());
+			SelfWormExpression.getWorm().getProgram().increaseCount();
+			this.executed=true;}
 	}
 	
 	private final Expression print1;

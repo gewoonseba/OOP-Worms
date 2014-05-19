@@ -19,11 +19,13 @@ public class Move extends ActionStatement {
 
 	@Override
 	public void executeStatement() {
-		this.executed=false;
-		Worm self = SelfWormExpression.getWorm();
-		IActionHandler handler = self.getProgram().getHandler();
-		handler.move(self);
-		this.executed=true;
+		if (SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000){
+			this.executed=false;
+			Worm self = SelfWormExpression.getWorm();
+			IActionHandler handler = self.getProgram().getHandler();
+			handler.move(self);
+			self.getProgram().increaseCount();
+			this.executed=true;}
 	}
 	
 	@Override
