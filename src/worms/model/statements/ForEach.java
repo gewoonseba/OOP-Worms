@@ -5,11 +5,13 @@ import worms.model.programs.ProgramFactory.ForeachType;
 import worms.model.types.*;
 
 public class ForEach extends Statement {
+	
+	public boolean executed=false;
 
 	
 	public ForeachType type;
 	public String name;
-	public Statement body;
+	private Statement body;
 
 	
 	public ForEach(ForeachType type,String name,Statement body) {
@@ -26,7 +28,7 @@ public class ForEach extends Statement {
 
 	@Override
 	public void executeStatement() {
-		
+		this.executed=false;
 		switch (type) {
 		case WORM:
 			Entity<Worm> e=new Entity<Worm>();
@@ -58,8 +60,22 @@ public class ForEach extends Statement {
 			
 			
 		}
-		
+		this.executed=true;
 
 	}
-
+	
+	@Override
+	public boolean isexecuted() {
+		return this.executed;
+	}
+	@Override
+	public void setExecuted(boolean bool) {
+		this.executed=bool;
+		
+	}
+	
+	public Statement getBody(){
+		return this.body;
+	}
+	
 }

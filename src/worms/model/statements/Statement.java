@@ -12,4 +12,8 @@ public abstract class Statement implements Cloneable {
 	public abstract String toString();
 	
 	public abstract void executeStatement();
+	
+	public abstract boolean isexecuted();
+	
+	public abstract void setExecuted(boolean bool);
 }

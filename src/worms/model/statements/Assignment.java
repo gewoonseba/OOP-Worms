@@ -7,6 +7,8 @@ import worms.model.types.Type;
 
 public class Assignment extends Statement {
 	
+	public boolean executed=false;
+	
 	public Assignment(String variableName, Expression rhs){
 		this.variableName = variableName;
 		this.rhs = rhs;
@@ -18,13 +20,29 @@ public class Assignment extends Statement {
 	}
 	
 	public void executeStatement() {
-
+        this.executed=false;
 		Worm self = SelfWormExpression.getWorm();
 		self.getProgram().getGlobals().put(variableName,rhs.getValue());
+		this.executed=true;
 	}
 	
 	private final String variableName;
 	
 	private final Expression rhs;
+
+	@Override
+	public boolean isexecuted() {
+		
+		return this.executed;
+	}
+
+	@Override
+	public void setExecuted(boolean bool) {
+		this.executed=bool;
+		
+	}
+	
+	
+	
 
 }

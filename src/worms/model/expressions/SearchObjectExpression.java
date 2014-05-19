@@ -31,6 +31,7 @@ public class SearchObjectExpression extends Expression {
 	@Override
 	public Entity<?> getValue() {
 		// TODO Eleganter?
+		System.out.println("binnen");
 		for (Worm w:SelfWormExpression.getWorm().getWorld().getWorms()){
 			if (w!=SelfWormExpression.getWorm()){
 				if (((w.getY()-SelfWormExpression.getWorm().getY())
@@ -59,6 +60,13 @@ public class SearchObjectExpression extends Expression {
 						nearestFood=w;
 			}
 		}
+		if (nearestWorm == null && nearestFood == null)
+			return null;
+		if (nearestWorm == null)
+			return new Entity<>(nearestFood);
+		
+		if (nearestFood == null)
+			return new Entity<>(nearestWorm);	
 		nearestObject = nearestWorm;
 		if (Math.sqrt(Math.pow((nearestFood.getY()-SelfWormExpression.getWorm().getY()),2)+
 				Math.pow((nearestFood.getX()-SelfWormExpression.getWorm().getX()),2))<

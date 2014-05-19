@@ -7,5 +7,7 @@ public abstract class ActionStatement extends Statement {
 
 	
 	public abstract void executeStatement();
+	
+	public abstract boolean enoughAp();
 
 }

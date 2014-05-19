@@ -361,14 +361,14 @@ public class World {
 					return false;}
 				if (passableMap[coordinatesToPixels(x+xchange, y)[1]][coordinatesToPixels(x+xchange, y)[0]]==false)
 					return true;
-				do {change+=maxDistance/(Math.ceil((radius/(getHeightScale()/2))));
+				do {change+=maxDistance/(Math.ceil((radius/(getHeightScale()/3))));
 					}while((Math.sqrt((xchange)*(xchange)+(change)*(change))<minDistance-0.01));
 				while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<=maxDistance )){
 					if (passableMap[coordinatesToPixels(x + xchange, y+change)[1]][coordinatesToPixels(x + xchange, y+ change)[0]]==false)
 						return true;
 					if (passableMap[coordinatesToPixels(x + xchange, y-change)[1]][coordinatesToPixels(x + xchange, y- change)[0]]==false)
 						return true;
-					change+=maxDistance/(Math.ceil((radius/(getHeightScale()/2))));
+					change+=maxDistance/(Math.ceil((radius/(getHeightScale()/3))));
 				}
 				xchange-=maxDistance/(Math.ceil((radius/(getWidthScale()/2))));
 				change =0;
@@ -885,7 +885,6 @@ public class World {
 		currentWorm.setCurrentAP(currentWorm.getMaxAP());
 		if (currentWorm.getProgram() != null){
 			SelfWormExpression.setWorm(currentWorm);
-			System.out.println(SelfWormExpression.getWorm());
 			currentWorm.getProgram().executeProgram(); }
 	}
 	
@@ -896,6 +895,11 @@ public class World {
 	 */
 	public void startGame(){
 		currentTurn = 0;
+		Worm currentWorm = worms.get(currentTurn);
+		if (currentWorm.getProgram() != null){
+			SelfWormExpression.setWorm(currentWorm);
+			currentWorm.getProgram().executeProgram();
+		}
 	}
 	
 	/**

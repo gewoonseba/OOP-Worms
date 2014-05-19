@@ -6,7 +6,7 @@ import java.util.Map;
 
 import worms.gui.game.IActionHandler;
 import worms.model.expressions.SelfWormExpression;
-import worms.model.statements.Statement;
+import worms.model.statements.*;
 import worms.model.types.Type;
 import worms.model.IllegalWormException;
 import worms.model.Worm;
@@ -64,6 +64,109 @@ public class Program {
 	
 	public void executeProgram(){
 		statement.executeStatement();
+	}
+	
+	private boolean inForEach;
+	
+	public boolean wellFormed(){
+		inForEach=false;
+		Statement i=statement;
+		if (i instanceof Sequence){
+			if (!(isWellFormedSequence(((Sequence)i).getStatements())))
+				return false;}
+		else if (i instanceof ForEach){
+			if (!(isWellFormedForEach(((ForEach)i).getBody())))
+				return false;}
+		else if (i instanceof While)
+			if(!isWellFormedWhile(((While)i).getBody()))
+				return false;
+		else if (i instanceof If)
+			if (!isWellFormedIf(((If)i).getStatements()))
+				return false;
+		return true;
+	
+	}
+	
+	public boolean isWellFormedWhile(Statement i){
+		if (inForEach && (i instanceof ActionStatement))
+			return false;
+		else if (i instanceof Sequence){
+			if (!(isWellFormedSequence(((Sequence)i).getStatements())))
+				return false;}
+		else if (i instanceof ForEach){
+			if (!(isWellFormedForEach(((ForEach)i).getBody())))
+				return false;}
+		else if (i instanceof While)
+			if(!isWellFormedWhile(((While)i).getBody()))
+				return false;
+		else if (i instanceof If)
+			if (!isWellFormedIf(((If)i).getStatements()))
+				return false;
+		return true;
+		
+	}
+	
+	public boolean isWellFormedSequence(List<Statement> body){
+		for (Statement i: body){
+			if (inForEach && (i instanceof ActionStatement))
+				return false;
+			else if (i instanceof Sequence){
+				if (!(isWellFormedSequence(((Sequence)i).getStatements())))
+					return false;}
+			else if (i instanceof ForEach){
+				if (!(isWellFormedForEach(((ForEach)i).getBody())))
+					return false;}
+			else if (i instanceof While)
+				if(!isWellFormedWhile(((While)i).getBody()))
+					return false;
+			else if (i instanceof If)
+				if (!isWellFormedIf(((If)i).getStatements()))
+					return false;
+			}
+		return true;
+		
+	}
+	public boolean isWellFormedForEach(Statement i){
+		inForEach=true;
+		if (i instanceof Sequence){
+			boolean a=(isWellFormedSequence(((Sequence)i).getStatements()));
+			inForEach=false;
+			return a;}
+		else if (i instanceof ForEach){
+			boolean a=(isWellFormedForEach(((ForEach)i).getBody()));
+			inForEach=false;
+			return a;}
+		else if (i instanceof While){
+			boolean a=(isWellFormedWhile(((While)i).getBody()));
+			inForEach=false;
+			return a;}
+		else if (i instanceof If){
+			boolean a=(isWellFormedIf(((If)i).getStatements()));
+			inForEach=false;
+			return a;}
+		inForEach= false;
+		return true;
+	}
+	
+	public boolean isWellFormedIf(List<Statement> body){
+		for (Statement i: body){
+			if (inForEach && (i instanceof ActionStatement))
+				return false;
+			else if (i instanceof Sequence){
+				if (!(isWellFormedSequence(((Sequence)i).getStatements())))
+					return false;}
+			else if (i instanceof ForEach){
+				if (!(isWellFormedForEach(((ForEach)i).getBody())))
+					return false;}
+			else if (i instanceof While)
+				if(!isWellFormedWhile(((While)i).getBody()))
+					return false;
+			else if (i instanceof If)
+				if (!isWellFormedIf(((If)i).getStatements()))
+					return false;
+			}
+		return true;
+		
 	}
 
 }

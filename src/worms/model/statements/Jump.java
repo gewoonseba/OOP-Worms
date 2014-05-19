@@ -6,6 +6,8 @@ import worms.model.expressions.SelfWormExpression;
 
 public class Jump extends ActionStatement {
 	
+	public boolean executed=false;
+	
 	public Jump(){
 		
 	}
@@ -17,9 +19,28 @@ public class Jump extends ActionStatement {
 
 	@Override
 	public void executeStatement() {
+		this.executed=true;
 		Worm self = SelfWormExpression.getWorm();
 		IActionHandler handler = self.getProgram().getHandler();
 		handler.jump(self);
+		this.executed=false;
+	}
+	
+	@Override
+	public boolean isexecuted() {
+		
+		return this.executed;
+	}
+	@Override
+	public void setExecuted(boolean bool) {
+		this.executed=bool;
+		
 	}
 
+	@Override
+	public boolean enoughAp() {
+		return SelfWormExpression.getWorm().canJumpAP();
+	}
+	
+	
 }

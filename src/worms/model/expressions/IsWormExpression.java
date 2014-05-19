@@ -4,15 +4,18 @@ import worms.model.Worm;
 
 public class IsWormExpression<E> extends BooleanExpression {
 	
-	private final E entity;
+	private final Expression entity;
 	
 	public IsWormExpression(Expression entity) {
-		this.entity = ((EntityExpression<E>)entity).getValue().getValue();
+		this.entity = entity;
 	}
 
 	@Override
 	public BooleanType getValue() {
-		return new BooleanType(entity instanceof Worm);	
+		System.out.println("huppa");
+		if (entity==null || entity.getValue()==null)
+			return new BooleanType(false);
+		return new BooleanType(entity.getValue().getValue() instanceof Worm);	
 	}
 
 

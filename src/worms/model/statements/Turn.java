@@ -7,10 +7,11 @@ import worms.model.expressions.*;
 
 public class Turn extends ActionStatement {
 	
+	public boolean executed=false;
+	
 	public Turn(Expression angle) {
-		if (!(angle instanceof DoubleExpression))
-			throw new IllegalArgumentException();
-		this.angle = (DoubleExpression) angle;
+		
+		this.angle = angle;
 	}
 
 	@Override
@@ -20,15 +21,34 @@ public class Turn extends ActionStatement {
 
 	@Override
 	public void executeStatement() {
+		this.executed=false;
 		Worm self = SelfWormExpression.getWorm();
 		IActionHandler handler = self.getProgram().getHandler();
 		handler.turn(self, getActualAngle());
+		this.executed=true;
 	}
 	
-	private final DoubleExpression angle;
+	private final Expression angle;
 	
 	private double getActualAngle() {
 		return (Double) angle.getValue().getValue();
 	}
+	
+	@Override
+	public boolean isexecuted() {
+		
+		return this.executed;
+	}
+	@Override
+	public void setExecuted(boolean bool) {
+		this.executed=bool;
+		
+	}
 
+	@Override
+	public boolean enoughAp() {
+		return SelfWormExpression.getWorm().canJumpAP();
+	}
+	
+	
 }

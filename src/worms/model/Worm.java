@@ -165,6 +165,33 @@ public class Worm {
 		return false;
 	}
 	
+	public boolean canMoveAP(){
+		double currentDistance = getRadius();
+		double[] newLocation = null;
+		if (getCurrentAP() == 0)
+			return false;
+		while (newLocation == null && currentDistance>=0.1){
+			newLocation = searchFitLocation(currentDistance);
+			currentDistance -= 0.01;
+		}
+		currentDistance = getRadius();
+		while (newLocation == null && currentDistance >= 0.1){
+			newLocation = searchFallLocation(currentDistance);
+			currentDistance -= 0.01;
+		}
+		if (!(newLocation == null)){
+			double newX = newLocation[0];
+			double newY = newLocation[1];
+			double slope = Math.atan((getY() - newY)/(getX() - newX));
+			int newAP = (int) Math.round(getCurrentAP() - (Math.abs(Math.cos(slope)) + Math.abs(4*Math.sin(slope))));
+			if (newAP >= 0){
+				return true;
+			}
+			return false;
+		}
+		return true;
+	}
+	
 	//XXX: Formal specification
 	/**
 	 * Method to search a location which is adjacent to impassable terrain on a quarter circle, a given distance from the
@@ -373,7 +400,7 @@ public class Worm {
 	public void jump(double timeStep) throws IllegalAPException{
 		if (! this.canJumpAP()){
 			throw new IllegalAPException(this.getCurrentAP(), this);}
-		double time = (this.getRadius())/getInitialSpeed();
+		double time = (this.getRadius())/(getInitialSpeed()*4);
 		double[] tempCoordinates = jumpStep(time);
 		double tempX = tempCoordinates[0];
 		double tempY = tempCoordinates[1];
@@ -759,7 +786,7 @@ public class Worm {
 	 * 		  The AP provided is not valid for the given worm.
 	 *        | (! isValidCurrentAP(currentAP))
 	 */
-	protected void setCurrentAP(int currentAP) throws IllegalAPException {
+	public void setCurrentAP(int currentAP) throws IllegalAPException {
 		if (! isValidCurrentAP(currentAP))
 			throw new IllegalAPException(currentAP,this);
 		this.currentAP = currentAP;
