@@ -577,9 +577,6 @@ public class World {
 		if (worm.hasWorld())
 			throw new IllegalStateException();
 		worms.remove(worm);
-		if (currentTurn>=worms.size()){
-			currentTurn=0;
-		}
 	}
 	
 	/**
@@ -588,9 +585,7 @@ public class World {
 	 * 		| getWorms().get(currentTurn)
 	 */
 	public Worm getCurrentWorm() throws IndexOutOfBoundsException{
-		if (getCurrentTurn()>=getWorms().size())
-			throw new IndexOutOfBoundsException("currentTurn is too high.");
-		return getWorms().get(currentTurn);
+		return currentWorm;
 	}
 	
 	/**
@@ -871,11 +866,11 @@ public class World {
 	 * 
 	 */
 	public void startNextTurn(){
-		currentTurn += 1;
-		if (currentTurn >= worms.size()){
-			currentTurn = 0;
+		int nextTurn = worms.indexOf(currentWorm) + 1;
+		if (nextTurn >= worms.size()){
+			nextTurn = 0;
 		}
-		Worm currentWorm = worms.get(currentTurn);
+		currentWorm = worms.get(nextTurn);
 		if (currentWorm.getHitPoints()+10>currentWorm.getMaxHitPoints()){
 			currentWorm.setHitPoints(currentWorm.getMaxHitPoints());
 		}
@@ -890,30 +885,39 @@ public class World {
 	
 	/**
 	 * Method to start the game
-	 * @post currentTurn is set to zero
-	 * 		| new.currentTurn == 0
+	 * @post currentWorm is set to the first worm in worms.
+	 * 		| new.currentWorm == worms.get(0)
+	 * @post if currentWorm is a computer-controled worm, his program is executed. And SelfWormExpression is
+	 * 		set to the currentWorm.
+	 * 		|if (currentWorm.getProgram() != null){
+	 *			SelfWormExpression.setWorm(currentWorm);
+	 *			currentWorm.getProgram().executeProgram();}
 	 */
 	public void startGame(){
-		currentTurn = 0;
-		Worm currentWorm = worms.get(currentTurn);
+		currentWorm = worms.get(0);
 		if (currentWorm.getProgram() != null){
 			SelfWormExpression.setWorm(currentWorm);
 			currentWorm.getProgram().executeProgram();
 		}
 	}
 	
-	/**
-	 * Method that returns the current turn.
-	 */
-	@Basic
-	public int getCurrentTurn(){
-		return this.currentTurn;
-	}
+//	/**
+//	 * Method that returns the current turn.
+//	 */
+//	@Basic
+//	public int getCurrentTurn(){
+//		return this.currentTurn;
+//	}
 
+//	/**
+//	 * Variable to determine which worms turn it is.
+//	 */
+//	private int currentTurn;
+	
 	/**
-	 * Variable to determine which worms turn it is.
+	 * Variable registering the current worm.
 	 */
-	private int currentTurn;
+	private Worm currentWorm;
 	
 	/**
 	 * Method to return the active projectile.

@@ -170,8 +170,6 @@ public class Facade implements IFacade{
 
 	@Override
 	public Worm getCurrentWorm(World world) throws ModelException {
-		if (world.getCurrentTurn()>=world.getWorms().size())
-			throw new ModelException("Cannot select this worm");
 		return world.getCurrentWorm();
 	}
 
