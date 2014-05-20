@@ -2,7 +2,7 @@ package worms.model.expressions;
 
 import worms.model.types.BooleanType;
 
-public class BooleanLiteral extends BooleanBasicExpressions {
+public class BooleanLiteral extends Expression {
 	
 	/**
 	 * Initialize this new double literal with given value.
@@ -31,10 +31,6 @@ public class BooleanLiteral extends BooleanBasicExpressions {
 	public BooleanType getValue() {
 		return this.value;
 	}
-	//TODO:How to implement getValue and getBooleanValue.
-	
-	
-	
 
 	@Override
 	public boolean equals(Object other) {
@@ -47,6 +43,4 @@ public class BooleanLiteral extends BooleanBasicExpressions {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
 }

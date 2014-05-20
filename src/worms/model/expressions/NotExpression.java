@@ -2,21 +2,20 @@ package worms.model.expressions;
 
 import worms.model.types.BooleanType;
 
-public class AndExpression extends LogicalOperator{
+public class NotExpression extends LogicalOperator{
 	
-	public AndExpression(Expression expr1,Expression expr2) {
-		super(expr1,expr2);
+	public NotExpression(Expression expr1) {
+		super(expr1,null);
 	}
 	
 	@Override
 	public String getOperatorSymbol() {
-		return "&&";
+		return "!";
 	}
 
 	@Override
 	public BooleanType getValue() {
-		BooleanType andType= new BooleanType((Boolean) super.getLeft().getValue().getValue() &&  (Boolean) super.getRight().getValue().getValue());
-		return (andType);
+		return new BooleanType(! (Boolean) super.getLeft().getValue().getValue());
 	}
 
 	@Override

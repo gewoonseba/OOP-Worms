@@ -4,11 +4,6 @@ import worms.model.types.Type;
 
 public abstract class Expression implements Cloneable {
 
-	
-
-
-	
-
 	/**
 	 * Return a textual representation of this expression.
 	 *

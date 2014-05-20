@@ -3,7 +3,7 @@ package worms.model.expressions;
 import worms.model.types.BooleanType;
 import be.kuleuven.cs.som.annotate.Model;
 
-public class LessThanOrEqual extends BooleanCompareExpression {
+public class LessThanOrEqual extends Comparator {
 
 	@Model
 	public LessThanOrEqual(Expression left, Expression right) {

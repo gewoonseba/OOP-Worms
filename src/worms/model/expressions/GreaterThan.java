@@ -2,7 +2,7 @@ package worms.model.expressions;
 
 import worms.model.types.BooleanType;
 
-public class GreaterThan extends BooleanCompareExpression {
+public class GreaterThan extends Comparator {
 	
 	public GreaterThan(Expression left,Expression right){
 		this.leftOperand = left;

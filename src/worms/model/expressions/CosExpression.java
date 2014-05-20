@@ -7,6 +7,7 @@ public class CosExpression extends DoubleUnaryExpression {
 	public CosExpression(Expression operand)
 			throws IllegalOperandException {
 		super((DoubleExpression) operand);
+		this.originalOperand = operand;
 	}
 
 	@Override
@@ -19,5 +20,6 @@ public class CosExpression extends DoubleUnaryExpression {
 	public DoubleType getValue() {
 		return new DoubleType(Math.cos(getOperand().getValue().getValue()));
 	}
+	
 
 }

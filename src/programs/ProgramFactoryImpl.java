@@ -33,7 +33,7 @@ public class ProgramFactoryImpl implements ProgramFactory<Expression,Statement,T
 
 	@Override
 	public Expression createNot(int line, int column, Expression e) {
-		return new BooleanNegation(e);
+		return new NotExpression(e);
 	}
 
 	@Override

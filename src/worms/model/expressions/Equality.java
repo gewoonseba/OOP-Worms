@@ -3,7 +3,7 @@ package worms.model.expressions;
 import worms.model.types.BooleanType;
 
 
-public class Equality extends BooleanCompareExpression {
+public class Equality extends Comparator {
 
 	public Equality(Expression left,Expression right){
 		this.leftOperand = left;
