@@ -3,6 +3,7 @@ package worms.model;
 import java.util.*;
 
 import programs.Program;
+import worms.model.expressions.SelfWormExpression;
 import be.kuleuven.cs.som.annotate.*;
 
 
@@ -790,7 +791,7 @@ public class Worm {
 		if (! isValidCurrentAP(currentAP))
 			throw new IllegalAPException(currentAP,this);
 		this.currentAP = currentAP;
-		if((currentAP == 0) && (getWorld() != null))
+		if((currentAP == 0) && (getWorld() != null) && (getProgram()==null))
 			getWorld().startNextTurn();
 	}
 	
@@ -1016,7 +1017,7 @@ public class Worm {
 		if (! isValidHitPoints(hitPoints))
 			throw new IllegalArgumentException();
 		this.hitPoints = hitPoints;
-		if (hitPoints == 0) {
+		if ((hitPoints == 0)&&(SelfWormExpression.getWorm()!=this)) {
 			World oldWorld = getWorld();
 			removeWorld();
 			oldWorld.getWinner();

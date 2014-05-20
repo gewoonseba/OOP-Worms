@@ -21,20 +21,19 @@ public class While extends Statement {
 		this.executed=false;
 	    while (getActualCondition() ){
 	    	if (SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)
-				break;
+				return;
 	    	if (body instanceof ActionStatement){
 				if (!((ActionStatement)body).enoughAp()){
-					SelfWormExpression.getWorm().setCurrentAP(0);
-					break;}}
+					SelfWormExpression.getWorm().getProgram().stop();
+					return;}}
 	    	body.executeStatement();
-	    	if (SelfWormExpression.getWorm().getCurrentAP()==0||SelfWormExpression.getWorm().getHitPoints()==0)
-				break;
+	    	if (SelfWormExpression.getWorm().getProgram().isStopped())
+				return;
 	    }
-	    if (!(getActualCondition()) ){
-	    	System.out.println("condition");
-	    	SelfWormExpression.getWorm().getProgram().increaseCount();
-	    	this.executed=true;}
+	    this.executed=true;
+	    SelfWormExpression.getWorm().getProgram().increaseCount();
 	}
+	
 	
 	@Override
 	public String toString() {

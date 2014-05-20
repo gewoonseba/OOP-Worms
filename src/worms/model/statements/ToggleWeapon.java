@@ -19,13 +19,14 @@ public class ToggleWeapon extends ActionStatement {
 
 	@Override
 	public void executeStatement() {
-		if (SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000){
-			this.executed=false;
+		this.executed=false;
+		if (!(SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)){
 			Worm self = SelfWormExpression.getWorm();
 			IActionHandler handler = self.getProgram().getHandler();
 			handler.toggleWeapon(self);
 			self.getProgram().increaseCount();
-			this.executed=true;}
+			this.executed=true;
+		}
 	}
 	
 	@Override

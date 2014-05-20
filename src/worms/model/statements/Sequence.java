@@ -25,24 +25,20 @@ public class Sequence extends Statement {
 			i=0;
 		while (i <statements.size()){
 			if (SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)
-				break;
-			if (statements.get(i).isexecuted()){
-				statements.get(i).setExecuted(false);
-				i+=1;
-		        continue;}
+				return;
 			if (statements.get(i) instanceof ActionStatement){
 				if (!((ActionStatement)statements.get(i)).enoughAp()){
-					SelfWormExpression.getWorm().setCurrentAP(0);
-					break;}}
+					SelfWormExpression.getWorm().getProgram().stop();
+					return;}}
 			statements.get(i).executeStatement();
-			if (SelfWormExpression.getWorm().getCurrentAP()==0||SelfWormExpression.getWorm().getHitPoints()==0)
-				break;
-			statements.get(i).setExecuted(false);
-			i+=1;
+			if (statements.get(i).isexecuted()){
+				statements.get(i).setExecuted(false);
+				i+=1;}
+			if (SelfWormExpression.getWorm().getProgram().isStopped())
+				return;
 		}
-		if (i == statements.size())
-	        SelfWormExpression.getWorm().getProgram().increaseCount();
-			this.executed=true;
+	   SelfWormExpression.getWorm().getProgram().increaseCount();
+	   this.executed=true;
 	}
 	
 	private List<Statement> statements;

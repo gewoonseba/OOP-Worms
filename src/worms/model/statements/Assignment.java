@@ -23,7 +23,8 @@ public class Assignment extends Statement {
 		if ((!(SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000))){
         	this.executed=false;
         	Worm self = SelfWormExpression.getWorm();
-        	self.getProgram().getGlobals().put(variableName,rhs.getValue());
+        	Expression right = rhs;
+        	self.getProgram().getGlobals().put(variableName,right.getValue());
         	self.getProgram().increaseCount();
         	this.executed=true;}
 	}

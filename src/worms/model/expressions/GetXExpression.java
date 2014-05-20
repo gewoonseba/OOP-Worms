@@ -29,7 +29,7 @@ public class GetXExpression extends Expression {
 	public DoubleType getValue() {
 		if (entity instanceof SelfWormExpression){
 			this.entity= new EntityExpression<Worm>((new SelfWormExpression()).getValue());}
-		System.out.println((entity.getValue().getValue().getClass()));
+
 		if ((entity.getValue().getValue()) instanceof Worm)
 			return new DoubleType(((Worm)((Entity<?>) entity.getValue()).getValue()).getX());
 		return new DoubleType(((Food)((Entity<?>) entity.getValue()).getValue()).getX());

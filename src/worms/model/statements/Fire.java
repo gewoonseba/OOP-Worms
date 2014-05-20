@@ -22,12 +22,15 @@ public class Fire extends ActionStatement {
 	@Override
 	public void executeStatement() {
 		if (!(SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)){
-		
 			this.executed=false;
+			System.out.println("VUUUR");
+			System.out.println(getActualYield());
 			Worm self = SelfWormExpression.getWorm();
 			IActionHandler handler = self.getProgram().getHandler();
 			handler.fire(self, getActualYield());
 			self.getProgram().increaseCount();
+			if (SelfWormExpression.getWorm().getHitPoints()<=0)
+				SelfWormExpression.getWorm().getProgram().stop();
 			this.executed=true;}
 	}
 	
@@ -50,8 +53,6 @@ public class Fire extends ActionStatement {
 	
 	@Override
 	public boolean enoughAp() {
-		System.out.println("SCHIETAP");
-		System.out.println(SelfWormExpression.getWorm().getShootAP());
 		return SelfWormExpression.getWorm().getShootAP()>=0;
 	}
 

@@ -35,34 +35,24 @@ public class If extends Statement {
 		else if(getActualCondition()){
 			if (then instanceof ActionStatement){
 				if (!((ActionStatement)then).enoughAp()){
-					System.out.println("in");
-					SelfWormExpression.getWorm().setCurrentAP(0);
+					SelfWormExpression.getWorm().getProgram().stop();
+					return;
 					}
-				else{
-					SelfWormExpression.getWorm().getProgram().increaseCount();
-					this.executed=true;
-					then.executeStatement();}
 			}
-			else{
-				SelfWormExpression.getWorm().getProgram().increaseCount();
-				this.executed=true;
-				then.executeStatement();}
+			SelfWormExpression.getWorm().getProgram().increaseCount();
+			then.executeStatement();
 		}
 		else if(!getActualCondition()){
 			if (otherwise instanceof ActionStatement){
 				if (!((ActionStatement)otherwise).enoughAp()){
-					SelfWormExpression.getWorm().setCurrentAP(0);
+					SelfWormExpression.getWorm().getProgram().stop();
+					return;
 					}
-				else{
-					SelfWormExpression.getWorm().getProgram().increaseCount();
-					this.executed=true;
-					otherwise.executeStatement();}
 			}
-			else{
-				SelfWormExpression.getWorm().getProgram().increaseCount();
-				this.executed=true;}
-			otherwise.executeStatement();}
-	
+		SelfWormExpression.getWorm().getProgram().increaseCount();
+		otherwise.executeStatement();
+		}
+	this.executed=true;
 	}
 	
 	private boolean getActualCondition() {

@@ -17,8 +17,7 @@ public class Skip extends ActionStatement {
 	public void executeStatement() {
 		if (!(SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)){
 			this.executed=false;
-			SelfWormExpression.getWorm().setCurrentAP(0);
-			SelfWormExpression.getWorm().getProgram().increaseCount();
+			SelfWormExpression.getWorm().getProgram().stop();
 			this.executed=true;}
 	}
 	

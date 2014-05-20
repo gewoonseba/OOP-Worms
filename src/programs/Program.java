@@ -9,6 +9,7 @@ import worms.model.expressions.SelfWormExpression;
 import worms.model.statements.*;
 import worms.model.types.Type;
 import worms.model.IllegalWormException;
+import worms.model.World;
 import worms.model.Worm;
 
 public class Program {
@@ -63,8 +64,14 @@ public class Program {
 	private final Statement statement;
 	
 	public void executeProgram(){
+		this.stopped=false;
 		statementCount=0;
 		statement.executeStatement();
+		World oldWorld = SelfWormExpression.getWorm().getWorld();
+		if (SelfWormExpression.getWorm().getHitPoints()<=0){
+			SelfWormExpression.getWorm().removeWorld();
+			oldWorld.getWinner();}
+		oldWorld.startNextTurn();
 	}
 	
 	private boolean inForEach;
@@ -73,6 +80,16 @@ public class Program {
 	
 	public int getstatementCount(){
 		return this.statementCount;
+	}
+	
+	public boolean isStopped(){
+		return this.stopped;
+	}
+	
+	private boolean stopped;
+	
+	public void stop(){
+		this.stopped= true;
 	}
 	
 	public void increaseCount(){

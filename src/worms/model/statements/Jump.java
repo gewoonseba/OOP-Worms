@@ -19,8 +19,8 @@ public class Jump extends ActionStatement {
 
 	@Override
 	public void executeStatement() {
+		this.executed=false;
 			if (!(SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)){
-				this.executed=false;
 				Worm self = SelfWormExpression.getWorm();
 				IActionHandler handler = self.getProgram().getHandler();
 				handler.jump(self);
