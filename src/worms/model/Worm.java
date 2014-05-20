@@ -1234,7 +1234,7 @@ public class Worm {
 			}
 			for (Food food:removeFoods){
 				this.setRadius(1.1*(this.getRadius()));
-				this.getWorld().removeAsFood(food);
+				food.removeWorld();
 				food.terminate();
 			}
 		}
