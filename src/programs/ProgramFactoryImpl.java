@@ -108,12 +108,12 @@ public class ProgramFactoryImpl implements ProgramFactory<Expression,Statement,T
 
 	@Override
 	public Expression createIsWorm(int line, int column, Expression e) {
-		return new IsWormExpression<>(e);
+		return new IsWormExpression(e);
 	}
 
 	@Override
 	public Expression createIsFood(int line, int column, Expression e) {
-		return new IsFoodExpression<>(e);
+		return new IsFoodExpression(e);
 	}
 
 	@Override
@@ -189,7 +189,7 @@ public class ProgramFactoryImpl implements ProgramFactory<Expression,Statement,T
 
 	@Override
 	public Expression createSqrt(int line, int column, Expression e) {
-		return new Sqrt(e);
+		return new SqrtExpression(e);
 	}
 
 	@Override
