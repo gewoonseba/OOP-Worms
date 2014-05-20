@@ -22,7 +22,6 @@ public abstract class DoubleUnaryExpression extends DoubleComposedExpression {
 	@Model
 	protected DoubleUnaryExpression(DoubleExpression operand)
 			throws IllegalOperandException {
-	
 		setOperandAt(1, operand);
 	}
 

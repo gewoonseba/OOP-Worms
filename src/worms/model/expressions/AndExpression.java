@@ -25,7 +25,7 @@ public class AndExpression extends LogicalOperator{
 	}
 
 	@Override
-	public LogicalOperator clone() {
+	public AndExpression clone() {
 		return new AndExpression(super.getLeft(),super.getRight());
 	}
 

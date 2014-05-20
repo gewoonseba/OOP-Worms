@@ -4,15 +4,10 @@ import worms.model.Worm;
 import worms.model.types.DoubleType;
 import worms.model.types.Entity;
 
-public class GetMaxHPExpression extends Expression {
+public class GetMaxHPExpression extends OperationExpression {
 
-	private final Expression worm;
-	
-	public GetMaxHPExpression(Expression worm) {
-		if (worm instanceof SelfWormExpression)
-			this.worm= new EntityExpression<Worm>((new SelfWormExpression()).getValue());
-		else
-			this.worm = worm;
+	public GetMaxHPExpression(Expression entity) {
+		super(entity);
 	}
 
 	@Override
@@ -29,7 +24,12 @@ public class GetMaxHPExpression extends Expression {
 
 	@Override
 	public DoubleType getValue() {
-		return new DoubleType((double) ((Entity<Worm>) worm.getValue()).getValue().getMaxHitPoints());
+		return new DoubleType((double) ((Entity<Worm>) getEntity().getValue()).getValue().getMaxHitPoints());
+	}
+
+	@Override
+	public GetMaxHPExpression clone() {
+		return new GetMaxHPExpression(getEntity());
 	}
 
 }

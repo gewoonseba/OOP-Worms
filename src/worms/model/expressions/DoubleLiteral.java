@@ -27,6 +27,7 @@ public class DoubleLiteral extends DoubleBasicExpression {
 		DoubleType doubleType=new DoubleType();
 		doubleType.setValue(value);
 		this.value = doubleType;
+		this.originalValue = value;
 	}
 
 	/**
@@ -88,6 +89,15 @@ public class DoubleLiteral extends DoubleBasicExpression {
 		return null;
 	}
 
+	@Override
+	public DoubleLiteral clone() {
+		return new DoubleLiteral(getOriginalValue());
+	}
+	
+	public double getOriginalValue(){
+		return this.originalValue;
+	}
 
+	private double originalValue;
 
 }

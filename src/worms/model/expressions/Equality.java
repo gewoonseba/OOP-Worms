@@ -6,8 +6,7 @@ import worms.model.types.BooleanType;
 public class Equality extends Comparator {
 
 	public Equality(Expression left,Expression right){
-		this.leftOperand = left;
-		this.rightOperand = right;
+		super(left,right);
 	}
 	
 	@Override
@@ -17,32 +16,17 @@ public class Equality extends Comparator {
 
 	@Override
 	public BooleanType getValue() {
-		return new BooleanType(getLeftOperand().getValue().equals(getRightOperand().getValue()));
+		return new BooleanType(super.getLeft().getValue().equals(super.getRight().getValue()));
 	}
-
-	
-
-	
-
-
-	@Override
-	public Expression getLeftOperand() {
-		return leftOperand;
-	}
-
-	@Override
-	public Expression getRightOperand() {
-		return rightOperand;
-	}
-	
-	private final Expression leftOperand;
-	
-	private final Expression rightOperand;
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return super.getLeft().toString() + getOperatorSymbol() + super.getRight().toString();
+	}
+
+	@Override
+	public Equality clone() {
+		return new Equality(super.getLeft(), super.getRight());
 	}
 
 }

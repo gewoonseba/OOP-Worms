@@ -2,7 +2,7 @@ package worms.model.expressions;
 
 import worms.model.types.BooleanType;
 
-public class BooleanLiteral extends Expression {
+public class BooleanLiteral extends BooleanExpression {
 	
 	/**
 	 * Initialize this new double literal with given value.
@@ -16,15 +16,13 @@ public class BooleanLiteral extends Expression {
 	public BooleanLiteral(boolean value) {
 		BooleanType valueType = new BooleanType(value);
 		this.value = valueType;
+		this.originalBoolean = value;
 	}
 	
 	public BooleanLiteral(){
 		this(false);
 	}
 	
-	/**
-	 * Variable registering the value of this double literal.
-	 */
 	private final BooleanType value;
 
 	@Override
@@ -42,5 +40,16 @@ public class BooleanLiteral extends Expression {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	private boolean getOriginalBoolean(){
+		return this.originalBoolean;
+	}
+	
+	private boolean originalBoolean;
+
+	@Override
+	public BooleanLiteral clone() {
+		return new BooleanLiteral(getOriginalBoolean());
 	}
 }

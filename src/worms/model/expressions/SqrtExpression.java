@@ -2,9 +2,9 @@ package worms.model.expressions;
 
 import worms.model.types.DoubleType;
 
-public class CosExpression extends DoubleUnaryExpression {
+public class SqrtExpression extends DoubleUnaryExpression {
 
-	public CosExpression(Expression operand)
+	public SqrtExpression(Expression operand)
 			throws IllegalOperandException {
 		super((DoubleExpression) operand);
 	}
@@ -17,12 +17,12 @@ public class CosExpression extends DoubleUnaryExpression {
 
 	@Override
 	public DoubleType getValue() {
-		return new DoubleType(Math.cos(getOperand().getValue().getValue()));
+		return new DoubleType(Math.sqrt(getOperand().getValue().getValue()));
 	}
 
 	@Override
-	public CosExpression clone() {
-		return new CosExpression(super.getOperand());
+	public SqrtExpression clone() {
+		return new SqrtExpression(super.getOperand());
 	}
 	
 }

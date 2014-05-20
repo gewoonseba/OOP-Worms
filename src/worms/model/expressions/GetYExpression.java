@@ -1,17 +1,20 @@
 package worms.model.expressions;
+
 import worms.model.Food;
 import worms.model.Worm;
-import worms.model.types.*;
+import worms.model.types.DoubleType;
 
-public class GetYExpression extends Expression {
-	
-	private Expression entity;
-	
-	public GetYExpression(Expression worm){
-	
-		this.entity = (Expression) worm;
+public class GetYExpression extends OperationExpression {
+
+	public GetYExpression(Expression entity) {
+		super(entity);
 	}
 
+	@Override
+	public boolean equals(Object other) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	@Override
 	public String toString() {
@@ -19,16 +22,17 @@ public class GetYExpression extends Expression {
 		return null;
 	}
 
-
 	@Override
 	public DoubleType getValue() {
-		if (entity instanceof SelfWormExpression){
-			this.entity= new EntityExpression<Worm>((new SelfWormExpression()).getValue());}
-		if (((Entity<?>)entity.getValue()).getValue() instanceof Worm)
-			return new DoubleType(((Worm)((Entity<?>) entity.getValue()).getValue()).getY());
-		return new DoubleType(((Food)((Entity<?>) entity.getValue()).getValue()).getY());
+		Object actualEntity = getEntity().getValue().getValue();
+		if (actualEntity instanceof Worm)
+			return  new DoubleType(((Worm) actualEntity).getY());
+		return new DoubleType(((Food) actualEntity).getY());
 	}
 
-	
+	@Override
+	public GetYExpression clone() {
+		return new GetYExpression(getEntity());
+	}
 
 }

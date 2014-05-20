@@ -5,8 +5,7 @@ import worms.model.types.BooleanType;
 public class Inequality extends Comparator {
 
 	public Inequality(Expression left,Expression right){
-		this.leftOperand = left;
-		this.rightOperand = right;
+		super(left,right);
 	}
 	
 	@Override
@@ -16,28 +15,19 @@ public class Inequality extends Comparator {
 
 	@Override
 	public BooleanType getValue() {
-		return new BooleanType(!getLeftOperand().getValue().equals(getRightOperand().getValue()));
+		return new BooleanType(! super.getLeft().getValue().equals(super.getRight().getValue()));
 	}
 
 	
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return super.getLeft().toString() + getOperatorSymbol() + super.getRight().toString();
 	}
 
 	@Override
-	public Expression getLeftOperand() {
-		return leftOperand;
+	public Inequality clone() {
+		return new Inequality(super.getLeft(), super.getRight());
 	}
-
-	@Override
-	public Expression getRightOperand() {
-		return rightOperand;
-	}
-	
-	private final Expression leftOperand;
-	private final Expression rightOperand;
 
 }

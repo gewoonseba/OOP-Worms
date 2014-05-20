@@ -14,6 +14,8 @@ public abstract class Expression implements Cloneable {
 	public abstract String toString();
 	
 	public abstract Type getValue();
+	
+	public abstract Expression clone();
 
 
 }

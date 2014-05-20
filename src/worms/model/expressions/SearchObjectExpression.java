@@ -12,10 +12,6 @@ public class SearchObjectExpression extends Expression {
     	this.angleIncrease =((DoubleExpression)e).getValue().getValue();
 	}
 
-	
-
-
-
 	@Override
 	public boolean equals(Object other) {
 		// TODO Auto-generated method stub
@@ -31,7 +27,6 @@ public class SearchObjectExpression extends Expression {
 	@Override
 	public Entity<?> getValue() {
 		// TODO Eleganter?
-		System.out.println("binnen");
 		for (Worm w:SelfWormExpression.getWorm().getWorld().getWorms()){
 			if (w!=SelfWormExpression.getWorm()){
 				if (((w.getY()-SelfWormExpression.getWorm().getY())

@@ -10,24 +10,26 @@ public class Division extends DoubleBinaryExpression {
 		super((DoubleExpression)left, (DoubleExpression)right);
 	}
 
-
 	@Override
 	public DoubleType getValue() {
 		return new DoubleType(((Double) getLeftOperand().getValue().getValue()) / 
 				((Double) getRightOperand().getValue().getValue()));
 	}
 
-	
 	@Override
 	public String getOperatorSymbol() {
 		return "/";
 	}
 
-
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Division clone() {
+		return new Division(super.getLeftOperand(),super.getRightOperand());
 	}
 
 
@@ -36,7 +38,5 @@ public class Division extends DoubleBinaryExpression {
 		// TODO Auto-generated method stub
 		
 	}
-
-
 	
 }

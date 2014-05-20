@@ -25,7 +25,7 @@ public class LessThan extends Comparator {
 	}
 
 	@Override
-	public Comparator clone() {
+	public LessThan clone() {
 		return new LessThan(super.getLeft(),super.getRight());
 	}
 

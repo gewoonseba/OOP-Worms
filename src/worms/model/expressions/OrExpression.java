@@ -25,7 +25,7 @@ public class OrExpression extends LogicalOperator{
 	}
 
 	@Override
-	public LogicalOperator clone() {
+	public OrExpression clone() {
 		return new OrExpression(super.getLeft(),super.getRight());
 	}
 

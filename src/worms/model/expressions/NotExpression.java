@@ -24,8 +24,8 @@ public class NotExpression extends LogicalOperator{
 	}
 
 	@Override
-	public LogicalOperator clone() {
-		return new AndExpression(super.getLeft(),super.getRight());
+	public NotExpression clone() {
+		return new NotExpression(super.getLeft());
 	}
 
 }

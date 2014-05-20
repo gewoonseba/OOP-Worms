@@ -14,11 +14,6 @@ public class EntityExpression<E> extends Expression {
 		return this.value;
 	}
 
-	
-
-	
-	
-
 	@Override
 	public boolean equals(Object other) {
 		// TODO Auto-generated method stub
@@ -29,6 +24,11 @@ public class EntityExpression<E> extends Expression {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public EntityExpression<E> clone() {
+		return new EntityExpression<E>(getValue());
 	}
 
 

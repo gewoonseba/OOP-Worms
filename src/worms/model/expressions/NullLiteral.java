@@ -1,18 +1,17 @@
 package worms.model.expressions;
 
-import worms.model.types.Entity;
+import worms.model.types.DoubleType;
 
 
 public class NullLiteral extends Expression{
-
-	private Entity<Double> double1;
+	
+	public NullLiteral(){
+	}
 
 	@Override
-	public Entity<Double> getValue() {
-		return new Entity<Double>();
+	public DoubleType getValue() {
+		return null;
 	}
-	
-
 
 	@Override
 	public boolean equals(Object other) {
@@ -23,6 +22,11 @@ public class NullLiteral extends Expression{
 	public String toString() {
 		// TODO Auto-generated method stub
 		return "null";
+	}
+	
+	@Override
+	public NullLiteral clone() {
+		return new NullLiteral();
 	}
 
 

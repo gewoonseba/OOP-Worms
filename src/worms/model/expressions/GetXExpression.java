@@ -5,12 +5,10 @@ import worms.model.Worm;
 import worms.model.types.DoubleType;
 import worms.model.types.Entity;
 
-public class GetXExpression extends Expression {
+public class GetXExpression extends OperationExpression {
 
-	private Expression entity;
-	
 	public GetXExpression(Expression entity) {
-		this.entity = entity;
+		super(entity);
 	}
 
 	@Override
@@ -27,12 +25,15 @@ public class GetXExpression extends Expression {
 
 	@Override
 	public DoubleType getValue() {
-		if (entity instanceof SelfWormExpression){
-			this.entity= new EntityExpression<Worm>((new SelfWormExpression()).getValue());}
+		Object actualEntity = getEntity().getValue().getValue();
+		if (actualEntity instanceof Worm)
+			return  new DoubleType(((Worm) actualEntity).getX());
+		return new DoubleType(((Food) actualEntity).getX());
+	}
 
-		if ((entity.getValue().getValue()) instanceof Worm)
-			return new DoubleType(((Worm)((Entity<?>) entity.getValue()).getValue()).getX());
-		return new DoubleType(((Food)((Entity<?>) entity.getValue()).getValue()).getX());
+	@Override
+	public GetXExpression clone() {
+		return new GetXExpression(getEntity());
 	}
 
 }
