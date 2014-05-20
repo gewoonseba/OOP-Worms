@@ -5,8 +5,7 @@ import worms.model.types.BooleanType;
 public class GreaterThan extends Comparator {
 	
 	public GreaterThan(Expression left,Expression right){
-		this.leftOperand = left;
-		this.rightOperand = right;
+		super(left,right);
 	}
 	
 	@Override
@@ -16,27 +15,18 @@ public class GreaterThan extends Comparator {
 
 	@Override
 	public BooleanType getValue() {
-		return new BooleanType((Double)getLeftOperand().getValue().getValue() >(Double)getRightOperand().getValue().getValue());
+		return new BooleanType((Double) super.getLeft().getValue().getValue() 
+				> (Double) super.getRight().getValue().getValue());
 	}
-
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return super.getLeft().toString() + getOperatorSymbol() + super.getRight().toString() ;
 	}
 
 	@Override
-	public Expression getLeftOperand() {
-		return leftOperand;
+	public Comparator clone() {
+		return new GreaterThan(super.getLeft(),super.getRight());
 	}
-
-	@Override
-	public Expression getRightOperand() {
-		return rightOperand;
-	}
-	
-	private final Expression leftOperand;
-	private final Expression rightOperand;
 
 }
