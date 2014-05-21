@@ -66,17 +66,34 @@ public class SearchObjectExpression extends Expression {
 			}
 		}
 		for (Food w:worm.getWorld().getFood()){
-			if (((w.getY()-worm.getY())
-					/(w.getX()-worm.getX())==
-					Math.tan(worm.getDirection()+angleIncrease))){
+			double distance = (Math.sqrt(Math.pow((w.getY()-worm.getY()),2)+
+					Math.pow((w.getX()-worm.getX()),2)));
+			if (distance<=Food.getRadius()){
 				if (nearestFood==null)
 					nearestFood = w;
-				else if (Math.sqrt(Math.pow((w.getY()-worm.getY()),2)+
-						Math.pow((w.getX()-worm.getX()),2))<
-						(Math.sqrt(Math.pow((nearestFood.getY()-worm.getY()),2)+
-								Math.pow((nearestFood.getX()-worm.getX()),2))))
-						nearestFood=w;
-			}
+				else if (distance<(Math.sqrt(Math.pow((nearestFood.getY()-worm.getY()),2)+
+						Math.pow((nearestWorm.getX()-worm.getX()),2))))
+					nearestFood=w;
+				continue;}
+			double direction = worm.getDirection();
+			while (direction+angleIncrease<0)
+				direction+=2*Math.PI;
+			double alfa = Math.asin((w.getY()-worm.getY())/distance);
+			if (((w.getX()>worm.getX()&&w.getY()>worm.getY())))
+				alfa = alfa;
+			else if (((w.getX()<worm.getX()&&w.getY()>worm.getY())))
+				alfa = Math.PI-alfa;
+			else if (((w.getX()<worm.getX()&&w.getY()<worm.getY())))
+				alfa = Math.PI-alfa;
+			else if ((w.getX()>worm.getX()&&w.getY()<worm.getY()))
+				alfa = 2*Math.PI+alfa;
+			if ((alfa+Math.abs(Math.asin(Food.getRadius()/distance))>=(direction+angleIncrease))
+					&&(alfa-Math.abs(Math.asin(Food.getRadius()/distance))<=(direction+angleIncrease))){
+				if (nearestFood==null)
+					nearestFood = w;
+				else if (distance<(Math.sqrt(Math.pow((nearestFood.getY()-worm.getY()),2)+
+						Math.pow((nearestFood.getX()-worm.getX()),2))))
+					nearestFood=w;}
 		}
 		if (nearestWorm == null && nearestFood == null)
 			return null;
@@ -92,6 +109,12 @@ public class SearchObjectExpression extends Expression {
 						Math.pow((nearestWorm.getX()-worm.getX()),2))))
 			nearestObject= nearestFood;
 		return new Entity<>(nearestObject);
+	}
+
+	@Override
+	public Expression clone() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
