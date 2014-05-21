@@ -11,8 +11,7 @@ public class SqrtExpression extends DoubleUnaryExpression {
 
 	@Override
 	public String getOperatorSymbol() {
-		// TODO Auto-generated method stub
-		return null;
+		return "sqrt";
 	}
 
 	@Override
@@ -23,6 +22,11 @@ public class SqrtExpression extends DoubleUnaryExpression {
 	@Override
 	public SqrtExpression clone() {
 		return new SqrtExpression(super.getOperand());
+	}
+	
+	@Override
+	public String toString(){
+		return ( getOperatorSymbol() +"(" + getOperand().toString() +")");
 	}
 	
 }

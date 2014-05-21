@@ -9,9 +9,9 @@ public class ForEach extends Statement {
 	public boolean executed=false;
 
 	
-	public ForeachType type;
-	public String name;
-	private Statement body;
+	private final ForeachType type;
+	private final String name;
+	private final Statement body;
 
 	
 	public ForEach(ForeachType type,String name,Statement body) {
@@ -22,8 +22,7 @@ public class ForEach extends Statement {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return ("foreach(" + type.toString() + " " + name + ":" + body.toString() + ")");
 	}
 
 	@Override

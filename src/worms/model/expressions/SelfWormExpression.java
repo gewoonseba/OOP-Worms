@@ -36,8 +36,7 @@ public class SelfWormExpression extends Expression {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return "self";
 	}
 	
 

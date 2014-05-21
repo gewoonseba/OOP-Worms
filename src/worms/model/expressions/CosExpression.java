@@ -11,8 +11,12 @@ public class CosExpression extends DoubleUnaryExpression {
 
 	@Override
 	public String getOperatorSymbol() {
-		// TODO Auto-generated method stub
-		return null;
+		return "cos";
+	}
+	
+	@Override
+	public String toString(){
+		return (getOperatorSymbol() + "(" + getOperand().toString() + ")");
 	}
 
 	@Override

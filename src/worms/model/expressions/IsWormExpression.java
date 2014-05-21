@@ -14,13 +14,6 @@ public class IsWormExpression extends BooleanExpression {
 			return new BooleanType(false);
 		return new BooleanType(entity.getValue().getValue() instanceof Worm);	
 	}
-
-
-	@Override
-	public boolean equals(Object other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 	public Expression getEntity(){
 		return this.entity;
@@ -30,8 +23,7 @@ public class IsWormExpression extends BooleanExpression {
 
 	@Override
 	public String toString() { 
-		//TODO generated method stub
-		return null;
+		return ("isWorm(" + getEntity().toString() + ")");
 	}
 
 	@Override

@@ -85,8 +85,7 @@ public class DoubleLiteral extends DoubleBasicExpression {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return ((Double)getOriginalValue()).toString();
 	}
 
 	@Override

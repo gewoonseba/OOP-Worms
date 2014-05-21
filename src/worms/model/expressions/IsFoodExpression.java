@@ -17,15 +17,8 @@ public class IsFoodExpression extends BooleanExpression {
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return ("isFood(" + getEntity().toString() + ")");
 	}
 	
 	public Expression getEntity(){

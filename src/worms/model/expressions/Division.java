@@ -23,20 +23,12 @@ public class Division extends DoubleBinaryExpression {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return (getLeftOperand().toString() + getOperatorSymbol() + getRightOperand().toString());
 	}
 
 	@Override
 	public Division clone() {
 		return new Division(super.getLeftOperand(),super.getRightOperand());
-	}
-
-
-	@Override
-	protected void setOperandAt(int index, DoubleExpression left) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }

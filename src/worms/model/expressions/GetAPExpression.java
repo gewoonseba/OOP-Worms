@@ -11,15 +11,8 @@ public class GetAPExpression extends OperationExpression {
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return ("getAP(" + getEntity().toString() +")");
 	}
 
 	@Override

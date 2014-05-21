@@ -1,9 +1,10 @@
 package worms.model;
 
-import java.nio.channels.IllegalSelectorException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import be.kuleuven.cs.som.annotate.*;
+import be.kuleuven.cs.som.annotate.Basic;
+import be.kuleuven.cs.som.annotate.Raw;
 
 /**
  * A Class of Projectiles. A Projectile has a location (x,y), a direction (expressed as a radian value),
@@ -183,7 +184,6 @@ public class Projectile {
 		return initialSpeed;
 	}
 	
-	//TODO: Formal specification second @effect
 	/**
 	 * Method to make the given projectile jump.
 	 * @param timeStep
@@ -216,8 +216,6 @@ public class Projectile {
 		else terminate();
 	}
 	
-	
-	//TODO:Formal specification
 	/**
 	 * Method to calculate the time it takes to jump for the given projectile.
 	 * @param timeStep
@@ -361,7 +359,6 @@ public class Projectile {
 		return affectedWorms;
 	}
 	
-	//TODO: specification
 	/**
 	 * Method to hit the overlapping worms with the given projectile, if any.
 	 * @param affectedWorms

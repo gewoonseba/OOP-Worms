@@ -23,8 +23,8 @@ public class If extends Statement {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return ("if(" + condition.toString() + ")" + "\n" +"\t" + then.toString() 
+				+ "\n" + "else:" + "\n" + "\t" + otherwise.toString());
 	}
 
 	@Override
