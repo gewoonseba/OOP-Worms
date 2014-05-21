@@ -23,8 +23,6 @@ public class Fire extends ActionStatement {
 	public void executeStatement() {
 		if (!(SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)){
 			this.executed=false;
-			System.out.println("VUUUR");
-			System.out.println(getActualYield());
 			Worm self = SelfWormExpression.getWorm();
 			IActionHandler handler = self.getProgram().getHandler();
 			handler.fire(self, getActualYield());

@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import programs.Program;
 import worms.util.Util;
 
 
@@ -34,6 +35,16 @@ public class WormTest {
 	 * References an immutable Team with TestTeam as its name.
 	 */
 	private static Team testTeam;
+	
+	/**
+	 * References an immutable Program.
+	 */
+	private static Program testProgram;
+	
+	/**
+	 * References a Worm with a program
+	 */
+	private static Worm testWormImmProgram;
 	
 	/**
 	 * References an immutable World with 10 as its height and width, a completely passable map and randomGenerator as 
@@ -78,6 +89,8 @@ public class WormTest {
 		testWormImmWithWorld.setWorldTo(testWorld);
 		testWorld.addAsWorm(testWormImmWithWorld);
 		testWormImmBasic.setTeamTo(testTeam);
+		testProgram = new Program(null, null, null, null);
+		testWormImmProgram = new Worm(0.5,0.5,0,0.25,"Henry o' Hara 4", testProgram);
 	}
 	
 	private static World testWorld3;
@@ -701,7 +714,15 @@ public class WormTest {
 		assert(testWorld.getActiveProjectile() != null);
 	}
     
-  
+    @Test
+    public void hasProgram_falseCase(){
+    	assertFalse(testWormMutWithWorld.hasProgram());
+    }
+    
+    @Test
+    public void hasProgram_trueCase(){
+    	assertTrue(testWormImmProgram.hasProgram());
+    }
     
 	
 

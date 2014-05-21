@@ -15,8 +15,15 @@ import be.kuleuven.cs.som.annotate.*;
  * code repository:https://github.com/sebastianstoelen/OOP-Worms
  * @author Sebastian Stoelen 2BbiCwsElt2, Matthias Maeyens 2BbiCwsElt2
  * @version 2.0
- * 
- *
+ * @invariant isValidRadius(getRadius())
+ *            isValidDirection(getDirection())
+ *            isValidName(getName())
+ *            isValidCoordinate(getX()) && isValidCoordinate(getY())
+ *                isValidWeapon(getCurrentWeapon())
+ *            isValidCurrentAP(getCurrentAP())
+ *            isValidHitPoints(getHitPoints())
+ *            this.canHaveAsWorld(getWorld())
+ *            this.canHaveAsTeam(getTeam())
  */
 public class Worm {
 	

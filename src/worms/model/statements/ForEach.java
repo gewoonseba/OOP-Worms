@@ -29,8 +29,7 @@ public class ForEach extends Statement {
 	@Override
 	public void executeStatement() {
 		this.executed=false;
-		switch (type) {
-		case WORM:
+		if (type==ForeachType.WORM){
 			Entity<Worm> e=new Entity<Worm>();
 			for (Worm w:SelfWormExpression.getWorm().getWorld().getWorms()){
 				if (SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)
@@ -43,9 +42,9 @@ public class ForEach extends Statement {
 						return;
 						}
 				}
-				body.executeStatement();
 			}
-		case FOOD:
+		}
+		if (type==ForeachType.FOOD){
 			Entity<Food> f=new Entity<Food>();
 			for (Food w:SelfWormExpression.getWorm().getWorld().getFood()){
 				if (SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)
@@ -60,7 +59,8 @@ public class ForEach extends Statement {
 				}
 				body.executeStatement();
 			}
-		case ANY:
+		}
+		if (type==ForeachType.WORM){
 			Entity<Food> v=new Entity<Food>();
 			for (Food w:SelfWormExpression.getWorm().getWorld().getFood()){
 				if (SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)
@@ -89,12 +89,9 @@ public class ForEach extends Statement {
 				}
 				body.executeStatement();
 			}
-			
-			
 		}
 		SelfWormExpression.getWorm().getProgram().increaseCount();
 		this.executed=true;
-
 	}
 	
 	@Override

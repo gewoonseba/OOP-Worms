@@ -19,6 +19,14 @@ import be.kuleuven.cs.som.annotate.*;
  * @author Sebastian Stoelen 2BbiCwsElt2, Matthias Maeyens 2BbiCwsElt2
  * @version 1.0
  *
+ *@invariant isValidWidth(getWidth())
+ *           isValidHeight(getHeight())
+ *           for (int i= 0 to getWorms().size()-1)
+ *           	this.canHaveAsWorm(getWorms.get(i))
+ *           for (int i= 0 to getTeam().size()-1)
+ *           	this.canHaveAsWorm(getTeam.get(i))
+ *           for (int i= 0 to getFood().size()-1)
+ *           	this.canHaveAsWorm(getFood.get(i))
  */
 public class World {
 
