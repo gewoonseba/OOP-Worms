@@ -1,18 +1,23 @@
 package worms.model.expressions;
+
 import worms.model.*;
 import worms.model.types.Entity;
 public class SearchObjectExpression extends Expression {
 	
+	public SearchObjectExpression(Expression e) {
+		this.e =e;
+	}
+
 	private final Expression e;
 	private Worm nearestWorm;
 	private Food nearestFood;
 	private Object nearestObject;
 	
-    public SearchObjectExpression(Expression e) {
-    	this.e =e;
+	private final Expression getE(){
+		return this.e;
 	}
-
-	@Override
+	
+    @Override
 	public boolean equals(Object other) {
 		// TODO Auto-generated method stub
 		return false;
@@ -112,9 +117,8 @@ public class SearchObjectExpression extends Expression {
 	}
 
 	@Override
-	public Expression clone() {
-		// TODO Auto-generated method stub
-		return null;
+	public SearchObjectExpression clone() {
+		return new SearchObjectExpression(getE());
 	}
 
 
