@@ -5,18 +5,11 @@ import worms.model.Worm;
 import worms.model.types.DoubleType;
 import worms.model.types.Entity;
 
-public class GetRadiusExpression extends Expression {
+public class GetRadiusExpression extends OperationExpression {
 
-	private final Expression worm;
-	
-	public GetRadiusExpression(Expression worm) {
-		if (worm instanceof SelfWormExpression)
-			this.worm= new EntityExpression<Worm>((new SelfWormExpression()).getValue());
-		else
-			this.worm = worm;
+	public GetRadiusExpression(Expression entity) {
+		super(entity);
 	}
-	
-	
 
 	@Override
 	public boolean equals(Object other) {
@@ -32,9 +25,15 @@ public class GetRadiusExpression extends Expression {
 
 	@Override
 	public DoubleType getValue() {
-		if (((Entity<?>)worm.getValue()).getValue() instanceof Worm)
-			return new DoubleType(((Worm)((Entity<?>) worm.getValue()).getValue()).getRadius());
+		Object actualEntity = getEntity().getValue().getValue();
+		if (actualEntity instanceof Worm)
+			return  new DoubleType(((Worm) actualEntity).getRadius());
 		return new DoubleType(Food.getRadius());
+	}
+
+	@Override
+	public GetRadiusExpression clone() {
+		return new GetRadiusExpression(getEntity());
 	}
 
 }

@@ -721,10 +721,10 @@ public class World {
 	 * Method to remove a given food from this world.
 	 * @param food
 	 * 		The food to be removed.
-	 * @post The new world will not have the given worm as one of its worms.
+	 * @post The new world will not have the given worm as one of its food.
 	 * 		| new.food.contains(food) == false
 	 * @throws IllegalFoodException
-	 * 		The given food is null, or this world does not contain the given worm.
+	 * 		The given food is null, or this world does not contain the given food.
 	 * 		| (food == null) || (! hasAsFood(food))
 	 * @throws IllegalStateException
 	 * 		The given food still has a world.

@@ -12,10 +12,6 @@ public class SearchObjectExpression extends Expression {
     	this.e =e;
 	}
 
-	
-
-
-
 	@Override
 	public boolean equals(Object other) {
 		// TODO Auto-generated method stub
@@ -31,6 +27,7 @@ public class SearchObjectExpression extends Expression {
 	@Override
 	public Entity<?> getValue() {
 		// TODO Eleganter?
+
 		nearestWorm=null;
 		nearestObject=null;
 		nearestFood=null;

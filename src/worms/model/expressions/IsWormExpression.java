@@ -2,9 +2,7 @@ package worms.model.expressions;
 import worms.model.types.*;
 import worms.model.Worm;
 
-public class IsWormExpression<E> extends BooleanExpression {
-	
-	private final Expression entity;
+public class IsWormExpression extends BooleanExpression {
 	
 	public IsWormExpression(Expression entity) {
 		this.entity = entity;
@@ -12,7 +10,6 @@ public class IsWormExpression<E> extends BooleanExpression {
 
 	@Override
 	public BooleanType getValue() {
-		System.out.println("huppa");
 		if (entity==null || entity.getValue()==null)
 			return new BooleanType(false);
 		return new BooleanType(entity.getValue().getValue() instanceof Worm);	
@@ -24,11 +21,22 @@ public class IsWormExpression<E> extends BooleanExpression {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public Expression getEntity(){
+		return this.entity;
+	}
+
+	private final Expression entity;
 
 	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
+	public String toString() { 
+		//TODO generated method stub
 		return null;
+	}
+
+	@Override
+	public IsWormExpression clone() {
+		return new IsWormExpression(getEntity());
 	}
 
 }

@@ -2,7 +2,7 @@ package worms.model.expressions;
 import worms.model.types.*;
 import worms.model.Worm;
 
-public class SelfWormExpression extends WormExpression {
+public class SelfWormExpression extends Expression {
 
 	public SelfWormExpression(){
 		
@@ -27,6 +27,17 @@ public class SelfWormExpression extends WormExpression {
 
 	public static void setWorm(Worm worm) {
 		SelfWormExpression.worm = worm;
+	}
+
+	@Override
+	public Expression clone() {
+		return new SelfWormExpression(getWorm());
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

@@ -2,23 +2,21 @@ package worms.model.expressions;
 
 import worms.model.types.BooleanType;
 
-public class Inequality extends Comparator {
-
-	public Inequality(Expression left,Expression right){
-		super(left,right);
+public class NotExpression extends LogicalOperator{
+	
+	public NotExpression(Expression expr1) {
+		super(expr1,null);
 	}
 	
 	@Override
 	public String getOperatorSymbol() {
-		return "!=";
+		return "!";
 	}
 
 	@Override
 	public BooleanType getValue() {
-		return new BooleanType(! super.getLeft().getValue().equals(super.getRight().getValue()));
+		return new BooleanType(! (Boolean) super.getLeft().getValue().getValue());
 	}
-
-	
 
 	@Override
 	public String toString() {
@@ -26,8 +24,8 @@ public class Inequality extends Comparator {
 	}
 
 	@Override
-	public Inequality clone() {
-		return new Inequality(super.getLeft(), super.getRight());
+	public NotExpression clone() {
+		return new NotExpression(super.getLeft());
 	}
 
 }

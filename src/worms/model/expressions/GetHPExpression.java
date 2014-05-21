@@ -4,17 +4,18 @@ import worms.model.Worm;
 import worms.model.types.DoubleType;
 import worms.model.types.Entity;
 
-public class GetHPExpression extends Expression {
-
-	private final Expression worm;	
+public class GetHPExpression extends OperationExpression {
 	
-	public GetHPExpression(Expression worm) {
-		if (worm instanceof SelfWormExpression)
-			this.worm= new EntityExpression<Worm>((new SelfWormExpression()).getValue());
-		else
-			this.worm = worm;
+	public GetHPExpression(Expression entity) {
+		super(entity);
 	}
 	
+
+	@Override
+	public DoubleType getValue() {
+		return new DoubleType((double) ((Entity<Worm>) getEntity().getValue()).getValue().getHitPoints());
+	}
+
 
 	@Override
 	public boolean equals(Object other) {
@@ -28,9 +29,10 @@ public class GetHPExpression extends Expression {
 		return null;
 	}
 
+
 	@Override
-	public DoubleType getValue() {
-		return new DoubleType((double) ((Entity<Worm>) worm.getValue()).getValue().getHitPoints());
+	public GetHPExpression clone() {
+		return new GetHPExpression(getEntity());
 	}
 
 }

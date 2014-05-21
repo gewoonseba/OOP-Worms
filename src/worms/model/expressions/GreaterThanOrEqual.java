@@ -2,44 +2,31 @@ package worms.model.expressions;
 
 import worms.model.types.BooleanType;
 
-public class GreaterThanOrEqual extends BooleanCompareExpression {
-
+public class GreaterThanOrEqual extends Comparator {
+	
 	public GreaterThanOrEqual(Expression left,Expression right){
-		this.leftOperand = left;
-		this.rightOperand = right;
+		super(left,right);
 	}
 	
 	@Override
 	public String getOperatorSymbol() {
 		return ">=";
 	}
-	
+
 	@Override
 	public BooleanType getValue() {
-		return new BooleanType((Double) getLeftOperand().getValue().getValue() >= (Double) getRightOperand().getValue().getValue());
-	}
-
-	
-	@Override
-	public boolean equals(Object other) {
-		// TODO Auto-generated method stub
-		return false;
+		return new BooleanType((Double) super.getLeft().getValue().getValue() 
+				>= (Double) super.getRight().getValue().getValue());
 	}
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return super.getLeft().toString() + getOperatorSymbol() + super.getRight().toString() ;
 	}
 
-	public Expression getLeftOperand() {
-		return  leftOperand;
+	@Override
+	public GreaterThanOrEqual clone() {
+		return new GreaterThanOrEqual(super.getLeft(),super.getRight());
 	}
 
-	public Expression getRightOperand() {
-		return rightOperand;
-	}
-	
-	private final Expression leftOperand;
-	private final Expression  rightOperand;
 }

@@ -7,7 +7,6 @@ public class SinExpression extends DoubleUnaryExpression {
 	public SinExpression(Expression operand)
 			throws IllegalOperandException {
 		super((DoubleExpression) operand);
-		
 	}
 
 	@Override
@@ -21,4 +20,9 @@ public class SinExpression extends DoubleUnaryExpression {
 		return new DoubleType(Math.sin(getOperand().getValue().getValue()));
 	}
 
+	@Override
+	public SinExpression clone() {
+		return new SinExpression(super.getOperand());
+	}
+	
 }

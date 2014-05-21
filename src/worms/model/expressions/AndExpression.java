@@ -2,40 +2,31 @@ package worms.model.expressions;
 
 import worms.model.types.BooleanType;
 
-public class AndExpression extends BooleanExpression{
+public class AndExpression extends LogicalOperator{
 	
-	public AndExpression(Expression expr1,Expression expr2) throws IllegalArgumentException {
-		if (! (expr1 instanceof BooleanExpression && expr2 instanceof BooleanExpression))
-			throw new IllegalArgumentException();
-		this.expr1 = (BooleanExpression)expr1;
-		this.expr2 = (BooleanExpression)expr2;
-
+	public AndExpression(Expression expr1,Expression expr2) {
+		super(expr1,expr2);
 	}
 	
+	@Override
 	public String getOperatorSymbol() {
 		return "&&";
 	}
 
 	@Override
 	public BooleanType getValue() {
-		BooleanType andType= new BooleanType(expr1.getValue().getValue() &&  expr2.getValue().getValue());
-		return ( andType);
-	}
-
-
-
-	@Override
-	public boolean equals(Object other) {
-		// TODO Auto-generated method stub
-		return false;
+		BooleanType andType= new BooleanType((Boolean) super.getLeft().getValue().getValue() &&  (Boolean) super.getRight().getValue().getValue());
+		return (andType);
 	}
 
 	@Override
 	public String toString() {
-		return expr1.toString() + getOperatorSymbol() + expr2.toString();
+		return super.getLeft().toString() + getOperatorSymbol() + super.getRight().toString();
 	}
-	
-	private final BooleanExpression expr1;
-	private final BooleanExpression expr2;
+
+	@Override
+	public AndExpression clone() {
+		return new AndExpression(super.getLeft(),super.getRight());
+	}
 
 }

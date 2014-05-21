@@ -4,17 +4,11 @@ import worms.model.Worm;
 import worms.model.types.DoubleType;
 import worms.model.types.Entity;
 
-public class GetDirectionExpression extends Expression {
+public class GetDirectionExpression extends OperationExpression {
 
-	private final Expression worm;
-	
-	public GetDirectionExpression(Expression worm) {
-		if (worm instanceof SelfWormExpression)
-			this.worm= new EntityExpression<Worm>((new SelfWormExpression()).getValue());
-		else
-			this.worm = worm;
+    public GetDirectionExpression(Expression entity) {
+		super(entity);
 	}
-	
 
 	@Override
 	public boolean equals(Object other) {
@@ -30,8 +24,11 @@ public class GetDirectionExpression extends Expression {
 
 	@Override
 	public DoubleType getValue() {
-		Entity<Worm> entity = (Entity<Worm>) worm.getValue();
-		return new DoubleType(entity.getValue().getDirection());
+		return new DoubleType((double) ((Entity<Worm>) getEntity().getValue()).getValue().getDirection());
 	}
 
+	@Override
+	public GetDirectionExpression clone() {
+		return new GetDirectionExpression(getEntity());
+	}
 }

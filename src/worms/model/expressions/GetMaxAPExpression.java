@@ -4,17 +4,11 @@ import worms.model.Worm;
 import worms.model.types.DoubleType;
 import worms.model.types.Entity;
 
-public class GetMaxAPExpression extends Expression{
+public class GetMaxAPExpression extends OperationExpression{
 
-	private final Expression worm;
-	
-	public GetMaxAPExpression(Expression worm) {
-		if (worm instanceof SelfWormExpression)
-			this.worm= new EntityExpression<Worm>((new SelfWormExpression()).getValue());
-		else
-			this.worm = worm;
+	public GetMaxAPExpression(Expression entity) {
+		super(entity);
 	}
-	
 	
 	@Override
 	public boolean equals(Object other) {
@@ -30,7 +24,12 @@ public class GetMaxAPExpression extends Expression{
 
 	@Override
 	public DoubleType getValue() {
-		return new DoubleType((double) ((Entity<Worm>) worm.getValue()).getValue().getMaxAP());
+		return new DoubleType((double) ((Entity<Worm>) getEntity().getValue()).getValue().getMaxAP());
+	}
+
+	@Override
+	public GetMaxAPExpression clone() {
+		return new GetMaxAPExpression(getEntity());
 	}
 
 }

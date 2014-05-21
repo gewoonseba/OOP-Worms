@@ -1,51 +1,33 @@
 package worms.model.expressions;
 
 import worms.model.types.BooleanType;
-import be.kuleuven.cs.som.annotate.Model;
 
-public class LessThanOrEqual extends BooleanCompareExpression {
-
-	@Model
-	public LessThanOrEqual(Expression left, Expression right) {
-		this.leftOperand = left;
-		this.rightOperand = right;
-	}
-		
-	@Override
-	public BooleanType getValue() {
-		return new BooleanType((Double) getLeftOperand().getValue().getValue() <= (Double) getRightOperand().getValue().getValue());
-	}
-
+public class LessThanOrEqual extends Comparator {
 	
-
-	@Override
-	public boolean equals(Object other) {
-		return false;
+	public LessThanOrEqual(Expression left,Expression right){
+		super(left,right);
 	}
-
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	@Override
 	public String getOperatorSymbol() {
-		// TODO Auto-generated method stub
 		return "<=";
 	}
 
 	@Override
-	public Expression getLeftOperand() {
-		return leftOperand;
+	public BooleanType getValue() {
+		return new BooleanType((Double) super.getLeft().getValue().getValue() 
+				<= (Double) super.getRight().getValue().getValue());
 	}
 
 	@Override
-	public Expression getRightOperand() {
-		return rightOperand;
+	public String toString() {
+		return super.getLeft().toString() + getOperatorSymbol() + super.getRight().toString() ;
 	}
-	
-	private final Expression leftOperand;
-	private final Expression rightOperand;
+
+	@Override
+	public LessThanOrEqual clone() {
+		return new LessThanOrEqual(super.getLeft(),super.getRight());
+	}
+
 }
 
