@@ -1,45 +1,14 @@
-double x;
-double y;
-double z;
+double d := 0.01;
+bool b := true;
+entity w;
 
-x := (0.5 + 0.5);
-
-skip;
-turn(x);
-
-z := 1 + 1 + 1;
-print z;
-
-toggleweap;
-
-if (true) then
- { fire 10; }
-if (true) then
- { fire 100; }
- else
- { skip; }
-if (false) then
- { }
- else
- { fire 50; }
-
-move;
-skip;
-toggleweap;
-move;
-fire 1;
-skip;
-
-y := getradius(self);
-
-while (true && (true || false)) do {
-  turn(0.5);
-  toggleweap;
-  fire (50);
+while(b) {
+  w := searchobj(0);
+  if (isworm(w)) {
+    fire 100;
+  } else {
+    turn d;
+    d := d + 0.01;
+  }
 }
-
-skip;
-fire 100;
-
-jump;
 

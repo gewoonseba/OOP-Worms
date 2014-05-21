@@ -3,13 +3,13 @@ import worms.model.*;
 import worms.model.types.Entity;
 public class SearchObjectExpression extends Expression {
 	
-	private final double angleIncrease;
+	private final Expression e;
 	private Worm nearestWorm;
 	private Food nearestFood;
 	private Object nearestObject;
 	
     public SearchObjectExpression(Expression e) {
-    	this.angleIncrease =((DoubleExpression)e).getValue().getValue();
+    	this.e =e;
 	}
 
 	
@@ -31,32 +31,53 @@ public class SearchObjectExpression extends Expression {
 	@Override
 	public Entity<?> getValue() {
 		// TODO Eleganter?
-		System.out.println("binnen");
-		for (Worm w:SelfWormExpression.getWorm().getWorld().getWorms()){
-			if (w!=SelfWormExpression.getWorm()){
-				if (((w.getY()-SelfWormExpression.getWorm().getY())
-						/(w.getY()-SelfWormExpression.getWorm().getY())==
-						Math.tan(SelfWormExpression.getWorm().getDirection()+angleIncrease))){
+		nearestWorm=null;
+		nearestObject=null;
+		nearestFood=null;
+		double angleIncrease=((Double)e.getValue().getValue());
+		Worm worm = SelfWormExpression.getWorm();
+		for (Worm w:worm.getWorld().getWorms()){
+			if (w!=worm){
+				double distance = (Math.sqrt(Math.pow((w.getY()-worm.getY()),2)+
+						Math.pow((w.getX()-worm.getX()),2)));
+				if (distance<=w.getRadius()){
 					if (nearestWorm==null)
 						nearestWorm = w;
-					else if (Math.sqrt(Math.pow((w.getY()-SelfWormExpression.getWorm().getY()),2)+
-							Math.pow((w.getX()-SelfWormExpression.getWorm().getX()),2))<
-							(Math.sqrt(Math.pow((nearestWorm.getY()-SelfWormExpression.getWorm().getY()),2)+
-									Math.pow((nearestWorm.getX()-SelfWormExpression.getWorm().getX()),2))))
+					else if (distance<(Math.sqrt(Math.pow((nearestWorm.getY()-worm.getY()),2)+
+							Math.pow((nearestWorm.getX()-worm.getX()),2))))
 						nearestWorm=w;
-				}
+					continue;}
+				double direction = worm.getDirection();
+				while (direction+angleIncrease<0)
+					direction+=2*Math.PI;
+				double alfa = Math.asin((w.getY()-worm.getY())/distance);
+				if (((w.getX()>worm.getX()&&w.getY()>worm.getY())))
+					alfa = alfa;
+				else if (((w.getX()<worm.getX()&&w.getY()>worm.getY())))
+					alfa = Math.PI-alfa;
+				else if (((w.getX()<worm.getX()&&w.getY()<worm.getY())))
+					alfa = Math.PI-alfa;
+				else if ((w.getX()>worm.getX()&&w.getY()<worm.getY()))
+					alfa = 2*Math.PI+alfa;
+				if ((alfa+Math.abs(Math.asin(w.getRadius()/distance))>=(direction+angleIncrease))
+						&&(alfa-Math.abs(Math.asin(w.getRadius()/distance))<=(direction+angleIncrease))){
+					if (nearestWorm==null)
+						nearestWorm = w;
+					else if (distance<(Math.sqrt(Math.pow((nearestWorm.getY()-worm.getY()),2)+
+							Math.pow((nearestWorm.getX()-worm.getX()),2))))
+						nearestWorm=w;}
 			}
 		}
-		for (Food w:SelfWormExpression.getWorm().getWorld().getFood()){
-			if (((w.getY()-SelfWormExpression.getWorm().getY())
-					/(w.getY()-SelfWormExpression.getWorm().getY())==
-					Math.tan(SelfWormExpression.getWorm().getDirection()+angleIncrease))){
+		for (Food w:worm.getWorld().getFood()){
+			if (((w.getY()-worm.getY())
+					/(w.getX()-worm.getX())==
+					Math.tan(worm.getDirection()+angleIncrease))){
 				if (nearestFood==null)
 					nearestFood = w;
-				else if (Math.sqrt(Math.pow((w.getY()-SelfWormExpression.getWorm().getY()),2)+
-						Math.pow((w.getX()-SelfWormExpression.getWorm().getX()),2))<
-						(Math.sqrt(Math.pow((nearestFood.getY()-SelfWormExpression.getWorm().getY()),2)+
-								Math.pow((nearestFood.getX()-SelfWormExpression.getWorm().getX()),2))))
+				else if (Math.sqrt(Math.pow((w.getY()-worm.getY()),2)+
+						Math.pow((w.getX()-worm.getX()),2))<
+						(Math.sqrt(Math.pow((nearestFood.getY()-worm.getY()),2)+
+								Math.pow((nearestFood.getX()-worm.getX()),2))))
 						nearestFood=w;
 			}
 		}
@@ -68,10 +89,10 @@ public class SearchObjectExpression extends Expression {
 		if (nearestFood == null)
 			return new Entity<>(nearestWorm);	
 		nearestObject = nearestWorm;
-		if (Math.sqrt(Math.pow((nearestFood.getY()-SelfWormExpression.getWorm().getY()),2)+
-				Math.pow((nearestFood.getX()-SelfWormExpression.getWorm().getX()),2))<
-				(Math.sqrt(Math.pow((nearestWorm.getY()-SelfWormExpression.getWorm().getY()),2)+
-						Math.pow((nearestWorm.getX()-SelfWormExpression.getWorm().getX()),2))))
+		if (Math.sqrt(Math.pow((nearestFood.getY()-worm.getY()),2)+
+				Math.pow((nearestFood.getX()-worm.getX()),2))<
+				(Math.sqrt(Math.pow((nearestWorm.getY()-worm.getY()),2)+
+						Math.pow((nearestWorm.getX()-worm.getX()),2))))
 			nearestObject= nearestFood;
 		return new Entity<>(nearestObject);
 	}

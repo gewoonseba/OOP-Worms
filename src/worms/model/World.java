@@ -173,7 +173,7 @@ public class World {
 	 * 		| return == getHeight()/getPixelHeight()
 	 */
 	public double getHeightScale(){
-		return (getHeight()/getPixelHeight());
+		return ((double)getHeight())/((double)getPixelHeight());
 	}
 	
 	/**
@@ -364,6 +364,7 @@ public class World {
 				do {change+=maxDistance/(Math.ceil((radius/(getHeightScale()/3))));
 					}while((Math.sqrt((xchange)*(xchange)+(change)*(change))<minDistance-0.01));
 				while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<=maxDistance )){
+		
 					if (passableMap[coordinatesToPixels(x + xchange, y+change)[1]][coordinatesToPixels(x + xchange, y+ change)[0]]==false)
 						return true;
 					if (passableMap[coordinatesToPixels(x + xchange, y-change)[1]][coordinatesToPixels(x + xchange, y- change)[0]]==false)

@@ -59,9 +59,9 @@ public class WormTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		testWormImmBasic = new Worm(0.5,0.5,0,0.25,"James o'Hara 1");
-		testWormImmSmallDirection = new Worm(0,0,Math.PI/4,0.25,"William o'Hara 2");
-		testWormImmWithWorld = new Worm(0.5,0.5,0,0.25,"Henry o' Hara 3");
+		testWormImmBasic = new Worm(0.5,0.5,0,0.25,"James o'Hara 1", null);
+		testWormImmSmallDirection = new Worm(0,0,Math.PI/4,0.25,"William o'Hara 2", null);
+		testWormImmWithWorld = new Worm(0.5,0.5,0,0.25,"Henry o' Hara 3", null);
 		testTeam = new Team("TestTeam");
 		passableMap = new boolean[][]{
 				{ true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true },
@@ -100,9 +100,9 @@ public class WormTest {
 
 	@Before
 	public void setUp() throws Exception {
-		testWormMutBasic = new Worm(0.5,0.5,0,0.25,"Jimmy o'Hara 4");
-		testWormMutSmallDirection = new Worm(0,0,Math.PI/4,0.25,"Ricky o'Hara 5");
-		testWormMutWithWorld = new Worm(0.5,0.5,0,0.25,"Thomas o'Hara 6");
+		testWormMutBasic = new Worm(0.5,0.5,0,0.25,"Jimmy o'Hara 4", null);
+		testWormMutSmallDirection = new Worm(0,0,Math.PI/4,0.25,"Ricky o'Hara 5", null);
+		testWormMutWithWorld = new Worm(0.5,0.5,0,0.25,"Thomas o'Hara 6", null);
 		testWormMutBasic.setTeamTo(testTeam);
 		testWormMutWithWorld.setWorldTo(testWorld);
 		testWorld3 = new World(4.0, 4.0, passableMap2, randomGenerator);
@@ -115,7 +115,7 @@ public class WormTest {
 	 */
 	@Test
 	public  void constructor_LegalCase() {
-		Worm newWorm = new Worm(5,10,3,1,"Mike o'Brien 2");
+		Worm newWorm = new Worm(5,10,3,1,"Mike o'Brien 2", null);
 		assertEquals(5,newWorm.getX(),0);
 		assertEquals(10,newWorm.getY(),0);
 		assertEquals(3,newWorm.getDirection(),0);
@@ -128,7 +128,7 @@ public class WormTest {
 	 */
 	@Test (expected = IllegalRadiusException.class)
 	public void constructor_IllegalRadiusException(){
-		new Worm(0,0,0,0.24,"Jimmy");
+		new Worm(0,0,0,0.24,"Jimmy", null);
 	}
 	
 	/**
@@ -136,7 +136,7 @@ public class WormTest {
 	 */
 	@Test (expected = IllegalNameException.class)
 	public void constructor_IllegalNameException(){
-		new Worm(0,0,0,0.25,"J@mes");
+		new Worm(0,0,0,0.25,"J@mes", null);
 	}
 	
 	/**
@@ -397,7 +397,7 @@ public class WormTest {
 	 */
 	@Test
 	public void canMove_TrueCase(){
-		Worm worm = testWorld2.createWorm( 1, 2, 0, 1, "Test");
+		Worm worm = testWorld2.createWorm( 1, 2, 0, 1, "Test", null);
 		assertTrue(worm.canMove());
 	}
 	
@@ -412,7 +412,7 @@ public class WormTest {
 	
 	@Test
 	public void testMoveHorizontal() {
-		Worm worm = testWorld2.createWorm( 1, 2, 0, 1, "Test");
+		Worm worm = testWorld2.createWorm( 1, 2, 0, 1, "Test", null);
 		worm.move();
 		Util.fuzzyEquals(2, worm.getX());
 		Util.fuzzyEquals(2, worm.getY());
@@ -427,7 +427,7 @@ public class WormTest {
 		World world = new World(3.0, 4.0, new boolean[][] {
 				{ true, false, true }, { true, true, true },
 				{ true, true, true }, { false, false, false } }, randomGenerator);
-		Worm worm = world.createWorm( 1.5, 1.5, 0, 1, "Test");
+		Worm worm = world.createWorm( 1.5, 1.5, 0, 1, "Test", null);
 		worm.move();
 		Util.fuzzyEquals(2.5, worm.getX());
 		Util.fuzzyEquals(2.5, worm.getY());
@@ -435,7 +435,7 @@ public class WormTest {
 	
 	@Test
 	public void testMoveVertical() {
-		Worm worm = testWorld2.createWorm( 1, 1.5, Math.PI / 2, 0.5, "Test");
+		Worm worm = testWorld2.createWorm( 1, 1.5, Math.PI / 2, 0.5, "Test", null);
 		worm.move();
 		Util.fuzzyEquals(1, worm.getX());
 		Util.fuzzyEquals(2.0, worm.getY());
@@ -448,7 +448,7 @@ public class WormTest {
 		World world = new World(3.0, 2.0, new boolean[][] {
 				{ true, true, false }, { true, true, false } }, randomGenerator);
 		Worm worm = world.createWorm( 1.5, 0.5,
-				Math.PI / 2 - 10 * 0.0175, 0.5, "Test");
+				Math.PI / 2 - 10 * 0.0175, 0.5, "Test", null);
 		worm.move();
 		Util.fuzzyEquals(1.5, worm.getX());
 		Util.fuzzyEquals(1.0, worm.getY());
@@ -463,8 +463,8 @@ public class WormTest {
 		World world = new World(3.0, 4.0, new boolean[][] {
 				{ true, false, true }, { true, true, true },
 				{ true, true, true }, { false, false, false } }, randomGenerator);
-		Worm worm = world.createWorm( 1.5, 2.5, -Math.PI / 2, 0.5,
-				"Test");
+		Worm worm = world.createWorm( 1.5, 2.5, -Math.PI / 2, 0.49,
+				"Test", null);
 		assertFalse(worm.canFall());
 		worm.move();
 		assertTrue(worm.canFall());
@@ -510,7 +510,7 @@ public class WormTest {
 				{ true, false, true }, { true, true, true },
 				{ true, true, true }, { false, false, false } }, randomGenerator);
 		Worm worm = world.createWorm( 1.5, 1.5, Math.PI / 2, 0.5,
-				"Test");
+				"Test", null);
 		worm.jump(0.0001);
 		assertEquals(556,worm.getCurrentAP());
 		assertEquals(2.5,worm.getY(),0.1*worm.getRadius());
@@ -533,7 +533,7 @@ public class WormTest {
 				{ true, false, true }, { true, true, true },
 				{ true, true, true }, { false, false, false } }, randomGenerator);
 		Worm worm = world.createWorm( 1.5, 1.5, Math.PI / 2, 0.5,
-				"Test");
+				"Test", null);
 		worm.jumpTime(0.0001);
 		assertTrue(Util.fuzzyEquals(worm.jumpTime(0.0001),worm.jumpTime(0.0001)));
 	}

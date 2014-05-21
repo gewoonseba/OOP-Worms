@@ -353,7 +353,7 @@ public class Worm {
 	 */
 
 	private void fallStep(){
-		double distance = getWorld().getHeightScale()/2;
+		double distance = getRadius()/11;
 		setY(getY() - distance);
 	}
 	

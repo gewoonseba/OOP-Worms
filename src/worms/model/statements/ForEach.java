@@ -37,6 +37,12 @@ public class ForEach extends Statement {
 					return;
 				e.setValue(w);
 				SelfWormExpression.getWorm().getProgram().getGlobals().put(name,e );
+				if (body instanceof ActionStatement){
+					if (!((ActionStatement)body).enoughAp()){
+						SelfWormExpression.getWorm().getProgram().stop();
+						return;
+						}
+				}
 				body.executeStatement();
 			}
 		case FOOD:
@@ -46,6 +52,12 @@ public class ForEach extends Statement {
 					return;
 				f.setValue(w);
 				SelfWormExpression.getWorm().getProgram().getGlobals().put(name, f);
+				if (body instanceof ActionStatement){
+					if (!((ActionStatement)body).enoughAp()){
+						SelfWormExpression.getWorm().getProgram().stop();
+						return;
+						}
+				}
 				body.executeStatement();
 			}
 		case ANY:
@@ -55,6 +67,12 @@ public class ForEach extends Statement {
 					return;
 				v.setValue(w);
 				SelfWormExpression.getWorm().getProgram().getGlobals().put(name, v);
+				if (body instanceof ActionStatement){
+					if (!((ActionStatement)body).enoughAp()){
+						SelfWormExpression.getWorm().getProgram().stop();
+						return;
+						}
+				}
 				body.executeStatement();
 			}
 			Entity<Worm> a=new Entity<Worm>();
@@ -63,6 +81,12 @@ public class ForEach extends Statement {
 					return;
 				a.setValue(w);
 				SelfWormExpression.getWorm().getProgram().getGlobals().put(name,a );
+				if (body instanceof ActionStatement){
+					if (!((ActionStatement)body).enoughAp()){
+						SelfWormExpression.getWorm().getProgram().stop();
+						return;
+						}
+				}
 				body.executeStatement();
 			}
 			

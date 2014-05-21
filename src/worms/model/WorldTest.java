@@ -64,7 +64,7 @@ public class WorldTest {
 	public void setUp() throws Exception {
 		testFoodMut = new Food(5,5);
 		testWorldMut = new World(10,10, passableMap1, randomGenerator1);
-		testWormMut = new Worm(5,5,0,0.25,"Johnny");
+		testWormMut = new Worm(5,5,0,0.25,"Johnny", null);
 		testTeamMut = new Team("Random");
 	}
 
@@ -270,6 +270,7 @@ public class WorldTest {
 	public void getCurrentWorm_SingleCase(){
 		testWormMut.setWorldTo(testWorldMut);
 	    testWorldMut.addAsWorm(testWormMut);
+	    testWorldMut.startGame();
 	    assertTrue(testWorldMut.getCurrentWorm()==testWormMut);
 	}
 	
@@ -278,7 +279,7 @@ public class WorldTest {
 	 */
 	@Test
 	public void getWinner_OneWinner(){
-		Worm winningWorm= new Worm(5,5,0,0.25,"Winner");
+		Worm winningWorm= new Worm(5,5,0,0.25,"Winner", null);
 		winningWorm.setWorldTo(testWorldMut);
 	    testWorldMut.addAsWorm(winningWorm);
 		assertTrue(testWorldMut.getWinner()=="Winner");
@@ -290,8 +291,8 @@ public class WorldTest {
 	 */
 	@Test
 	public void getWinner_TeamWinner(){
-		Worm winningWorm= new Worm(5,5,0,0.25,"Winner");
-		Worm winningWorm2= new Worm(5,5,0,0.25,"Winner");
+		Worm winningWorm= new Worm(5,5,0,0.25,"Winner", null);
+		Worm winningWorm2= new Worm(5,5,0,0.25,"Winner", null);
 		Team winnaars = new Team("Winnaars");
 		winnaars.setWorldTo(testWorldMut);
 		winningWorm.setWorldTo(testWorldMut);
@@ -308,8 +309,8 @@ public class WorldTest {
 	 */
 	@Test
 	public void getWinner_NoWinner(){
-		Worm losingWorm= new Worm(5,5,0,0.25,"Winner");
-		Worm losingWorm2= new Worm(5,5,0,0.25,"Winner");
+		Worm losingWorm= new Worm(5,5,0,0.25,"Winner", null);
+		Worm losingWorm2= new Worm(5,5,0,0.25,"Winner", null);
 		losingWorm.setWorldTo(testWorldMut);
 	    testWorldMut.addAsWorm(losingWorm);
 	    losingWorm2.setWorldTo(testWorldMut);
@@ -322,7 +323,7 @@ public class WorldTest {
 	 */
 	@Test
 	public void isGameFinished_TrueCase(){
-		Worm winningWorm= new Worm(5,5,0,0.25,"Winner");
+		Worm winningWorm= new Worm(5,5,0,0.25,"Winner", null);
 		winningWorm.setWorldTo(testWorldMut);
 	    testWorldMut.addAsWorm(winningWorm);
 	    assertTrue(testWorldMut.isGameFinished());
@@ -333,8 +334,8 @@ public class WorldTest {
 	 */
 	@Test
 	public void isGameFinished_FalseCase(){
-		Worm losingWorm= new Worm(5,5,0,0.25,"Winner");
-		Worm losingWorm2= new Worm(5,5,0,0.25,"Winner");
+		Worm losingWorm= new Worm(5,5,0,0.25,"Winner", null);
+		Worm losingWorm2= new Worm(5,5,0,0.25,"Winner", null);
 		losingWorm.setWorldTo(testWorldMut);
 	    testWorldMut.addAsWorm(losingWorm);
 	    losingWorm2.setWorldTo(testWorldMut);
@@ -505,7 +506,7 @@ public class WorldTest {
 	 */
 	@Test
 	public void createWorm_TrueCase(){
-		testWorldMut.createWorm(5, 5, 0, 0.25, "Mike");
+		testWorldMut.createWorm(5, 5, 0, 0.25, "Mike", null);
 		assertTrue(testWorldMut.getWorms().size()==1);
 	}
 	
@@ -514,7 +515,7 @@ public class WorldTest {
 	 */
 	@Test (expected = IllegalArgumentException.class)
 	public void createWorm_XCoordinate_IllegalArgumentException(){
-		testWorldMut.createWorm(-1.5, 5, 0, 0.25, "Mike");
+		testWorldMut.createWorm(-1.5, 5, 0, 0.25, "Mike", null);
 	}
 	
 	/**
@@ -522,7 +523,7 @@ public class WorldTest {
 	 */
 	@Test (expected = IllegalArgumentException.class)
 	public void createWorm_YCoordinate_IllegalArgumentException(){
-		testWorldMut.createWorm(5, -1, 0, 0.25, "Mike");
+		testWorldMut.createWorm(5, -1, 0, 0.25, "Mike", null);
 	}
 	
 	/**
@@ -530,7 +531,7 @@ public class WorldTest {
 	 */
 	@Test (expected = IllegalArgumentException.class)
 	public void createWorm_Radius_IllegalArgumentException(){
-		testWorldMut.createWorm(0.5, 0.5, 0, 0.6, "Mike");
+		testWorldMut.createWorm(0.5, 0.5, 0, 0.6, "Mike", null);
 	}
 	
 	/**
@@ -538,7 +539,7 @@ public class WorldTest {
 	 */
 	@Test (expected = IllegalRadiusException.class)
 	public void createWorm_IllegalRadiusException(){
-		testWorldMut.createWorm(5, 5, 0, 0.22, "Mike");
+		testWorldMut.createWorm(5, 5, 0, 0.22, "Mike", null);
 	}
 	
 	/**
@@ -546,7 +547,7 @@ public class WorldTest {
 	 */
 	@Test (expected = IllegalNameException.class)
 	public void createWorm_IllegalNameException(){
-		testWorldMut.createWorm(5, 5, 0, 0.25, "Mike@gmail.com");
+		testWorldMut.createWorm(5, 5, 0, 0.25, "Mike@gmail.com", null);
 	}
 	
 	/**
@@ -596,8 +597,8 @@ public class WorldTest {
 	 */
 	@Test
 	public void startNextTurn_NormalCase(){
-		testWorldMut.createWorm(5,5,0,0.25,"Test1");
-		testWorldMut.createWorm(5,5,0,0.25,"Test2");
+		testWorldMut.createWorm(5,5,0,0.25,"Test1", null);
+		testWorldMut.createWorm(5,5,0,0.25,"Test2", null);
 		testWorldMut.startGame();
 		testWorldMut.startNextTurn();
 		assertEquals(testWorldMut.getCurrentWorm().getName(),"Test2");
@@ -609,8 +610,8 @@ public class WorldTest {
 	 */
 	@Test
 	public void startNextTurn_LastWormCase(){
-		testWorldMut.createWorm(5,5,0,0.25,"Test1");
-		testWorldMut.createWorm(5,5,0,0.25,"Test2");
+		testWorldMut.createWorm(5,5,0,0.25,"Test1", null);
+		testWorldMut.createWorm(5,5,0,0.25,"Test2", null);
 		testWorldMut.startGame();
 		testWorldMut.startNextTurn();
 		testWorldMut.startNextTurn();
@@ -649,7 +650,7 @@ public class WorldTest {
 	
 	@Test
 	public void addNewWorm_SingleCase(){
-		testWorldMut.addNewWorm();
+		testWorldMut.addNewWorm(null);
 		assertTrue(testWorldMut.getWorms().size()==1);
 	}
 	

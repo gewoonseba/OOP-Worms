@@ -94,7 +94,6 @@ public class Program {
 	
 	public void increaseCount(){
 		statementCount+=1;
-		System.out.println(statementCount);
 	}
 	
 	public boolean wellFormed(){
