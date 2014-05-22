@@ -32,4 +32,8 @@ public class Entity<E> extends Type{
 			return false;
 		return true;
 	}
+	@Override
+	public Entity<E> clone(){
+		return new Entity<E>(getValue());
+	}
 }

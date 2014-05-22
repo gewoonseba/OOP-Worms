@@ -17,11 +17,8 @@ while(true) do {
   y := gety self;
   r := getradius self;
   nearestWorm := null;
-  print nearestWorm;
   foreach(worm, w) do {
     if (w != self) {
-      print w;
-      print nearestWorm;
       wx := getx w;
       wy := gety w;
       wr := getradius w;

@@ -27,5 +27,9 @@ public class DoubleType extends Type{
 			return false;
 		return true;
 	}
+	
+	public DoubleType clone(){
+		return new DoubleType(getValue());
+	}
 }
 

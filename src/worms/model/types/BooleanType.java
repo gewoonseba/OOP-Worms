@@ -29,6 +29,9 @@ public class BooleanType extends Type {
 		return true;
 	}
 	
+	public BooleanType clone(){
+		return new BooleanType(getValue());
+	}
 	
 
 }
