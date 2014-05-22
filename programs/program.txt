@@ -1,14 +1,49 @@
-double d := 0.01;
-bool b := true;
+// Worm that prints the distance to the nearest other worm, turns and fires.
+
+double angle;
+entity nearestWorm;
+double distanceToNearestWorm;
+double x;
+double y;
+double r;
+double wx;
+double wy;
+double wr;
+double distance;
 entity w;
 
-while(b) {
-  w := searchobj(0);
-  if (isworm(w)) {
+while(true) do {
+  x := getx self;
+  y := gety self;
+  r := getradius self;
+  nearestWorm := null;
+  print nearestWorm;
+  foreach(worm, w) do {
+    if (w != self) {
+      print w;
+      print nearestWorm;
+      wx := getx w;
+      wy := gety w;
+      wr := getradius w;
+      distance := sqrt((((x - wx) * (x - wx)) + ((y - wy) * (y - wy))));
+      if(nearestWorm == null) then {
+        nearestWorm := w;
+        distanceToNearestWorm := distance;
+      } else {
+        if(distance < distanceToNearestWorm) then {
+          nearestWorm := w;
+          distanceToNearestWorm := distance;
+        } 
+      }
+    }
+  }
+  print nearestWorm;
+  if(nearestWorm != null) then {
+    print distanceToNearestWorm;
+  }
+  turn (0 + -0.2);
+  toggleweap;
+  if (! sameteam(nearestWorm)) {
     fire 100;
-  } else {
-    turn d;
-    d := d + 0.01;
   }
 }
-

@@ -4,8 +4,7 @@ import worms.model.types.DoubleType;
 
 public class SqrtExpression extends DoubleUnaryExpression {
 
-	public SqrtExpression(Expression operand)
-			throws IllegalOperandException {
+	public SqrtExpression(Expression operand){
 		super((DoubleExpression) operand);
 	}
 
@@ -16,7 +15,7 @@ public class SqrtExpression extends DoubleUnaryExpression {
 
 	@Override
 	public DoubleType getValue() {
-		return new DoubleType(Math.sqrt(getOperand().getValue().getValue()));
+		return new DoubleType(Math.sqrt((Double)getOperand().getValue().getValue()));
 	}
 
 	@Override

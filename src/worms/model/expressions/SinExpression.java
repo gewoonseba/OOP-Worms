@@ -4,8 +4,7 @@ import worms.model.types.DoubleType;
 
 public class SinExpression extends DoubleUnaryExpression {
 
-	public SinExpression(Expression operand)
-			throws IllegalOperandException {
+	public SinExpression(Expression operand){
 		super((DoubleExpression) operand);
 	}
 
@@ -16,7 +15,7 @@ public class SinExpression extends DoubleUnaryExpression {
 
 	@Override
 	public DoubleType getValue() {
-		return new DoubleType(Math.sin(getOperand().getValue().getValue()));
+		return new DoubleType(Math.sin((Double)getOperand().getValue().getValue()));
 	}
 
 	@Override

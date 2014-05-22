@@ -4,8 +4,7 @@ import worms.model.types.DoubleType;
 
 public class CosExpression extends DoubleUnaryExpression {
 
-	public CosExpression(Expression operand)
-			throws IllegalOperandException {
+	public CosExpression(Expression operand) {
 		super((DoubleExpression) operand);
 	}
 
@@ -21,7 +20,7 @@ public class CosExpression extends DoubleUnaryExpression {
 
 	@Override
 	public DoubleType getValue() {
-		return new DoubleType(Math.cos(getOperand().getValue().getValue()));
+		return new DoubleType(Math.cos((Double)getOperand().getValue().getValue()));
 	}
 
 	@Override

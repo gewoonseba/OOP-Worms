@@ -15,7 +15,11 @@ public class Inequality extends Comparator {
 
 	@Override
 	public BooleanType getValue() {
-		return new BooleanType(! super.getLeft().getValue().equals(super.getRight().getValue()));
+		if (getLeft().getValue()==null || getRight().getValue()==null){
+			if (getLeft().getValue()==null && getRight().getValue()==null)
+				return new BooleanType(false);
+			return new BooleanType(true);}
+		return new BooleanType(! super.getLeft().getValue().getValue().equals(super.getRight().getValue().getValue()));
 	}
 
 	

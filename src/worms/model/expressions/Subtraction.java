@@ -4,8 +4,7 @@ import worms.model.types.DoubleType;
 
 public class Subtraction extends DoubleBinaryExpression {
 
-	public Subtraction(Expression left, Expression right)
-			throws IllegalOperandException {
+	public Subtraction(Expression left, Expression right) {
 		super(left, right);
 	}
 

@@ -20,7 +20,7 @@ public class GetYExpression extends OperationExpression {
 	public DoubleType getValue() {
 		Expression entity = getEntity();
 		if (entity instanceof SelfWormExpression){
-			entity= new EntityExpression<Worm>((new SelfWormExpression()).getValue());}
+			return new DoubleType((Double)SelfWormExpression.getWorm().getY());}
 		if ((entity.getValue().getValue()) instanceof Worm)
 			return new DoubleType(((Worm)((Entity<?>) entity.getValue()).getValue()).getY());
 		return new DoubleType(((Food)((Entity<?>) entity.getValue()).getValue()).getY());

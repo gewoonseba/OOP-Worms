@@ -6,17 +6,16 @@ import be.kuleuven.cs.som.annotate.Model;
 public abstract class DoubleUnaryExpression extends DoubleComposedExpression {
 
 	@Model
-	protected DoubleUnaryExpression(DoubleExpression operand)
-			throws IllegalOperandException {
+	protected DoubleUnaryExpression(Expression operand){
 		this.operand = operand;
 	}
 
 	@Basic
-	public DoubleExpression getOperand() {
+	public Expression getOperand() {
 		return operand;
 	}
 
-	private final DoubleExpression operand;
+	private final Expression operand;
 
 	@Override
 	public String toString() {

@@ -19,6 +19,11 @@ public class Print extends Statement {
 	public void executeStatement(){
 		this.executed=false;
 		if (!(SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)){
+			if (print1.getValue()==null){
+				System.out.println("null");
+			    this.executed=true;
+			    SelfWormExpression.getWorm().getProgram().increaseCount();
+			    return;}
 			System.out.println(print1.getValue().getValue());
 			SelfWormExpression.getWorm().getProgram().increaseCount();
 			this.executed=true;}

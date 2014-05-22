@@ -7,6 +7,7 @@ public class Equality extends Comparator {
 
 	public Equality(Expression left,Expression right){
 		super(left,right);
+		
 	}
 	
 	@Override
@@ -16,7 +17,11 @@ public class Equality extends Comparator {
 
 	@Override
 	public BooleanType getValue() {
-		return new BooleanType(super.getLeft().getValue().equals(super.getRight().getValue()));
+		if (getLeft().getValue()==null || getRight().getValue()==null){
+			if (getLeft().getValue()==null && getRight().getValue()==null)
+				return new BooleanType(true);
+			return new BooleanType(false);}
+		return new BooleanType(super.getLeft().getValue().getValue().equals(super.getRight().getValue().getValue()));
 	}
 
 	@Override

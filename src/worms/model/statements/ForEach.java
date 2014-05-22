@@ -41,6 +41,7 @@ public class ForEach extends Statement {
 						return;
 						}
 				}
+				body.executeStatement();
 			}
 		}
 		if (type==ForeachType.FOOD){

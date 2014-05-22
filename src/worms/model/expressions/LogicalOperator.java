@@ -4,11 +4,9 @@ import worms.model.types.BooleanType;
 
 public abstract class LogicalOperator extends BooleanExpression {
 	
-	public LogicalOperator(Expression expr1,Expression expr2) throws IllegalArgumentException {
-		if (! (expr1 instanceof BooleanExpression && expr2 instanceof BooleanExpression))
-			throw new IllegalArgumentException();
-		this.left = (BooleanExpression)expr1;
-		this.right = (BooleanExpression)expr2;
+	public LogicalOperator(Expression expr1,Expression expr2) {
+		this.left = expr1;
+		this.right = expr2;
 	}
 	
 	public abstract String getOperatorSymbol();
