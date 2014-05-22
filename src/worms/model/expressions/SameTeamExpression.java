@@ -1,4 +1,5 @@
 package worms.model.expressions;
+import worms.model.Food;
 import worms.model.Worm;
 import worms.model.Team;
 import worms.model.types.*;
@@ -11,9 +12,10 @@ public class SameTeamExpression extends BooleanExpression {
 
 	@Override
 	public BooleanType getValue() {
+		if ((getEntity().getValue().getValue() instanceof Food))
+			return new BooleanType(false);
 		if (SelfWormExpression.getWorm().getTeam()== null)
 			return new BooleanType(false);
-		
 		return new BooleanType(((Entity<Worm>) this.entity.getValue()).getValue().getTeam().getName()== SelfWormExpression.getWorm().getTeam().getName());
 	}
 	
