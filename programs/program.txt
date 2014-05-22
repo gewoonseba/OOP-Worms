@@ -18,6 +18,7 @@ while(true) do {
   r := getradius self;
   nearestWorm := null;
   foreach(worm, w) do {
+  	print w;
     if (w != self) {
       wx := getx w;
       wy := gety w;
@@ -34,7 +35,6 @@ while(true) do {
       }
     }
   }
-  print nearestWorm;
   if(nearestWorm != null) then {
     print distanceToNearestWorm;
   }
