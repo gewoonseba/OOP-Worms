@@ -49,7 +49,7 @@ public class Turn extends ActionStatement {
 
 	@Override
 	public boolean enoughAp() {
-		return SelfWormExpression.getWorm().canJumpAP();
+		return SelfWormExpression.getWorm().canTurn(getActualAngle());
 	}
 	
 	
