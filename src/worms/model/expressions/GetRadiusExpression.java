@@ -3,7 +3,6 @@ package worms.model.expressions;
 import worms.model.Food;
 import worms.model.Worm;
 import worms.model.types.DoubleType;
-import worms.model.types.Entity;
 
 public class GetRadiusExpression extends OperationExpression {
 
@@ -12,15 +11,8 @@ public class GetRadiusExpression extends OperationExpression {
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return ("getRadius(" + getEntity().toString() +")");
 	}
 
 	@Override

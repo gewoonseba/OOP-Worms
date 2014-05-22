@@ -16,12 +16,6 @@ public class SameTeamExpression extends BooleanExpression {
 		
 		return new BooleanType(((Entity<Worm>) this.entity.getValue()).getValue().getTeam().getName() == SelfWormExpression.getWorm().getTeam().getName());
 	}
-
-	@Override
-	public boolean equals(Object other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 	public final Expression getEntity(){
 		return this.entity;
@@ -31,8 +25,7 @@ public class SameTeamExpression extends BooleanExpression {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return ("sameTeam(" + getEntity() + ")");
 	}
 
 	@Override

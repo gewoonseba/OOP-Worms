@@ -140,7 +140,6 @@ public class Worm {
 		return (! Double.isNaN(coordinate));
 	}
 	
-	//XXX: Formal specification
 	/**
 	 * Check whether the worm can move one step in its current direction.
 	 * @return True if and only if searchFitLocation can find a fit location in the worms current direction, 
@@ -200,7 +199,6 @@ public class Worm {
 		return true;
 	}
 	
-	//XXX: Formal specification
 	/**
 	 * Method to search a location which is adjacent to impassable terrain on a quarter circle, a given distance from the
 	 * center of the Worm. The method shall search for fit locations, beginning in the current  direction of the Worm. When
@@ -232,7 +230,6 @@ public class Worm {
 		return null;
 	}
 	
-	//XXX: Formal specification
 	/**
 	 * Method to search a location which is on passable terrain on a quarter circle, a given distance from the
 	 * center of the Worm. The method shall search for fit locations, beginning in the current  direction of the Worm. When
@@ -265,7 +262,6 @@ public class Worm {
 		return null;
 	}
 	
-	//XXX:Formal specification
 	/**
 	 * Method to move the worm one step, in its current direction. 
 	 * If the worm overlaps with food after its step, the worm will eat that food.

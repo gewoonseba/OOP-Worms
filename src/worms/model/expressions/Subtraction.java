@@ -22,13 +22,7 @@ public class Subtraction extends DoubleBinaryExpression {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected void setOperandAt(int index, DoubleExpression left) {
-		// TODO Auto-generated method stub
+		return (getLeftOperand().toString() + getOperatorSymbol() + getRightOperand().toString());
 	}
 
 	@Override

@@ -11,8 +11,7 @@ public class SinExpression extends DoubleUnaryExpression {
 
 	@Override
 	public String getOperatorSymbol() {
-		// TODO Auto-generated method stub
-		return null;
+		return "sin";
 	}
 
 	@Override
@@ -23,6 +22,11 @@ public class SinExpression extends DoubleUnaryExpression {
 	@Override
 	public SinExpression clone() {
 		return new SinExpression(super.getOperand());
+	}
+	
+	@Override
+	public String toString(){
+		return(getOperatorSymbol() + "(" + getOperand().toString() + ")");
 	}
 	
 }

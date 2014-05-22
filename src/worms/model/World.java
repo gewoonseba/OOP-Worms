@@ -1,9 +1,6 @@
 package worms.model;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import programs.Program;
 import worms.model.expressions.SelfWormExpression;
@@ -229,22 +226,6 @@ public class World {
 	}
 	
 	/**
-	 * Method to convert a given pixel to a coordinate.
-	 * @param x
-	 * 		The column in which the pixel is located
-	 * @param y
-	 * 		The row in which the pixel is located
-	 * @return x is multiplied with the width scale. y is first mirrored around the center row 
-	 * 			and then multiplied with the height scale. The result is returned as an array of doubles.
-	 * 			| return == {x*getWidthScale(),(getPixelHeight() - y)*getHeightScale()}
-	 */
-	private double[] pixelsToCoordinates(int x,int y){
-		double newX = x*getWidthScale()+getWidthScale()/2;
-		double newY = (getPixelHeight()-y)*getHeightScale()+getHeightScale()/2;
-		return new double[] {newX,newY};
-	}
-	
-	/**
 	 * Method to convert a given coordinate to a pixel.
 	 * @param x
 	 * 		The x-coordinate
@@ -290,55 +271,6 @@ public class World {
 		return new double[] {x,y};
 		
 	}
-	
-	/**
-	 * method to see if an object with a given radius is adjacent to impassable terrain.
-	 * @param x
-	 *       |the x coordinate of the center of the object.
-	 * @param y
-	 *       |the y coordinate of the center of the object.
-	 * @param radius
-	 *       |the radius of the object.
-	 * @return returns a boolean that is true if and only if there is an impassable location
-	 *       between the radius and 1.1*radius.
-	 *       |if{
-	 *       |for each(newX,newY) for which holds that (getDistance(x,y,newX,newY) < maxDistance
-	 *       | and getDistance(x,y,newX,newY) < minDistance)
-	 *       | => passableMap[newY][newX]==true:return false}
-	 *       |else: return true
-	 */
-		private boolean isPixelAdjacent(int x,int y, double radius){
-			if (!isPixelPassable(x, y, radius))
-				return false;
-			int maxDistance=(int) Math.round((1.1*radius)/getWidthScale());
-			double minDistance= radius/getWidthScale();
-			int pixelX = x + Math.round(maxDistance);
-			int pixelY = y;
-			double immPixelX = x;
-			int change = 0;
-			while(true){
-				if (Math.abs(pixelX-immPixelX)>maxDistance+0.01){
-					return false;
-				}
-				if (passableMap[pixelY][pixelX]==false){
-					return true;
-				}
-				do {
-					change+=1;
-				} while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<minDistance);
-				while(Math.sqrt((immPixelX-pixelX)*(immPixelX-pixelX)+(change)*(change))<=maxDistance+0.01){
-					if (passableMap[pixelY - change][pixelX]==false){
-						return true;
-					}
-					if (passableMap[pixelY + change][pixelX]==false){
-						return true;
-					}
-					change+=1;
-				}
-				change=0;
-				pixelX-=1;
-			}	
-		}
 
 	/**
 	 * method to see if an object with a given radius is adjacent to impassable terrain.
@@ -383,50 +315,6 @@ public class World {
 				change =0;
 			}
 		}
-		
-	/**
-	 * method to see if an object with a given radius is passable.
-	 * @param x
-	 *       |the x coordinate of the center of the object.
-	 * @param y
-	 *       |the y coordinate of the center of the object.
-	 * @param radius
-	 *       |the radius of the object.
-	 * @return returns a boolean that is true if and only if there is no impassable location
-	 *       in the given radius.
-	 *       |if{
-	 *       |for each(newX,newY) where getDistance(x,y,newX,newY) < maxDistance
-	 *       | => passableMap[newY][newX]==true:return true}
-	 *       |else: return false
-	 */
-		private boolean isPixelPassable(int x, int y, double radius){
-            double maxDistance=radius/getWidthScale();
-			
-			int pixelX = x;
-			int pixelY = y;
-			double immPixelX = x-maxDistance;
-			int change = 0;
-			while(true){
-				if (Math.abs(pixelX-immPixelX)>maxDistance+0.01){
-					return true;
-				}
-				if (passableMap[pixelY][pixelX]==false){
-					return false;
-				}
-				change=1;
-				while(Math.sqrt((pixelX-immPixelX)*(pixelX-immPixelX)+(change)*(change))<maxDistance){
-					if (passableMap[pixelY+change][pixelX]==false){
-						return false;
-					}
-					if (passableMap[pixelY - change][pixelX]==false){
-						return false;
-					}
-					change+=1;
-				}
-				pixelX-=1;
-				change=0;
-			}		
-		}
 
 	/**
 	 * method to see if an object with a given radius is passable.
@@ -469,7 +357,6 @@ public class World {
 		}
 	}
 
-	//TODO: specification
 	/**
 	 * Method to create a new Worm and put it at a random location in this world.
 	 * @effect The new worm is created with a random x and y coordinate (which results in an adjacent position), the minimal radius, direction set to zero
@@ -491,7 +378,6 @@ public class World {
 		createWorm(location[0], location[1], 0, radius, playerNumber,program);
 	}
 	
-	//TODO: Postconditions
 	/**
 	 * Method to create a worm and add it to this world.
 	 * @param x

@@ -43,7 +43,6 @@ public class ProgramFactoryImpl implements ProgramFactory<Expression,Statement,T
 
 	@Override
 	public Expression createSelf(int line, int column) {
-		// TODO Auto-generated method stub
 		return new SelfWormExpression();
 	}
 
@@ -54,55 +53,46 @@ public class ProgramFactoryImpl implements ProgramFactory<Expression,Statement,T
 
 	@Override
 	public Expression createGetY(int line, int column, Expression e) {
-		// TODO Auto-generated method stub
 		return new GetYExpression(e);
 	}
 
 	@Override
 	public Expression createGetRadius(int line, int column, Expression e) {
-		// TODO Auto-generated method stub
 		return new GetRadiusExpression(e);
 	}
 
 	@Override
 	public Expression createGetDir(int line, int column, Expression e) {
-		// TODO Auto-generated method stub
 		return new GetDirectionExpression(e);
 	}
 
 	@Override
 	public Expression createGetAP(int line, int column, Expression e) {
-		// TODO Auto-generated method stub
 		return new GetAPExpression(e);
 	}
 
 	@Override
 	public Expression createGetMaxAP(int line, int column, Expression e) {
-		// TODO Auto-generated method stub
 		return new GetMaxAPExpression(e);
 	}
 
 	@Override
 	public Expression createGetHP(int line, int column, Expression e) {
-		// TODO Auto-generated method stub
 		return new GetHPExpression(e);
 	}
 
 	@Override
 	public Expression createGetMaxHP(int line, int column, Expression e) {
-		// TODO Auto-generated method stub
 		return new GetMaxHPExpression(e);
 	}
 
 	@Override
 	public Expression createSameTeam(int line, int column, Expression e) {
-		// TODO Auto-generated method stub
 		return new SameTeamExpression(e);
 	}
 
 	@Override
 	public Expression createSearchObj(int line, int column, Expression e) {
-		// TODO Auto-generated method stub
 		return new SearchObjectExpression(e);
 	}
 
@@ -120,12 +110,6 @@ public class ProgramFactoryImpl implements ProgramFactory<Expression,Statement,T
 	public Expression createVariableAccess(int line, int column, String name) {
 		return new VariableAccesExpression(name);
 	}
-
-//	@Override
-//	public Expression createVariableAccess(int line, int column, String name,
-//			Type type) {
-//		return null;
-//	}
 
 	@Override
 	public Expression createLessThan(int line, int column, Expression e1,
@@ -286,7 +270,6 @@ public class ProgramFactoryImpl implements ProgramFactory<Expression,Statement,T
 	@Override
 	public Expression createVariableAccess(int line, int column, String name,
 			Type type) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

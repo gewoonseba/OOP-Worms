@@ -37,8 +37,7 @@ public class While extends Statement {
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return ("while(" + condition.toString() + ")" + "\n" + "\t" + body.toString());
 	}
 	
 	private boolean getActualCondition() {

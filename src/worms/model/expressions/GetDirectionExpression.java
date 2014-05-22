@@ -11,15 +11,8 @@ public class GetDirectionExpression extends OperationExpression {
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return ("getDirection(" + getEntity().toString() + ")");
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package worms.model.statements;
 
-import worms.model.Worm;
 import worms.model.expressions.SelfWormExpression;
 
 public class Skip extends ActionStatement {
@@ -12,7 +11,6 @@ public class Skip extends ActionStatement {
 		return "skip";
 	}
 
-	//FIXME: should use actionhandler
 	@Override
 	public void executeStatement() {
 		if (!(SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)){

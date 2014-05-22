@@ -16,17 +16,9 @@ public class GetHPExpression extends OperationExpression {
 		return new DoubleType((double) ((Entity<Worm>) getEntity().getValue()).getValue().getHitPoints());
 	}
 
-
-	@Override
-	public boolean equals(Object other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return ("getHP(" + getEntity().toString() +")");
 	}
 
 

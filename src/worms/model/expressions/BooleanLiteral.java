@@ -38,8 +38,7 @@ public class BooleanLiteral extends BooleanExpression {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return ((Boolean)getOriginalBoolean()).toString();
 	}
 	
 	private boolean getOriginalBoolean(){

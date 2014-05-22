@@ -9,17 +9,10 @@ public class GetMaxAPExpression extends OperationExpression{
 	public GetMaxAPExpression(Expression entity) {
 		super(entity);
 	}
-	
-	@Override
-	public boolean equals(Object other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return ("getMaxAP(" + getEntity().toString() + ")");
 	}
 
 	@Override

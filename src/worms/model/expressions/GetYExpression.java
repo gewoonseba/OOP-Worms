@@ -12,15 +12,8 @@ public class GetYExpression extends OperationExpression {
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return ("getY(" + getEntity().toString() + ")");
 	}
 
 	@Override

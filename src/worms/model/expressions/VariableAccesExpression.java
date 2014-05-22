@@ -11,15 +11,8 @@ public class VariableAccesExpression extends Expression {
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return ("variableAcces(" + getName() +")");
 	}
 	
 	public String getVariable(){
@@ -29,7 +22,6 @@ public class VariableAccesExpression extends Expression {
 
 	@Override
 	public Type getValue() {
-		// TODO Object?
 		return SelfWormExpression.getWorm().getProgram().getGlobals().get(name);
 	}
 	

@@ -13,21 +13,9 @@ public abstract class OperationExpression extends Expression{
 	public Expression getEntity(){
 		return this.entity;
 	}
-	
+
 	private Expression entity;
 
 	@Override
-	public boolean equals(Object other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
-
+	public abstract String toString();
 }

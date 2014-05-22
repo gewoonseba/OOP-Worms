@@ -16,23 +16,14 @@ public class SearchObjectExpression extends Expression {
 	private final Expression getE(){
 		return this.e;
 	}
-	
-    @Override
-	public boolean equals(Object other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return ("searchObject(" + getE().toString() +")");
 	}
 
 	@Override
 	public Entity<?> getValue() {
-		// TODO Eleganter?
-
 		nearestWorm=null;
 		nearestObject=null;
 		nearestFood=null;
@@ -53,9 +44,7 @@ public class SearchObjectExpression extends Expression {
 				while (direction+angleIncrease<0)
 					direction+=2*Math.PI;
 				double alfa = Math.asin((w.getY()-worm.getY())/distance);
-				if (((w.getX()>worm.getX()&&w.getY()>worm.getY())))
-					alfa = alfa;
-				else if (((w.getX()<worm.getX()&&w.getY()>worm.getY())))
+				if (((w.getX()<worm.getX()&&w.getY()>worm.getY())))
 					alfa = Math.PI-alfa;
 				else if (((w.getX()<worm.getX()&&w.getY()<worm.getY())))
 					alfa = Math.PI-alfa;
@@ -84,9 +73,7 @@ public class SearchObjectExpression extends Expression {
 			while (direction+angleIncrease<0)
 				direction+=2*Math.PI;
 			double alfa = Math.asin((w.getY()-worm.getY())/distance);
-			if (((w.getX()>worm.getX()&&w.getY()>worm.getY())))
-				alfa = alfa;
-			else if (((w.getX()<worm.getX()&&w.getY()>worm.getY())))
+			if (((w.getX()<worm.getX()&&w.getY()>worm.getY())))
 				alfa = Math.PI-alfa;
 			else if (((w.getX()<worm.getX()&&w.getY()<worm.getY())))
 				alfa = Math.PI-alfa;
