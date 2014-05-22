@@ -27,7 +27,6 @@ public class Worms {
 				options.programFile = program;
 			}
 		}
-
 		return options;
 	}
 }
