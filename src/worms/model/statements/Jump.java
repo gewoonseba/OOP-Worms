@@ -25,6 +25,8 @@ public class Jump extends ActionStatement {
 				IActionHandler handler = self.getProgram().getHandler();
 				handler.jump(self);
 				self.getProgram().increaseCount();
+				if (SelfWormExpression.getWorm().getHitPoints()<=0)
+					SelfWormExpression.getWorm().getProgram().stop();
 				this.executed=true;}
 	}
 	
