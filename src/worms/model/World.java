@@ -342,7 +342,8 @@ public class World {
 			if (Math.abs(xchange)>maxDistance){
 				return true;}
 			if (passableMap[coordinatesToPixels(x+xchange, y)[1]][coordinatesToPixels(x+xchange, y)[0]]==false)
-				return false;
+				if (!(x+xchange==Math.floor(x+xchange)&&xchange==2*maxDistance))
+					return false;
 			change+=maxDistance/(Math.ceil((radius/(getHeightScale()))));
 			while ((Math.sqrt((xchange)*(xchange )+(change)*(change))<=maxDistance )){
 				if (passableMap[coordinatesToPixels(x + xchange, y+change)[1]][coordinatesToPixels(x + xchange, y+ change)[0]]==false)
