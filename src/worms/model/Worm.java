@@ -14,7 +14,7 @@ import be.kuleuven.cs.som.annotate.*;
  * to a Team, but it doesn't have to belong to a team. Furthermore a Worm shall possess weapons and is able to shoot these weapons.
  * code repository:https://github.com/sebastianstoelen/OOP-Worms
  * @author Sebastian Stoelen 2BbiCwsElt2, Matthias Maeyens 2BbiCwsElt2
- * @version 2.0
+ * @version 3.0
  * @invariant isValidRadius(getRadius())
  *            isValidDirection(getDirection())
  *            isValidName(getName())

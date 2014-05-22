@@ -14,7 +14,7 @@ import be.kuleuven.cs.som.annotate.*;
  * 
  * code repository:https://github.com/sebastianstoelen/OOP-Worms
  * @author Sebastian Stoelen 2BbiCwsElt2, Matthias Maeyens 2BbiCwsElt2
- * @version 1.0
+ * @version 2.0
  *
  *@invariant isValidWidth(getWidth())
  *           isValidHeight(getHeight())
