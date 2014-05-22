@@ -72,6 +72,7 @@ public class Program {
 			SelfWormExpression.getWorm().removeWorld();
 			oldWorld.getWinner();}
 		oldWorld.startNextTurn();
+		SelfWormExpression.setWorm(null);
 	}
 	
 	private boolean inForEach;
