@@ -34,7 +34,6 @@ while(true) do {
       }
     }
   }
-  print nearestWorm;
   if(nearestWorm != null) then {
     print distanceToNearestWorm;
   }
