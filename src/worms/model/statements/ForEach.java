@@ -60,7 +60,7 @@ public class ForEach extends Statement {
 				body.executeStatement();
 			}
 		}
-		if (type==ForeachType.WORM){
+		if (type==ForeachType.ANY){
 			Entity<Food> v=new Entity<Food>();
 			for (Food w:SelfWormExpression.getWorm().getWorld().getFood()){
 				if (SelfWormExpression.getWorm().getProgram().getstatementCount()>=1000)
